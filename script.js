@@ -1224,13 +1224,29 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const orders = getOrders();
             const orderId = `WR-${Math.floor(100000 + Math.random() * 900000)}`;
+            const paymentName = document.querySelector('input[name="paymentRadio"]:checked').closest('.payment-method').querySelector('.payment-method-details span').textContent;
             const newOrder = {
                 orderId,
                 date: new Date().toLocaleDateString(),
                 customer: activeUser.name,
                 total,
-                status: "pending",
-                items: cart.length
+                status: "processing",
+                items: cart.map(item => ({
+                    id: item.product.id,
+                    title: item.product.title,
+                    price: item.product.price,
+                    image: item.product.image,
+                    quantity: item.quantity,
+                    size: item.size
+                })),
+                shippingAddress: {
+                    fullName,
+                    address,
+                    city,
+                    pincode,
+                    phone
+                },
+                paymentMethod: paymentName
             };
             orders.push(newOrder);
             saveOrders(orders);
@@ -1488,6 +1504,9 @@ document.addEventListener('DOMContentLoaded', () => {
                             <td>${o.date}</td>
                             <td>₹${o.total}</td>
                             <td><span class="status-badge ${o.status}">${o.status}</span></td>
+                            <td>
+                                <button class="btn btn-secondary" onclick="viewOrderTracking('${o.orderId}')" style="padding: 6px 12px; font-size: 11px;">Track</button>
+                            </td>
                         </tr>
                     `).join('');
                 }
@@ -1552,7 +1571,14 @@ document.addEventListener('DOMContentLoaded', () => {
                                 <td>${o.customer}</td>
                                 <td>${o.date}</td>
                                 <td>₹${o.total}</td>
-                                <td><span class="status-badge ${o.status}">${o.status}</span></td>
+                                <td>
+                                    <select class="form-control" onchange="changeOrderStatus('${o.orderId}', this.value)" style="height: 32px; padding: 4px 8px; font-size: 11px; background-color: var(--search-bg); width: 120px;">
+                                        <option value="pending" ${o.status === 'pending' ? 'selected' : ''}>Pending</option>
+                                        <option value="processing" ${o.status === 'processing' ? 'selected' : ''}>Processing</option>
+                                        <option value="shipped" ${o.status === 'shipped' ? 'selected' : ''}>Shipped</option>
+                                        <option value="delivered" ${o.status === 'delivered' ? 'selected' : ''}>Delivered</option>
+                                    </select>
+                                </td>
                             </tr>
                         `).join('');
                     }
@@ -1672,4 +1698,145 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
     }
+
+    // --- Order Tracking modal and Admin update controls ---
+    window.viewOrderTracking = function(orderId) {
+        const orders = getOrders();
+        const o = orders.find(x => x.orderId === orderId);
+        if (!o) return;
+        
+        const activeUser = getActiveUser();
+        if (!o.items || !Array.isArray(o.items)) {
+            o.items = [
+                { title: "Wrogn Hooded Windcheater Jacket", price: o.total, image: "Images/jacket-1.jpg", quantity: 1, size: "M" }
+            ];
+            o.shippingAddress = {
+                fullName: activeUser ? activeUser.name : "Ankit Kumar",
+                address: "Indiranagar Flat 24B",
+                city: "Bangalore",
+                pincode: "560038",
+                phone: "+91 98765 43210"
+            };
+            o.paymentMethod = "Cash on Delivery (COD)";
+        }
+        
+        const trackingModal = document.createElement('div');
+        trackingModal.className = "invoice-modal-overlay";
+        trackingModal.id = "trackingModalOverlay";
+        
+        let step1 = true, step2 = false, step3 = false, step4 = false;
+        let date1 = o.date, date2 = "Pending", date3 = "Pending", date4 = "Pending";
+        
+        if (o.status === "shipped") {
+            step2 = true;
+            date2 = o.date;
+        } else if (o.status === "delivered") {
+            step2 = true;
+            step3 = true;
+            step4 = true;
+            date2 = o.date;
+            date3 = o.date;
+            date4 = o.date;
+        } else if (o.status === "processing") {
+            date2 = "Processing";
+        }
+        
+        const itemsHTML = o.items.map(item => `
+            <div style="display: flex; gap: 12px; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--divider-color);">
+                <img src="${item.image}" style="width: 40px; height: 50px; object-fit: cover; border-radius: 4px;">
+                <div style="flex: 1; text-align: left;">
+                    <div style="font-size: 13px; font-weight: 700; color: var(--text-color);">${item.title}</div>
+                    <div style="font-size: 11px; color: var(--text-muted);">Size: ${item.size} | Qty: ${item.quantity}</div>
+                </div>
+                <div style="font-size: 13.5px; font-weight: 800; color: var(--text-color);">₹${item.price * item.quantity}</div>
+            </div>
+        `).join('');
+        
+        trackingModal.innerHTML = `
+            <div class="auth-card" style="max-width: 550px; width: 100%; margin: 0; background-color: var(--card-bg); max-height: 90vh; overflow-y: auto; padding: 30px; position: relative;">
+                <button class="cart-drawer-close" onclick="document.getElementById('trackingModalOverlay').remove()" style="position: absolute; top: 15px; right: 20px; background: none; border: none; color: var(--text-color); font-size: 28px; cursor: pointer;">&times;</button>
+                
+                <h3 style="font-size: 18px; font-weight: 800; margin-bottom: 5px; text-transform: uppercase;">Order Tracking Details</h3>
+                <p style="color: var(--text-muted); font-size: 12.5px; margin-bottom: 25px;">Order ID: <strong>#${o.orderId}</strong> | Placed on ${o.date}</p>
+                
+                <div class="tracking-timeline-container" style="margin-bottom: 30px; position: relative; padding: 10px 0;">
+                    <div style="display: flex; justify-content: space-between; position: relative; margin-bottom: 10px; width: 100%;">
+                        <div style="position: absolute; top: 14px; left: 10%; right: 10%; height: 4px; background-color: var(--divider-color); z-index: 1;"></div>
+                        <div style="position: absolute; top: 14px; left: 10%; width: ${o.status === 'delivered' ? '80%' : o.status === 'shipped' ? '40%' : '15%'}; height: 4px; background-color: var(--accent-color); z-index: 2; transition: width 0.4s;"></div>
+                        
+                        <div style="z-index: 3; text-align: center; width: 20%;">
+                            <div style="width: 32px; height: 32px; border-radius: 50%; background-color: ${step1 ? 'var(--accent-color)' : 'var(--divider-color)'}; color: ${step1 ? '#000' : 'var(--text-color)'}; display: flex; align-items: center; justify-content: center; margin: 0 auto 8px auto; font-size: 12px; font-weight: bold; border: 3px solid var(--card-bg); box-shadow: 0 0 0 2px ${step1 ? 'var(--accent-color)' : 'transparent'};">✓</div>
+                            <span style="font-size: 11px; font-weight: 700; display: block; color: var(--text-color);">Ordered</span>
+                            <span style="font-size: 9px; color: var(--text-muted);">${date1}</span>
+                        </div>
+                        
+                        <div style="z-index: 3; text-align: center; width: 20%;">
+                            <div style="width: 32px; height: 32px; border-radius: 50%; background-color: ${step2 ? 'var(--accent-color)' : 'var(--divider-color)'}; color: ${step2 ? '#000' : 'var(--text-color)'}; display: flex; align-items: center; justify-content: center; margin: 0 auto 8px auto; font-size: 12px; font-weight: bold; border: 3px solid var(--card-bg); box-shadow: 0 0 0 2px ${step2 ? 'var(--accent-color)' : 'transparent'};">🚚</div>
+                            <span style="font-size: 11px; font-weight: 700; display: block; color: var(--text-color);">Shipped</span>
+                            <span style="font-size: 9px; color: var(--text-muted);">${date2}</span>
+                        </div>
+                        
+                        <div style="z-index: 3; text-align: center; width: 20%;">
+                            <div style="width: 32px; height: 32px; border-radius: 50%; background-color: ${step3 ? 'var(--accent-color)' : 'var(--divider-color)'}; color: ${step3 ? '#000' : 'var(--text-color)'}; display: flex; align-items: center; justify-content: center; margin: 0 auto 8px auto; font-size: 12px; font-weight: bold; border: 3px solid var(--card-bg); box-shadow: 0 0 0 2px ${step3 ? 'var(--accent-color)' : 'transparent'};">📦</div>
+                            <span style="font-size: 11px; font-weight: 700; display: block; color: var(--text-color);">Out for Delivery</span>
+                            <span style="font-size: 9px; color: var(--text-muted);">${date3}</span>
+                        </div>
+                        
+                        <div style="z-index: 3; text-align: center; width: 20%;">
+                            <div style="width: 32px; height: 32px; border-radius: 50%; background-color: ${step4 ? 'var(--accent-color)' : 'var(--divider-color)'}; color: ${step4 ? '#000' : 'var(--text-color)'}; display: flex; align-items: center; justify-content: center; margin: 0 auto 8px auto; font-size: 12px; font-weight: bold; border: 3px solid var(--card-bg); box-shadow: 0 0 0 2px ${step4 ? 'var(--accent-color)' : 'transparent'};">🏠</div>
+                            <span style="font-size: 11px; font-weight: 700; display: block; color: var(--text-color);">Delivered</span>
+                            <span style="font-size: 9px; color: var(--text-muted);">${date4}</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 25px; font-size: 13px; border-top: 1px solid var(--divider-color); padding-top: 15px;">
+                    <div style="text-align: left;">
+                        <h4 style="font-weight: bold; margin-bottom: 6px; text-transform: uppercase; font-size: 11px; color: var(--accent-color);">Shipping Details</h4>
+                        <p style="font-weight: 700; margin-bottom: 4px; color: var(--text-color);">${o.shippingAddress.fullName}</p>
+                        <p style="color: var(--text-muted); line-height: 1.4;">${o.shippingAddress.address}, ${o.shippingAddress.city} - ${o.shippingAddress.pincode}</p>
+                        <p style="color: var(--text-muted); margin-top: 4px;">Phone: ${o.shippingAddress.phone}</p>
+                    </div>
+                    <div style="text-align: left;">
+                        <h4 style="font-weight: bold; margin-bottom: 6px; text-transform: uppercase; font-size: 11px; color: var(--accent-color);">Payment Summary</h4>
+                        <p style="font-weight: 700; margin-bottom: 4px; color: var(--text-color);">${o.paymentMethod}</p>
+                        <p style="color: var(--text-muted);">Status: <span style="color: #2ecc71; font-weight: bold; text-transform: uppercase; font-size: 11px;">Confirmed</span></p>
+                    </div>
+                </div>
+                
+                <div style="margin-bottom: 25px;">
+                    <h4 style="font-weight: bold; margin-bottom: 10px; text-transform: uppercase; font-size: 11px; color: var(--accent-color);">Purchased Items</h4>
+                    <div style="max-height: 180px; overflow-y: auto; padding-right: 5px;">
+                        ${itemsHTML}
+                    </div>
+                </div>
+                
+                <div style="border-top: 1px dashed var(--divider-color); padding-top: 15px; font-size: 13px; display: flex; justify-content: space-between;">
+                    <span style="color: var(--text-muted);">Total Paid Amount:</span>
+                    <strong style="font-size: 16px; color: var(--text-color);">₹${o.total}</strong>
+                </div>
+                
+                <div style="margin-top: 25px; display: flex; justify-content: flex-end;">
+                    <button class="btn btn-primary" onclick="document.getElementById('trackingModalOverlay').remove()" style="padding: 10px 24px; color: #000; background-color: var(--accent-color); font-weight: bold; font-family: inherit;">Close Tracking</button>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(trackingModal);
+    };
+
+    window.changeOrderStatus = function(orderId, newStatus) {
+        let orders = getOrders();
+        const o = orders.find(x => x.orderId === orderId);
+        if (o) {
+            o.status = newStatus;
+            saveOrders(orders);
+            showToast(`Order #${orderId} status updated to ${newStatus}`);
+            // If admin dashboard is loaded, refresh figures
+            const totalSalesEl = document.getElementById('admin-total-sales');
+            if (totalSalesEl) {
+                const totalSales = orders.reduce((sum, ord) => sum + ord.total, 0);
+                totalSalesEl.textContent = `₹${totalSales}`;
+            }
+        }
+    };
 });
