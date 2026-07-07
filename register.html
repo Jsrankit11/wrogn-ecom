@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wrogn E-Commerce Navbar</title>
-      <!Google Fonts for premium typography! -->
+    <title>Account Registration | Wrogn E-Commerce</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -12,22 +11,15 @@
 </head>
 <body>
     <header class="header">
-        <!-- Top row containing logo, search bar, action items -->
         <div class="navbar-top-wrapper">
             <div class="navbar-container navbar-top">
-                <!-- Wrogn Logo -->
-                <a href="#" class="logo">
+                <a href="index.html" class="logo">
                     <span class="logo-w">W</span><span class="logo-rest">rogn</span>
                 </a>
-
-                <!-- Search Bar -->
                 <div class="search-bar-container">
                     <form class="search-form" id="searchForm" autocomplete="off">
                         <input type="text" placeholder="Search for products, brands..." class="search-input" id="searchInput" aria-label="Search products and brands">
-                        
-                        <!-- Voice Search (Microphone) -->
                         <button type="button" class="mic-btn" id="micBtn" title="Voice Search" aria-label="Voice search">
-                            <!-- Premium Custom Microphone SVG with Gradient -->
                             <svg class="mic-icon" viewBox="0 0 24 24" width="20" height="20">
                                 <defs>
                                     <linearGradient id="micGrad" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -40,8 +32,6 @@
                                 <line x1="12" y1="17" x2="12" y2="22" stroke="url(#micGrad)" stroke-width="2" stroke-linecap="round"/>
                             </svg>
                         </button>
-
-                        <!-- Search Submit Button -->
                         <button type="submit" class="search-btn" id="searchBtn" aria-label="Submit search">
                             <svg class="search-icon" viewBox="0 0 24 24" width="16" height="16">
                                 <circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="3" fill="none"></circle>
@@ -50,10 +40,7 @@
                         </button>
                     </form>
                 </div>
-
-                <!-- Top Row Right Actions -->
                 <div class="action-group">
-                    <!-- Theme Toggle (Moon/Sun) -->
                     <button class="action-btn theme-toggle" id="themeToggle" title="Toggle Theme" aria-label="Toggle light or dark theme">
                         <svg class="theme-icon-moon" viewBox="0 0 24 24" width="22" height="22">
                             <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" fill="#f5a623" stroke="#f5a623" stroke-width="1"/>
@@ -70,9 +57,7 @@
                             <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
                         </svg>
                     </button>
-
-                    <!-- User Profile -->
-                    <a href="#" class="action-btn profile-btn" title="My Profile" aria-label="Go to profile">
+                    <a href="profile.html" class="action-btn profile-btn" title="My Profile" aria-label="Go to profile">
                         <svg class="profile-icon" viewBox="0 0 24 24" width="22" height="22">
                             <defs>
                                 <linearGradient id="userGrad" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -84,16 +69,12 @@
                             <path d="M12 14c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" fill="url(#userGrad)"/>
                         </svg>
                     </a>
-
-                    <!-- Wishlist (Heart) -->
-                    <a href="#" class="action-btn wishlist-btn" title="My Wishlist" aria-label="View wishlist">
+                    <a href="wishlist.html" class="action-btn wishlist-btn" title="My Wishlist" aria-label="View wishlist">
                         <svg class="wishlist-icon" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
                         </svg>
                     </a>
-
-                    <!-- Shopping Cart -->
-                    <a href="#" class="action-btn cart-btn" title="My Cart" aria-label="View shopping cart">
+                    <a href="cart.html" class="action-btn cart-btn" title="My Cart" aria-label="View shopping cart">
                         <div class="cart-icon-wrapper">
                             <svg class="cart-icon" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <circle cx="9" cy="21" r="1"></circle>
@@ -103,8 +84,6 @@
                             <span class="cart-badge">0</span>
                         </div>
                     </a>
-
-                    <!-- Responsive Mobile Hamburg menu button -->
                     <button class="action-btn mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle menu" aria-expanded="false">
                         <svg class="hamburger-icon" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <line x1="3" y1="12" x2="21" y2="12" id="line1"></line>
@@ -115,30 +94,18 @@
                 </div>
             </div>
         </div>
-
-        <!-- Divider Line -->
         <div class="navbar-divider"></div>
-
-        <!-- Bottom row containing navigation links -->
         <div class="navbar-bottom-wrapper">
             <div class="navbar-container navbar-bottom" id="navbarBottom">
-                <!-- Close menu button for Mobile overlay navigation -->
                 <button class="mobile-close-btn" id="mobileCloseBtn" aria-label="Close menu">&times;</button>
-                
                 <ul class="nav-links">
-                    <li class="nav-item">
-                        <a href="index.html" class="nav-link active">HOME</a>
-                    </li>
-                    
+                    <li class="nav-item"><a href="index.html" class="nav-link">HOME</a></li>
                     <li class="nav-item has-dropdown">
-                        <a href="shop.html" class="nav-link dropdown-trigger" id="categoriesDropdownLink">
-                            CATEGORIES 
+                        <a href="shop.html" class="nav-link dropdown-trigger" id="categoriesDropdownLink">CATEGORIES
                             <svg class="dropdown-caret" viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round">
                                 <polyline points="6 9 12 15 18 9"></polyline>
                             </svg>
                         </a>
-                        
-                        <!-- Dropdown Menu Box -->
                         <div class="dropdown-menu">
                             <div class="dropdown-grid">
                                 <div class="dropdown-column">
@@ -173,47 +140,49 @@
                             </div>
                         </div>
                     </li>
-                    
-                    <li class="nav-item">
-                        <a href="shop.html" class="nav-link">NEW ARRIVALS</a>
-                    </li>
-                    
-                    <li class="nav-item">
-                        <a href="shop.html" class="nav-link">DEALS</a>
-                    </li>
-                    
-                    <li class="nav-item">
-                        <a href="shop.html" class="nav-link">BEST SELLERS</a>
-                    </li>
-                    
-                    <li class="nav-item">
-                        <a href="contact.html" class="nav-link">CONTACT US</a>
-                    </li>
+                    <li class="nav-item"><a href="shop.html" class="nav-link">NEW ARRIVALS</a></li>
+                    <li class="nav-item"><a href="shop.html" class="nav-link">DEALS</a></li>
+                    <li class="nav-item"><a href="shop.html" class="nav-link">BEST SELLERS</a></li>
+                    <li class="nav-item"><a href="contact.html" class="nav-link">CONTACT US</a></li>
                 </ul>
             </div>
         </div>
     </header>
 
-    <!-- Main Content for demonstration, ensuring premium look and feel -->
     <main class="main-content">
-        <section class="hero">
-            <div class="hero-bg-overlay"></div>
-            <div class="hero-content">
-                <span class="hero-tagline">BREAK THE RULES</span>
-                <h1 class="hero-title">WROGN COLLECTION 2026</h1>
-                <p class="hero-description">Experience the offbeat style that speaks for your non-conformist attitude. Bold graphics, quirky fits, and unmatched comfort.</p>
-                <div class="hero-buttons">
-                    <a href="shop.html" class="btn btn-primary">Shop Men's Clothing</a>
-                    <a href="shop.html?category=Accessories" class="btn btn-secondary">Explore Accessories</a>
+        <section class="container" style="flex: 1; display: flex; align-items: center; justify-content: center;">
+            <div class="auth-card">
+                <h2>Create Account</h2>
+                <p class="auth-sub">Register today for custom recommendations and rapid shipping updates.</p>
+                
+                <form id="registerForm">
+                    <div class="form-group">
+                        <label for="regName">Full Name</label>
+                        <input type="text" id="regName" class="form-control" placeholder="E.g., Ankit Kumar" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="regEmail">Email Address</label>
+                        <input type="email" id="regEmail" class="form-control" placeholder="name@example.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="regPassword">Password</label>
+                        <input type="password" id="regPassword" class="form-control" placeholder="Create Password" required minlength="6">
+                    </div>
+                    <div class="form-group">
+                        <label for="regConfirmPassword">Confirm Password</label>
+                        <input type="password" id="regConfirmPassword" class="form-control" placeholder="Verify Password" required minlength="6">
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-full">Sign Up</button>
+                </form>
+
+                <div class="auth-redirect">
+                    Already have an account? <a href="login.html">Sign In</a>
                 </div>
             </div>
         </section>
-        
-        <!-- Live status notification toast -->
-        <div class="toast" id="toast">Action triggered successfully!</div>
+        <div class="toast" id="toast"></div>
     </main>
 
-    <!-- Premium Footer Section -->
     <footer style="background-color: var(--card-bg); border-top: 1px solid var(--divider-color); padding: 50px 24px 30px 24px; color: var(--text-color);">
         <div style="max-width: 1240px; margin: 0 auto; display: grid; grid-template-columns: 2fr repeat(3, 1fr); gap: 40px; font-family: inherit;">
             <div>

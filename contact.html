@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wrogn E-Commerce Navbar</title>
-      <!Google Fonts for premium typography! -->
+    <title>Contact Us | Wrogn E-Commerce</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -12,22 +11,15 @@
 </head>
 <body>
     <header class="header">
-        <!-- Top row containing logo, search bar, action items -->
         <div class="navbar-top-wrapper">
             <div class="navbar-container navbar-top">
-                <!-- Wrogn Logo -->
-                <a href="#" class="logo">
+                <a href="index.html" class="logo">
                     <span class="logo-w">W</span><span class="logo-rest">rogn</span>
                 </a>
-
-                <!-- Search Bar -->
                 <div class="search-bar-container">
                     <form class="search-form" id="searchForm" autocomplete="off">
                         <input type="text" placeholder="Search for products, brands..." class="search-input" id="searchInput" aria-label="Search products and brands">
-                        
-                        <!-- Voice Search (Microphone) -->
                         <button type="button" class="mic-btn" id="micBtn" title="Voice Search" aria-label="Voice search">
-                            <!-- Premium Custom Microphone SVG with Gradient -->
                             <svg class="mic-icon" viewBox="0 0 24 24" width="20" height="20">
                                 <defs>
                                     <linearGradient id="micGrad" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -40,8 +32,6 @@
                                 <line x1="12" y1="17" x2="12" y2="22" stroke="url(#micGrad)" stroke-width="2" stroke-linecap="round"/>
                             </svg>
                         </button>
-
-                        <!-- Search Submit Button -->
                         <button type="submit" class="search-btn" id="searchBtn" aria-label="Submit search">
                             <svg class="search-icon" viewBox="0 0 24 24" width="16" height="16">
                                 <circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="3" fill="none"></circle>
@@ -50,10 +40,7 @@
                         </button>
                     </form>
                 </div>
-
-                <!-- Top Row Right Actions -->
                 <div class="action-group">
-                    <!-- Theme Toggle (Moon/Sun) -->
                     <button class="action-btn theme-toggle" id="themeToggle" title="Toggle Theme" aria-label="Toggle light or dark theme">
                         <svg class="theme-icon-moon" viewBox="0 0 24 24" width="22" height="22">
                             <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" fill="#f5a623" stroke="#f5a623" stroke-width="1"/>
@@ -70,9 +57,7 @@
                             <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
                         </svg>
                     </button>
-
-                    <!-- User Profile -->
-                    <a href="#" class="action-btn profile-btn" title="My Profile" aria-label="Go to profile">
+                    <a href="profile.html" class="action-btn profile-btn" title="My Profile" aria-label="Go to profile">
                         <svg class="profile-icon" viewBox="0 0 24 24" width="22" height="22">
                             <defs>
                                 <linearGradient id="userGrad" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -84,16 +69,12 @@
                             <path d="M12 14c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" fill="url(#userGrad)"/>
                         </svg>
                     </a>
-
-                    <!-- Wishlist (Heart) -->
-                    <a href="#" class="action-btn wishlist-btn" title="My Wishlist" aria-label="View wishlist">
+                    <a href="wishlist.html" class="action-btn wishlist-btn" title="My Wishlist" aria-label="View wishlist">
                         <svg class="wishlist-icon" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
                         </svg>
                     </a>
-
-                    <!-- Shopping Cart -->
-                    <a href="#" class="action-btn cart-btn" title="My Cart" aria-label="View shopping cart">
+                    <a href="cart.html" class="action-btn cart-btn" title="My Cart" aria-label="View shopping cart">
                         <div class="cart-icon-wrapper">
                             <svg class="cart-icon" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <circle cx="9" cy="21" r="1"></circle>
@@ -103,8 +84,6 @@
                             <span class="cart-badge">0</span>
                         </div>
                     </a>
-
-                    <!-- Responsive Mobile Hamburg menu button -->
                     <button class="action-btn mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle menu" aria-expanded="false">
                         <svg class="hamburger-icon" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <line x1="3" y1="12" x2="21" y2="12" id="line1"></line>
@@ -115,30 +94,18 @@
                 </div>
             </div>
         </div>
-
-        <!-- Divider Line -->
         <div class="navbar-divider"></div>
-
-        <!-- Bottom row containing navigation links -->
         <div class="navbar-bottom-wrapper">
             <div class="navbar-container navbar-bottom" id="navbarBottom">
-                <!-- Close menu button for Mobile overlay navigation -->
                 <button class="mobile-close-btn" id="mobileCloseBtn" aria-label="Close menu">&times;</button>
-                
                 <ul class="nav-links">
-                    <li class="nav-item">
-                        <a href="index.html" class="nav-link active">HOME</a>
-                    </li>
-                    
+                    <li class="nav-item"><a href="index.html" class="nav-link">HOME</a></li>
                     <li class="nav-item has-dropdown">
-                        <a href="shop.html" class="nav-link dropdown-trigger" id="categoriesDropdownLink">
-                            CATEGORIES 
+                        <a href="shop.html" class="nav-link dropdown-trigger" id="categoriesDropdownLink">CATEGORIES
                             <svg class="dropdown-caret" viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round">
                                 <polyline points="6 9 12 15 18 9"></polyline>
                             </svg>
                         </a>
-                        
-                        <!-- Dropdown Menu Box -->
                         <div class="dropdown-menu">
                             <div class="dropdown-grid">
                                 <div class="dropdown-column">
@@ -173,47 +140,103 @@
                             </div>
                         </div>
                     </li>
-                    
-                    <li class="nav-item">
-                        <a href="shop.html" class="nav-link">NEW ARRIVALS</a>
-                    </li>
-                    
-                    <li class="nav-item">
-                        <a href="shop.html" class="nav-link">DEALS</a>
-                    </li>
-                    
-                    <li class="nav-item">
-                        <a href="shop.html" class="nav-link">BEST SELLERS</a>
-                    </li>
-                    
-                    <li class="nav-item">
-                        <a href="contact.html" class="nav-link">CONTACT US</a>
-                    </li>
+                    <li class="nav-item"><a href="shop.html" class="nav-link">NEW ARRIVALS</a></li>
+                    <li class="nav-item"><a href="shop.html" class="nav-link">DEALS</a></li>
+                    <li class="nav-item"><a href="shop.html" class="nav-link">BEST SELLERS</a></li>
+                    <li class="nav-item"><a href="contact.html" class="nav-link active">CONTACT US</a></li>
                 </ul>
             </div>
         </div>
     </header>
 
-    <!-- Main Content for demonstration, ensuring premium look and feel -->
     <main class="main-content">
-        <section class="hero">
-            <div class="hero-bg-overlay"></div>
-            <div class="hero-content">
-                <span class="hero-tagline">BREAK THE RULES</span>
-                <h1 class="hero-title">WROGN COLLECTION 2026</h1>
-                <p class="hero-description">Experience the offbeat style that speaks for your non-conformist attitude. Bold graphics, quirky fits, and unmatched comfort.</p>
-                <div class="hero-buttons">
-                    <a href="shop.html" class="btn btn-primary">Shop Men's Clothing</a>
-                    <a href="shop.html?category=Accessories" class="btn btn-secondary">Explore Accessories</a>
+        <div class="page-header">
+            <h1>Contact Us</h1>
+            <p>Have questions about your order or want to share feedback? Get in touch below.</p>
+        </div>
+
+        <section class="container">
+            <div class="contact-grid">
+                <!-- Form -->
+                <div class="checkout-section" style="margin-bottom: 0;">
+                    <h3 style="margin-bottom: 25px;">Send a Message</h3>
+                    <form id="contactForm">
+                        <div class="form-group">
+                            <label for="contactName">Full Name</label>
+                            <input type="text" id="contactName" class="form-control" placeholder="E.g., Ankit Kumar" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="contactEmail">Email Address</label>
+                            <input type="email" id="contactEmail" class="form-control" placeholder="name@example.com" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="contactMsg">Message / Query</label>
+                            <textarea id="contactMsg" rows="5" class="form-control" placeholder="Type your inquiry here..." required style="resize: vertical;"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-full" style="margin-top: 15px;">Send Inquiry</button>
+                    </form>
+                </div>
+
+                <!-- Info Side -->
+                <div class="contact-info">
+                    <h3>Contact Information</h3>
+                    
+                    <div class="contact-method">
+                        <div class="contact-method-icon">
+                            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                            </svg>
+                        </div>
+                        <div class="contact-method-text">
+                            <h4>Phone Support</h4>
+                            <p>+91 1800 200 4567 (10 AM - 7 PM, Mon-Sat)</p>
+                        </div>
+                    </div>
+
+                    <div class="contact-method">
+                        <div class="contact-method-icon">
+                            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                                <polyline points="22,6 12,13 2,6"></polyline>
+                            </svg>
+                        </div>
+                        <div class="contact-method-text">
+                            <h4>Email Support</h4>
+                            <p>support@wrogn.codealpha.com</p>
+                        </div>
+                    </div>
+
+                    <div class="contact-method">
+                        <div class="contact-method-icon">
+                            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                                <circle cx="12" cy="10" r="3"></circle>
+                            </svg>
+                        </div>
+                        <div class="contact-method-text">
+                            <h4>HQ Address</h4>
+                            <p>Wrogn E-Commerce Ltd, Indiranagar Double Road, Bangalore, Karnataka - 560038</p>
+                        </div>
+                    </div>
+
+                    <!-- Map Placeholder -->
+                    <div style="border-radius: 8px; overflow: hidden; height: 180px; margin-top: 30px; border: 1px solid var(--divider-color); position: relative; background-color: var(--search-bg);">
+                        <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 20px;">
+                            <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="var(--accent-color)" stroke-width="2" style="margin-bottom: 8px;">
+                                <polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"></polygon>
+                                <line x1="8" y1="2" x2="8" y2="18"></line>
+                                <line x1="16" y1="6" x2="16" y2="22"></line>
+                            </svg>
+                            <span style="font-weight: 700; font-size: 13.5px; margin-bottom: 2px;">HQ Map Coordinates</span>
+                            <span style="color: var(--text-muted); font-size: 11.5px;">12.9716° N, 77.5946° E</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
-        
-        <!-- Live status notification toast -->
-        <div class="toast" id="toast">Action triggered successfully!</div>
+        <div class="toast" id="toast"></div>
     </main>
 
-    <!-- Premium Footer Section -->
     <footer style="background-color: var(--card-bg); border-top: 1px solid var(--divider-color); padding: 50px 24px 30px 24px; color: var(--text-color);">
         <div style="max-width: 1240px; margin: 0 auto; display: grid; grid-template-columns: 2fr repeat(3, 1fr); gap: 40px; font-family: inherit;">
             <div>
@@ -253,5 +276,19 @@
     </footer>
 
     <script src="script.js"></script>
+    <script>
+        document.getElementById('contactForm')?.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const name = document.getElementById('contactName').value;
+            // Access toast display from window or trigger local animation
+            const toast = document.getElementById('toast');
+            if (toast) {
+                toast.textContent = `Thanks, ${name}! Your message was successfully sent.`;
+                toast.classList.add('show');
+                setTimeout(() => toast.classList.remove('show'), 3500);
+            }
+            document.getElementById('contactForm').reset();
+        });
+    </script>
 </body>
 </html>
