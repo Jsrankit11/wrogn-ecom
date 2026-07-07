@@ -2110,3 +2110,609 @@ body {
     line-height: 1.5;
 }
 
+/* ==========================================================================
+   Wrogn Premium Widgets & Additions
+   ========================================================================== */
+
+/* --- Cart Drawer Overlay & Panel --- */
+.cart-drawer-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(4px);
+    z-index: 2100;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.cart-drawer-overlay.open {
+    opacity: 1;
+    visibility: visible;
+}
+
+.cart-drawer {
+    position: fixed;
+    top: 0;
+    right: -450px;
+    width: 100%;
+    max-width: 440px;
+    height: 100vh;
+    background-color: var(--card-bg);
+    border-left: 1px solid var(--divider-color);
+    box-shadow: -10px 0 30px rgba(0, 0, 0, 0.5);
+    z-index: 2200;
+    display: flex;
+    flex-direction: column;
+    transition: right 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.cart-drawer.open {
+    right: 0;
+}
+
+.cart-drawer-header {
+    padding: 24px;
+    border-bottom: 1px solid var(--divider-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.cart-drawer-header h3 {
+    font-size: 18px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.cart-drawer-close {
+    background: transparent;
+    border: none;
+    color: var(--text-color);
+    font-size: 28px;
+    cursor: pointer;
+    line-height: 1;
+    transition: color 0.2s;
+}
+
+.cart-drawer-close:hover {
+    color: var(--accent-color);
+}
+
+.cart-drawer-items {
+    flex: 1;
+    overflow-y: auto;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.drawer-item {
+    display: flex;
+    gap: 15px;
+    border-bottom: 1px solid var(--divider-color);
+    padding-bottom: 15px;
+    position: relative;
+}
+
+.drawer-item:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.drawer-item img {
+    width: 65px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 6px;
+    background-color: #151515;
+}
+
+.drawer-item-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.drawer-item-title {
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1.3;
+    margin-bottom: 4px;
+    padding-right: 20px;
+}
+
+.drawer-item-meta {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+}
+
+.drawer-item-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.drawer-item-price {
+    font-size: 14.5px;
+    font-weight: 800;
+}
+
+.drawer-item-remove {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    font-size: 18px;
+    cursor: pointer;
+    padding: 2px;
+}
+
+.drawer-item-remove:hover {
+    color: #ff7675;
+}
+
+.cart-drawer-footer {
+    padding: 24px;
+    border-top: 1px solid var(--divider-color);
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.drawer-summary-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+    font-size: 14.5px;
+}
+
+.drawer-summary-row.total {
+    font-size: 17px;
+    font-weight: 800;
+    border-top: 1px dashed var(--divider-color);
+    padding-top: 12px;
+    margin-bottom: 20px;
+}
+
+/* --- Support Chat Widget --- */
+.support-widget-container {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    z-index: 2000;
+    font-family: inherit;
+}
+
+.support-chat-btn {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: var(--accent-color);
+    color: #000000;
+    border: none;
+    box-shadow: 0 8px 24px rgba(245, 166, 35, 0.35);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.2s;
+}
+
+.support-chat-btn:hover {
+    transform: scale(1.08) rotate(5deg);
+    background-color: var(--accent-hover);
+}
+
+.support-chat-window {
+    position: absolute;
+    bottom: 75px;
+    right: 0;
+    width: 350px;
+    height: 480px;
+    background-color: var(--card-bg);
+    border: 1px solid var(--divider-color);
+    border-radius: 12px;
+    box-shadow: 0 10px 30px var(--shadow-color);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(20px) scale(0.95);
+    transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1), transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.3s;
+}
+
+.support-chat-window.open {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0) scale(1);
+}
+
+.chat-header {
+    background-color: var(--search-bg);
+    padding: 16px;
+    border-bottom: 1px solid var(--divider-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.chat-header-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.chat-avatar {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent-color), #6c5ce7);
+    color: #ffffff;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+}
+
+.chat-status {
+    display: flex;
+    flex-direction: column;
+}
+
+.chat-status span.name {
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.chat-status span.status {
+    font-size: 10.5px;
+    color: #2ecc71;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.chat-status span.status::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    background-color: #2ecc71;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.chat-close-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.chat-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    background-color: rgba(0, 0, 0, 0.02);
+}
+
+.chat-bubble {
+    max-width: 80%;
+    padding: 10px 14px;
+    border-radius: 12px;
+    font-size: 13px;
+    line-height: 1.4;
+}
+
+.chat-bubble.agent {
+    background-color: var(--search-bg);
+    color: var(--text-color);
+    align-self: flex-start;
+    border-top-left-radius: 2px;
+    border: 1px solid var(--divider-color);
+}
+
+.chat-bubble.user {
+    background-color: var(--accent-color);
+    color: #000000;
+    align-self: flex-end;
+    border-top-right-radius: 2px;
+    font-weight: 500;
+}
+
+.chat-quick-replies {
+    padding: 10px 16px;
+    border-top: 1px solid var(--divider-color);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    background-color: var(--card-bg);
+}
+
+.quick-reply-btn {
+    background-color: var(--search-bg);
+    border: 1px solid var(--divider-color);
+    color: var(--text-color);
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    cursor: pointer;
+    font-family: inherit;
+    transition: background-color 0.2s, border-color 0.2s;
+}
+
+.quick-reply-btn:hover {
+    border-color: var(--accent-color);
+    background-color: var(--accent-light);
+}
+
+.chat-footer {
+    padding: 12px 16px;
+    border-top: 1px solid var(--divider-color);
+    display: flex;
+    gap: 8px;
+    background-color: var(--search-bg);
+}
+
+.chat-input {
+    flex: 1;
+    border: 1px solid var(--divider-color);
+    background-color: var(--card-bg);
+    color: var(--text-color);
+    border-radius: 20px;
+    padding: 8px 16px;
+    font-size: 13px;
+    outline: none;
+    font-family: inherit;
+}
+
+.chat-send-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background-color: var(--accent-color);
+    color: #000000;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.chat-send-btn:hover {
+    transform: scale(1.05);
+}
+
+/* --- Search Suggestions Dropdown --- */
+.search-suggestions {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    width: 100%;
+    background-color: var(--dropdown-bg);
+    border: 1.5px solid var(--dropdown-border);
+    border-radius: 12px;
+    box-shadow: 0 12px 30px var(--shadow-color);
+    z-index: 1500;
+    max-height: 350px;
+    overflow-y: auto;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: opacity 0.2s, transform 0.2s, visibility 0.2s;
+}
+
+.search-suggestions.open {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.suggestion-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 18px;
+    cursor: pointer;
+    border-bottom: 1px solid var(--divider-color);
+    transition: background-color 0.2s;
+}
+
+.suggestion-item:last-child {
+    border-bottom: none;
+}
+
+.suggestion-item:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+:root[data-theme="light"] .suggestion-item:hover {
+    background-color: rgba(0, 0, 0, 0.03);
+}
+
+.suggestion-item img {
+    width: 40px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 4px;
+    background-color: #151515;
+}
+
+.suggestion-details {
+    display: flex;
+    flex-direction: column;
+}
+
+.suggestion-title {
+    font-size: 13.5px;
+    font-weight: 700;
+    color: var(--text-color);
+}
+
+.suggestion-meta {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-top: 2px;
+}
+
+/* --- Color Swatch Grid --- */
+.color-swatch-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 10px;
+}
+
+.color-swatch {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: transform 0.2s, border-color 0.2s;
+    position: relative;
+    box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.2);
+}
+
+.color-swatch:hover {
+    transform: scale(1.1);
+}
+
+.color-swatch.active {
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 2px var(--bg-color), 0 0 0 4px var(--accent-color);
+}
+
+/* --- UPI payment QR Code renderer --- */
+.qr-code-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background-color: var(--search-bg);
+    border-radius: 8px;
+    margin-top: 15px;
+    border: 1px solid var(--divider-color);
+    animation: fadeIn 0.3s ease;
+}
+
+.qr-code-box {
+    width: 160px;
+    height: 160px;
+    background-color: #ffffff;
+    border: 8px solid #ffffff;
+    border-radius: 8px;
+    padding: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+/* Simulated QR Blocks inside QR code box via CSS linear gradients */
+.qr-code-pattern {
+    width: 100%;
+    height: 100%;
+    background-image: 
+        radial-gradient(square, #000 25%, transparent 25%),
+        linear-gradient(45deg, transparent 46%, #000 49%, #000 51%, transparent 55%),
+        linear-gradient(to right, #000 10%, transparent 10%, transparent 90%, #000 90%),
+        linear-gradient(to bottom, #000 10%, transparent 10%, transparent 90%, #000 90%);
+    background-size: 15px 15px, 20px 20px, 100% 100%, 100% 100%;
+    position: relative;
+}
+
+.qr-code-pattern::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 35px;
+    height: 35px;
+    border: 8px solid #000;
+    background-color: #fff;
+    box-shadow: inset 0 0 0 5px #fff;
+}
+
+.qr-code-pattern::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 35px;
+    height: 35px;
+    border: 8px solid #000;
+    background-color: #fff;
+    box-shadow: inset 0 0 0 5px #fff;
+}
+
+/* --- Invoice & Forgot Password Modals --- */
+.invoice-modal-overlay, .forgot-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(8px);
+    z-index: 3000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    animation: fadeIn 0.3s ease;
+}
+
+.invoice-paper {
+    background-color: #ffffff;
+    color: #111115;
+    width: 100%;
+    max-width: 480px;
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+    position: relative;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+.invoice-paper::before {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 0;
+    width: 100%;
+    height: 10px;
+    background: radial-gradient(circle, transparent 70%, #ffffff 70%);
+    background-size: 15px 20px;
+    background-position: bottom;
+}
+
+.invoice-dashed-line {
+    border-top: 2px dashed #888888;
+    margin: 15px 0;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+

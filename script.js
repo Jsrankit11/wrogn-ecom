@@ -34,7 +34,9 @@ document.addEventListener('DOMContentLoaded', () => {
             description: "High-performance windcheater with an adjustable hood, water-resistant outer shell, and warm inner fleece lining. Perfect for winter streetwear styling.",
             image: "Images/jacket-1.jpg",
             images: ["Images/jacket-1.jpg", "Images/jacket-2.jpg", "Images/jacket-3.jpg"],
-            badge: "Best Seller"
+            badge: "Best Seller",
+            color: "Black",
+            tags: ["jacket", "outerwear"]
         },
         {
             id: 2,
@@ -47,7 +49,9 @@ document.addEventListener('DOMContentLoaded', () => {
             description: "Premium washed cotton denim with engineered rip details, regular-rise waist, and a tapered slim fit to show off your rebel edge.",
             image: "Images/sports-1.jpg",
             images: ["Images/sports-1.jpg", "Images/sports-2.jpg", "Images/sports-3.jpg"],
-            badge: "Trending"
+            badge: "Trending",
+            color: "Blue",
+            tags: ["jeans", "denim"]
         },
         {
             id: 3,
@@ -60,7 +64,9 @@ document.addEventListener('DOMContentLoaded', () => {
             description: "Elegant quartz chronograph watch featuring a matte-black stainless steel case, luxury genuine leather strap, and 50m water resistance.",
             image: "Images/watch-1.jpg",
             images: ["Images/watch-1.jpg", "Images/watch-2.jpg", "Images/watch-3.jpg"],
-            badge: "Premium"
+            badge: "Premium",
+            color: "Black",
+            tags: ["watch", "accessories"]
         },
         {
             id: 4,
@@ -73,7 +79,9 @@ document.addEventListener('DOMContentLoaded', () => {
             description: "Dry-fit moisture-wicking technology keeps you cool and dry during workouts. Ergonomic seams ensure maximum flexibility.",
             image: "Images/shirt-1.jpg",
             images: ["Images/shirt-1.jpg", "Images/shirt-2.jpg", "Images/sports-4.jpg"],
-            badge: "Sale"
+            badge: "Sale",
+            color: "Red",
+            tags: ["tee", "shirt"]
         },
         {
             id: 5,
@@ -86,7 +94,9 @@ document.addEventListener('DOMContentLoaded', () => {
             description: "Crisp white faux-leather upper with retro panels, padded high-top ankle collar, and vulcanized rubber sole for vintage appeal.",
             image: "Images/shoe-1.jpg",
             images: ["Images/shoe-1.jpg", "Images/shoe-2.jpg", "Images/shoe-3.jpg"],
-            badge: "New"
+            badge: "New",
+            color: "White",
+            tags: ["shoes", "sneakers"]
         },
         {
             id: 6,
@@ -99,7 +109,9 @@ document.addEventListener('DOMContentLoaded', () => {
             description: "Pure cotton lightweight flannel shirt in a striking black and red windowpane check pattern. Perfect for layering over graphic tees.",
             image: "Images/shirt-2.jpg",
             images: ["Images/shirt-2.jpg", "Images/jacket-4.jpg", "Images/jacket-5.jpg"],
-            badge: ""
+            badge: "",
+            color: "Grey",
+            tags: ["shirt", "checked"]
         },
         {
             id: 7,
@@ -112,7 +124,9 @@ document.addEventListener('DOMContentLoaded', () => {
             description: "Multi-pocket cotton twill cargo shorts featuring a relaxed fit, secure button closures, and utility belt loops. Ideal for summer travels.",
             image: "Images/sports-2.jpg",
             images: ["Images/sports-2.jpg", "Images/sports-3.jpg", "Images/sports-4.jpg"],
-            badge: ""
+            badge: "",
+            color: "Grey",
+            tags: ["shorts", "cargo"]
         },
         {
             id: 8,
@@ -125,11 +139,15 @@ document.addEventListener('DOMContentLoaded', () => {
             description: "Full-grain genuine oil-pulled leather belt with a brushed gunmetal single-prong buckle. Refined and durable.",
             image: "Images/belt.jpg",
             images: ["Images/belt.jpg", "Images/watch-3.jpg", "Images/watch-4.jpg"],
-            badge: ""
+            badge: "",
+            color: "Black",
+            tags: ["belt", "accessories"]
         }
     ];
 
-    if (!localStorage.getItem('wrogn_products')) {
+    // Force database reset if color schema is missing in existing localStorage
+    const existingProductsStr = localStorage.getItem('wrogn_products');
+    if (!existingProductsStr || !JSON.parse(existingProductsStr)[0]?.hasOwnProperty('color')) {
         localStorage.setItem('wrogn_products', JSON.stringify(defaultProducts));
     }
 
@@ -143,6 +161,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function saveCart(cart) {
         localStorage.setItem('wrogn_cart', JSON.stringify(cart));
         updateHeaderCounters();
+        renderCartDrawerItems();
     }
     function getWishlist() {
         return JSON.parse(localStorage.getItem('wrogn_wishlist')) || [];
@@ -203,12 +222,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Map Header navigation icons to the correct pages
     if (wishlistBtn) wishlistBtn.href = "wishlist.html";
-    if (cartBtn) cartBtn.href = "cart.html";
+    if (cartBtn) {
+        cartBtn.addEventListener('click', (e) => {
+            if (!window.location.pathname.includes('cart.html') && !window.location.pathname.includes('checkout.html')) {
+                e.preventDefault();
+                openCartDrawer();
+            }
+        });
+    }
     if (profileBtn) {
         profileBtn.addEventListener('click', (e) => {
             e.preventDefault();
-            if (getActiveUser()) {
-                window.location.href = "profile.html";
+            const activeUser = getActiveUser();
+            if (activeUser) {
+                if (activeUser.isAdmin) {
+                    window.location.href = "admin.html";
+                } else {
+                    window.location.href = "profile.html";
+                }
             } else {
                 window.location.href = "login.html";
             }
@@ -275,7 +306,279 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     updateHeaderCounters();
 
-    // --- Search Logic ---
+    // ==========================================================================
+    // Dynamic Global Components Injection (Cart Drawer & Support Widget)
+    // ==========================================================================
+
+    // 1. Cart Side Drawer Overlay & Panel
+    const drawerOverlay = document.createElement('div');
+    drawerOverlay.className = "cart-drawer-overlay";
+    drawerOverlay.id = "cartDrawerOverlay";
+    
+    const drawer = document.createElement('div');
+    drawer.className = "cart-drawer";
+    drawer.id = "cartDrawer";
+    drawer.innerHTML = `
+        <div class="cart-drawer-header">
+            <h3>Shopping Bag</h3>
+            <button class="cart-drawer-close" id="cartDrawerClose">&times;</button>
+        </div>
+        <div class="cart-drawer-items" id="cartDrawerItems"></div>
+        <div class="cart-drawer-footer">
+            <div class="drawer-summary-row">
+                <span>Subtotal</span>
+                <strong id="drawerSubtotal">₹0</strong>
+            </div>
+            <div class="drawer-summary-row total">
+                <span>Total Bill</span>
+                <strong id="drawerTotal">₹0</strong>
+            </div>
+            <a href="cart.html" class="btn btn-secondary btn-full" style="margin-bottom: 10px; font-size: 13px;">View Full Cart</a>
+            <a href="checkout.html" class="btn btn-primary btn-full" style="font-size: 13px;">Checkout Now</a>
+        </div>
+    `;
+    document.body.appendChild(drawerOverlay);
+    document.body.appendChild(drawer);
+
+    function openCartDrawer() {
+        renderCartDrawerItems();
+        drawerOverlay.classList.add('open');
+        drawer.classList.add('open');
+    }
+    function closeCartDrawer() {
+        drawerOverlay.classList.remove('open');
+        drawer.classList.remove('open');
+    }
+
+    document.getElementById('cartDrawerClose')?.addEventListener('click', closeCartDrawer);
+    drawerOverlay.addEventListener('click', closeCartDrawer);
+
+    function renderCartDrawerItems() {
+        const cart = getCart();
+        const itemsContainer = document.getElementById('cartDrawerItems');
+        const subtotalEl = document.getElementById('drawerSubtotal');
+        const totalEl = document.getElementById('drawerTotal');
+        
+        if (!itemsContainer) return;
+
+        if (cart.length === 0) {
+            itemsContainer.innerHTML = `
+                <div style="text-align: center; margin-top: 60px; color: var(--text-muted);">
+                    <p>Your bag is empty.</p>
+                </div>
+            `;
+            subtotalEl.textContent = "₹0";
+            totalEl.textContent = "₹0";
+        } else {
+            let subtotal = 0;
+            itemsContainer.innerHTML = cart.map((item, idx) => {
+                const lineCost = item.product.price * item.quantity;
+                subtotal += lineCost;
+                return `
+                    <div class="drawer-item">
+                        <img src="${item.product.image}" alt="${item.product.title}">
+                        <div class="drawer-item-info">
+                            <div>
+                                <h4 class="drawer-item-title">${item.product.title}</h4>
+                                <div class="drawer-item-meta">Size: ${item.size}</div>
+                            </div>
+                            <div class="drawer-item-bottom">
+                                <span class="drawer-item-price">₹${lineCost}</span>
+                                <div class="quantity-control" style="transform: scale(0.8); transform-origin: left center;">
+                                    <button onclick="changeDrawerQty(${idx}, -1)">-</button>
+                                    <input type="text" value="${item.quantity}" readonly style="width: 25px;">
+                                    <button onclick="changeDrawerQty(${idx}, 1)">+</button>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="drawer-item-remove" onclick="removeDrawerItem(${idx})">&times;</button>
+                    </div>
+                `;
+            }).join('');
+            
+            subtotalEl.textContent = `₹${subtotal}`;
+            totalEl.textContent = `₹${subtotal}`;
+        }
+    }
+
+    window.changeDrawerQty = function(idx, change) {
+        let cart = getCart();
+        cart[idx].quantity += change;
+        if (cart[idx].quantity <= 0) {
+            cart.splice(idx, 1);
+        }
+        saveCart(cart);
+        renderCartDrawerItems();
+        if (document.getElementById('cart-page-container')) {
+            renderCartPage();
+        }
+    };
+
+    window.removeDrawerItem = function(idx) {
+        let cart = getCart();
+        cart.splice(idx, 1);
+        saveCart(cart);
+        renderCartDrawerItems();
+        if (document.getElementById('cart-page-container')) {
+            renderCartPage();
+        }
+        showToast("Item removed from bag");
+    };
+
+    // 2. Floating Mobile Support Chat Widget
+    const supportContainer = document.createElement('div');
+    supportContainer.className = "support-widget-container";
+    supportContainer.innerHTML = `
+        <button class="support-chat-btn" id="supportChatBtn" aria-label="Open support chat">
+            <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+            </svg>
+        </button>
+        <div class="support-chat-window" id="supportChatWindow">
+            <div class="chat-header">
+                <div class="chat-header-info">
+                    <div class="chat-avatar">W</div>
+                    <div class="chat-status">
+                        <span class="name">Wrogn Support</span>
+                        <span class="status">Online</span>
+                    </div>
+                </div>
+                <button class="chat-close-btn" id="chatCloseBtn">&times;</button>
+            </div>
+            <div class="chat-body" id="chatBody">
+                <div class="chat-bubble agent">Hey there! 👋 Need help with sizes, returns, or tracking? Let us know.</div>
+            </div>
+            <div class="chat-quick-replies">
+                <button class="quick-reply-btn" data-query="track">Track Package</button>
+                <button class="quick-reply-btn" data-query="return">Easy Returns</button>
+                <button class="quick-reply-btn" data-query="coupon">Active Coupon</button>
+                <button class="quick-reply-btn" data-query="agent">Ask Agent</button>
+            </div>
+            <div class="chat-footer">
+                <input type="text" class="chat-input" id="chatInput" placeholder="Ask support...">
+                <button class="chat-send-btn" id="chatSendBtn" aria-label="Send message">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+                        <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(supportContainer);
+
+    const supportChatBtn = document.getElementById('supportChatBtn');
+    const supportChatWindow = document.getElementById('supportChatWindow');
+    const chatCloseBtn = document.getElementById('chatCloseBtn');
+    const chatBody = document.getElementById('chatBody');
+    const chatInput = document.getElementById('chatInput');
+    const chatSendBtn = document.getElementById('chatSendBtn');
+
+    supportChatBtn?.addEventListener('click', () => {
+        supportChatWindow.classList.toggle('open');
+    });
+
+    chatCloseBtn?.addEventListener('click', () => {
+        supportChatWindow.classList.remove('open');
+    });
+
+    function appendChatMessage(sender, text) {
+        const bubble = document.createElement('div');
+        bubble.className = `chat-bubble ${sender}`;
+        bubble.textContent = text;
+        chatBody.appendChild(bubble);
+        chatBody.scrollTop = chatBody.scrollHeight;
+    }
+
+    function triggerAgentReply(queryKey) {
+        setTimeout(() => {
+            let reply = "Thanks for reaching out! You can email us at support@wrogn.codealpha.com for manual tickets.";
+            
+            if (queryKey === 'track') {
+                const orders = getOrders();
+                if (orders.length > 0) {
+                    const lastOrder = orders[orders.length - 1];
+                    reply = `Your last order #${lastOrder.orderId} is currently status: "${lastOrder.status.toUpperCase()}". Scheduled to arrive soon!`;
+                } else {
+                    reply = "You don't have any placed orders yet. Add items to your cart to begin!";
+                }
+            } else if (queryKey === 'return') {
+                reply = "We offer a 15-day return window. Pack your items, make sure tags are attached, and raise a return in your Profile portal.";
+            } else if (queryKey === 'coupon') {
+                reply = "Apply coupon code 'WROGN15' in your cart to claim 15% discount on checkout.";
+            } else if (queryKey === 'agent') {
+                reply = "All live chat agents are currently occupied. Please leave a contact query in our Contact page or call 1800 200 4567.";
+            }
+            
+            appendChatMessage('agent', reply);
+        }, 700);
+    }
+
+    chatSendBtn?.addEventListener('click', () => {
+        const text = chatInput.value.trim();
+        if (text) {
+            appendChatMessage('user', text);
+            chatInput.value = '';
+            triggerAgentReply(text.toLowerCase());
+        }
+    });
+
+    chatInput?.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+            chatSendBtn.click();
+        }
+    });
+
+    document.querySelectorAll('.support-widget-container .quick-reply-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const query = btn.dataset.query;
+            appendChatMessage('user', btn.textContent);
+            triggerAgentReply(query);
+        });
+    });
+
+    // 3. Search Autocomplete Suggestions Dropdown
+    if (searchInput && searchForm) {
+        const suggestBox = document.createElement('div');
+        suggestBox.className = "search-suggestions";
+        suggestBox.id = "searchSuggestions";
+        searchForm.appendChild(suggestBox);
+
+        searchInput.addEventListener('input', () => {
+            const val = searchInput.value.trim().toLowerCase();
+            if (!val) {
+                suggestBox.classList.remove('open');
+                return;
+            }
+
+            const products = getProducts();
+            const matches = products.filter(p => p.title.toLowerCase().includes(val) || p.category.toLowerCase().includes(val));
+
+            if (matches.length === 0) {
+                suggestBox.innerHTML = `
+                    <div style="padding: 15px; color: var(--text-muted); font-size: 13px;">No suggestions found</div>
+                `;
+            } else {
+                suggestBox.innerHTML = matches.slice(0, 5).map(p => `
+                    <div class="suggestion-item" onclick="window.location.href='product-details.html?id=${p.id}'">
+                        <img src="${p.image}" alt="${p.title}">
+                        <div class="suggestion-details">
+                            <span class="suggestion-title">${p.title}</span>
+                            <span class="suggestion-meta">${p.category} | ₹${p.price}</span>
+                        </div>
+                    </div>
+                `).join('');
+            }
+            suggestBox.classList.add('open');
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!searchForm.contains(e.target)) {
+                suggestBox.classList.remove('open');
+            }
+        });
+    }
+
+    // --- Search Submit Interaction ---
     searchForm?.addEventListener('submit', (e) => {
         e.preventDefault();
         const query = searchInput.value.trim();
@@ -316,6 +619,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
         saveCart(cart);
         showToast(`Added ${product.title} (${size}) to Cart!`);
+        openCartDrawer(); // Immediately open Cart Drawer visualizer
     };
 
     window.handleToggleWishlist = function(productId, btnElement) {
@@ -359,7 +663,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
                 <div class="product-info">
                     <div>
-                        <div class="product-category">${product.category}</div>
+                        <div class="product-category">${product.category} | ${product.color}</div>
                         <h3 class="product-title"><a href="product-details.html?id=${product.id}">${product.title}</a></h3>
                     </div>
                     <div class="product-meta">
@@ -384,12 +688,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // ==========================================================================
 
     // --- 1. Home Page (index.html) ---
-    const homeProductsGrid = document.querySelector('.hero').nextElementSibling; // Just a placeholder check
     if (document.title.includes("Navbar") || document.getElementById('homepage-marker')) {
-        // If there's an anchor or container for products, we can render some
         const mainContent = document.querySelector('.main-content');
         if (mainContent && !document.getElementById('homepage-marker')) {
-            // Append a featured collection section below hero
             const featuredSection = document.createElement('section');
             featuredSection.className = 'container';
             featuredSection.id = 'homepage-marker';
@@ -418,19 +719,51 @@ document.addEventListener('DOMContentLoaded', () => {
         let searchQuery = urlParams.get('search') || '';
         let currentSort = 'popular';
         let maxPrice = 8000;
+        let selectedColor = 'All';
+        let jeansOnly = false;
 
-        const sidebarLinks = document.querySelectorAll('.filter-list a');
+        const sidebar = document.querySelector('.filter-sidebar');
+        if (sidebar) {
+            // Dynamically inject color swatch selector widget
+            const colorWidget = document.createElement('div');
+            colorWidget.className = "filter-widget";
+            colorWidget.innerHTML = `
+                <h3>Filter By Color</h3>
+                <div class="color-swatch-grid">
+                    <div class="color-swatch active" data-color="All" style="background: linear-gradient(135deg, #ff0000, #00ff00, #0000ff); border: 1px solid var(--divider-color);" title="All Colors"></div>
+                    <div class="color-swatch" data-color="Black" style="background-color: #000000; border: 1px solid #333;" title="Black"></div>
+                    <div class="color-swatch" data-color="Blue" style="background-color: #3498db;" title="Blue"></div>
+                    <div class="color-swatch" data-color="White" style="background-color: #ffffff; border: 1px solid #ccc;" title="White"></div>
+                    <div class="color-swatch" data-color="Red" style="background-color: #e74c3c;" title="Red"></div>
+                    <div class="color-swatch" data-color="Grey" style="background-color: #95a5a6;" title="Grey"></div>
+                </div>
+            `;
+            sidebar.appendChild(colorWidget);
+
+            // Dynamically inject "Jeans Only" tags checkbox widget
+            const tagWidget = document.createElement('div');
+            tagWidget.className = "filter-widget";
+            tagWidget.innerHTML = `
+                <h3>Filter By Tag</h3>
+                <ul class="filter-list">
+                    <li>
+                        <label style="display: flex; gap: 10px; align-items: center; cursor: pointer; font-size: 13.5px;">
+                            <input type="checkbox" id="tagJeansCheckbox" style="width: 16px; height: 16px; accent-color: var(--accent-color);">
+                            <span>Jeans / Denim Only</span>
+                        </label>
+                    </li>
+                </ul>
+            `;
+            sidebar.appendChild(tagWidget);
+        }
+
+        const sidebarLinks = document.querySelectorAll('.filter-sidebar .filter-list a');
         const priceSlider = document.getElementById('priceRange');
         const priceDisplay = document.getElementById('priceDisplay');
         const sortSelect = document.getElementById('shopSort');
         const resultsCountText = document.getElementById('results-count');
 
-        // Initial setup for search input in sidebar if needed
-        if (searchQuery) {
-            showToast(`Filtering by search: "${searchQuery}"`);
-        }
-
-        // Sidebar category listeners
+        // Categories click handlers
         sidebarLinks.forEach(link => {
             link.addEventListener('click', (e) => {
                 e.preventDefault();
@@ -441,7 +774,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
 
-        // Price Slider
+        // Price slider handler
         if (priceSlider) {
             priceSlider.addEventListener('input', (e) => {
                 maxPrice = parseInt(e.target.value);
@@ -450,30 +783,58 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
 
-        // Sorting
+        // Sort handler
         sortSelect?.addEventListener('change', (e) => {
             currentSort = e.target.value;
+            renderShop();
+        });
+
+        // Color swatches click handlers
+        const swatches = document.querySelectorAll('.color-swatch');
+        swatches.forEach(sw => {
+            sw.addEventListener('click', () => {
+                swatches.forEach(x => x.classList.remove('active'));
+                sw.classList.add('active');
+                selectedColor = sw.dataset.color;
+                renderShop();
+            });
+        });
+
+        // Tag filter checkbox handler
+        const tagJeansBox = document.getElementById('tagJeansCheckbox');
+        tagJeansBox?.addEventListener('change', (e) => {
+            jeansOnly = e.target.checked;
             renderShop();
         });
 
         function renderShop() {
             let products = getProducts();
 
-            // 1. Filter by category
+            // 1. Category Filter
             if (selectedCategory && selectedCategory !== 'All') {
                 products = products.filter(p => p.category.toLowerCase() === selectedCategory.toLowerCase());
             }
 
-            // 2. Filter by search
+            // 2. Search query Filter
             if (searchQuery) {
                 const query = searchQuery.toLowerCase();
                 products = products.filter(p => p.title.toLowerCase().includes(query) || p.category.toLowerCase().includes(query));
             }
 
-            // 3. Filter by price
+            // 3. Price Filter
             products = products.filter(p => p.price <= maxPrice);
 
-            // 4. Sort
+            // 4. Color Filter
+            if (selectedColor && selectedColor !== 'All') {
+                products = products.filter(p => p.color.toLowerCase() === selectedColor.toLowerCase());
+            }
+
+            // 5. Tag Filter
+            if (jeansOnly) {
+                products = products.filter(p => p.tags.includes('jeans'));
+            }
+
+            // 6. Sorting logic
             if (currentSort === 'low-high') {
                 products.sort((a, b) => a.price - b.price);
             } else if (currentSort === 'high-low') {
@@ -482,12 +843,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 products.sort((a, b) => b.rating - a.rating);
             }
 
-            // Render
+            // Render output
             if (products.length === 0) {
                 shopGrid.innerHTML = `
                     <div style="grid-column: 1/-1; text-align: center; padding: 60px 0; color: var(--text-muted);">
                         <h3>No products match your filters.</h3>
-                        <p>Try adjusting your selectors or clearing your search.</p>
+                        <p>Try resetting color selectors or broadening your price slider.</p>
                     </div>
                 `;
             } else {
@@ -499,7 +860,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
 
-        // Initialize shop
         renderShop();
     }
 
@@ -520,7 +880,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
             `;
         } else {
-            // Render Details
             let selectedSize = 'M';
             const wishlist = getWishlist();
             const isWishlisted = wishlist.includes(product.id) ? 'active' : '';
@@ -541,7 +900,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     
                     <!-- Content Details -->
                     <div class="details-content">
-                        <span class="product-category" style="font-size: 13px;">${product.category}</span>
+                        <span class="product-category" style="font-size: 13px;">${product.category} | ${product.color}</span>
                         <h2>${product.title}</h2>
                         
                         <div class="rating-stars">
@@ -580,7 +939,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
             `;
 
-            // Global handlers bound to window so onclick inline binds can access them
             window.switchDetailImage = function(src, element) {
                 document.getElementById('mainProductImg').src = src;
                 document.querySelectorAll('.thumbnail').forEach(t => t.classList.remove('active'));
@@ -633,7 +991,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                     <img src="${item.product.image}" alt="${item.product.title}">
                                     <div class="cart-item-details">
                                         <h4>${item.product.title}</h4>
-                                        <p>Size: ${item.size} | Category: ${item.product.category}</p>
+                                        <p>Size: ${item.size} | Color: ${item.product.color}</p>
                                     </div>
                                 </div>
                             </td>
@@ -684,7 +1042,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             <h3>Order Summary</h3>
                             <div class="summary-row">
                                 <span>Subtotal</span>
-                                <strong>₹${subtotal}</strong>
+                                <strong id="cartPageSubtotal">₹${subtotal}</strong>
                             </div>
                             <div class="summary-row">
                                 <span>Shipping</span>
@@ -698,12 +1056,12 @@ document.addEventListener('DOMContentLoaded', () => {
                             ` : ''}
                             <div class="summary-row total">
                                 <span>Total Price</span>
-                                <strong>₹${total}</strong>
+                                <strong id="cartPageTotal">₹${total}</strong>
                             </div>
                             
                             <!-- Promo Input -->
                             <div class="promo-form">
-                                <input type="text" placeholder="Promo Code" class="form-control" id="promoCode" value="${localStorage.getItem('wrogn_promo') || ''}">
+                                <input type="text" placeholder="Promo Code" class="form-control" id="promoCode" value="${localStorage.getItem('wrogn_promo') ? 'WROGN15' : ''}">
                                 <button class="btn btn-secondary" onclick="applyPromo()">Apply</button>
                             </div>
                             
@@ -780,7 +1138,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         </div>
                         <div class="product-info">
                             <div>
-                                <div class="product-category">${p.category}</div>
+                                <div class="product-category">${p.category} | ${p.color}</div>
                                 <h3 class="product-title"><a href="product-details.html?id=${p.id}">${p.title}</a></h3>
                             </div>
                             <div class="product-meta">
@@ -863,8 +1221,31 @@ document.addEventListener('DOMContentLoaded', () => {
                 m.classList.add('active');
                 const radio = m.querySelector('input[type="radio"]');
                 if (radio) radio.checked = true;
+                setTimeout(updatePaymentSelection, 50);
             });
         });
+
+        // UPI QR code renderer
+        const upiRadio = document.getElementById('payUPI');
+        function updatePaymentSelection() {
+            const existingQR = document.getElementById('checkoutQR');
+            existingQR?.remove();
+            
+            if (upiRadio?.checked) {
+                const qrContainer = document.createElement('div');
+                qrContainer.id = "checkoutQR";
+                qrContainer.className = "qr-code-container";
+                qrContainer.innerHTML = `
+                    <div class="qr-code-box">
+                        <div class="qr-code-pattern"></div>
+                    </div>
+                    <p style="margin-top: 12px; font-size: 13px; font-weight: 700; color: var(--text-color);">Scan QR to pay ₹${total}</p>
+                    <p style="color: var(--text-muted); font-size: 11px; margin-top: 2px;">Accepts GooglePay, PhonePe, Paytm</p>
+                `;
+                upiRadio.closest('.payment-method').appendChild(qrContainer);
+            }
+        }
+        updatePaymentSelection();
 
         // Checkout form submission
         const checkoutForm = document.getElementById('checkoutForm');
@@ -901,30 +1282,170 @@ document.addEventListener('DOMContentLoaded', () => {
             orders.push(newOrder);
             saveOrders(orders);
 
-            // Clear Cart
-            saveCart([]);
-            localStorage.removeItem('wrogn_promo');
+            // Generate receipt overlay modal
+            const invoiceModal = document.createElement('div');
+            invoiceModal.className = "invoice-modal-overlay";
+            invoiceModal.id = "invoiceModalOverlay";
+            
+            const dateStr = new Date().toLocaleString();
+            const itemsReceiptHTML = cart.map(item => `
+                <div style="display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 6px;">
+                    <span>${item.product.title.slice(0, 20)}.. (${item.size}) x${item.quantity}</span>
+                    <span>₹${item.product.price * item.quantity}</span>
+                </div>
+            `).join('');
 
-            showToast("Order placed successfully! Redirecting...");
-            setTimeout(() => {
+            const paymentName = document.querySelector('input[name="paymentRadio"]:checked').closest('.payment-method').querySelector('.payment-method-details span').textContent;
+
+            invoiceModal.innerHTML = `
+                <div class="invoice-paper">
+                    <div style="text-align: center;">
+                        <h2 style="font-weight: 900; letter-spacing: 2px; margin-bottom: 5px;">WROGN</h2>
+                        <p style="font-size: 11px; color: #555;">BREAK THE RULES CO.</p>
+                        <p style="font-size: 10px; color: #777;">INDIRANAGAR, BANGALORE</p>
+                    </div>
+                    
+                    <div class="invoice-dashed-line"></div>
+                    
+                    <div style="font-size: 11px; margin-bottom: 10px;">
+                        <div><strong>INVOICE ID:</strong> ${orderId}</div>
+                        <div><strong>DATE:</strong> ${dateStr}</div>
+                        <div><strong>CUSTOMER:</strong> ${fullName}</div>
+                        <div><strong>PHONE:</strong> ${phone}</div>
+                        <div><strong>PAYMENT:</strong> ${paymentName}</div>
+                    </div>
+                    
+                    <div class="invoice-dashed-line"></div>
+                    
+                    <div style="margin-bottom: 10px;">
+                        <div style="display: flex; justify-content: space-between; font-size: 11px; font-weight: bold; margin-bottom: 8px;">
+                            <span>ITEM DESCRIPTION</span>
+                            <span>PRICE</span>
+                        </div>
+                        ${itemsReceiptHTML}
+                    </div>
+                    
+                    <div class="invoice-dashed-line"></div>
+                    
+                    <div style="font-size: 12px;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+                            <span>SUBTOTAL:</span>
+                            <span>₹${subtotal}</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+                            <span>SHIPPING:</span>
+                            <span>${shipping === 0 ? "FREE" : "₹" + shipping}</span>
+                        </div>
+                        ${discount > 0 ? `
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 4px; color: #27ae60;">
+                            <span>DISCOUNT (15%):</span>
+                            <span>-₹${discount}</span>
+                        </div>
+                        ` : ''}
+                        <div style="display: flex; justify-content: space-between; font-weight: bold; font-size: 14px; margin-top: 8px;">
+                            <span>TOTAL PAID:</span>
+                            <span>₹${total}</span>
+                        </div>
+                    </div>
+                    
+                    <div class="invoice-dashed-line"></div>
+                    
+                    <div style="text-align: center; font-size: 10px; margin-top: 15px; color: #555;">
+                        <p>THANK YOU FOR SHOPPING WROGN!</p>
+                        <p>NO RETURNS ON SALE ITEMS.</p>
+                    </div>
+                    
+                    <div style="display: flex; gap: 10px; margin-top: 25px;">
+                        <button class="btn btn-secondary btn-full" onclick="downloadInvoiceText('${orderId}', '${fullName}', '${total}', '${dateStr}')" style="background-color: #111; color: #fff; border-color: #111; font-size: 12.5px;">Download Invoice</button>
+                        <button class="btn btn-primary btn-full" onclick="closeInvoiceRedirect()" style="color: #000; background-color: var(--accent-color); font-size: 12.5px;">Back to Profile</button>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(invoiceModal);
+
+            window.downloadInvoiceText = function(id, name, totalAmt, date) {
+                let content = `========================================\n`;
+                content += `             WROGN INVOICE              \n`;
+                content += `========================================\n`;
+                content += `Invoice ID: ${id}\n`;
+                content += `Date: ${date}\n`;
+                content += `Customer: ${name}\n`;
+                content += `Payment Method: ${paymentName}\n`;
+                content += `----------------------------------------\n`;
+                cart.forEach(item => {
+                    content += `${item.product.title} (${item.size}) x${item.quantity} - Rs.${item.product.price * item.quantity}\n`;
+                });
+                content += `----------------------------------------\n`;
+                content += `Subtotal: Rs.${subtotal}\n`;
+                content += `Shipping: Rs.${shipping}\n`;
+                if (discount > 0) content += `Discount: -Rs.${discount}\n`;
+                content += `Total Paid: Rs.${totalAmt}\n`;
+                content += `========================================\n`;
+                content += `Thank you for shopping with WROGN!\n`;
+                
+                const blob = new Blob([content], { type: "text/plain" });
+                const link = document.createElement("a");
+                link.href = URL.createObjectURL(blob);
+                link.download = `wrogn-invoice-${id}.txt`;
+                link.click();
+                showToast("Invoice downloaded successfully!");
+            };
+
+            window.closeInvoiceRedirect = function() {
+                invoiceModal.remove();
+                saveCart([]);
+                localStorage.removeItem('wrogn_promo');
                 window.location.href = "profile.html";
-            }, 2000);
+            };
         });
     }
 
     // --- 7. Login Page (login.html) ---
     const loginForm = document.getElementById('loginForm');
     if (loginForm) {
+        // Inject Forgot Password Modal dynamically
+        const forgotModal = document.createElement('div');
+        forgotModal.id = "forgotModalOverlay";
+        forgotModal.className = "forgot-modal-overlay hidden";
+        forgotModal.innerHTML = `
+            <div class="auth-card" style="position: relative; margin: 0; max-width: 400px; background-color: var(--card-bg);">
+                <button class="cart-drawer-close" id="closeForgotModal" style="position: absolute; top: 15px; right: 20px;">&times;</button>
+                <h3 style="font-size: 20px; font-weight: 800; margin-bottom: 10px; text-transform: uppercase;">Reset Password</h3>
+                <p style="color: var(--text-muted); font-size: 13px; margin-bottom: 20px;">Enter your email below. We'll send instructions to recover your credentials.</p>
+                <form id="forgotForm">
+                    <div class="form-group">
+                        <label for="forgotEmail">Email Address</label>
+                        <input type="email" id="forgotEmail" class="form-control" placeholder="name@example.com" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-full">Send Reset Instructions</button>
+                </form>
+            </div>
+        `;
+        document.body.appendChild(forgotModal);
+
+        const forgotTrigger = Array.from(document.querySelectorAll('a')).find(a => a.textContent.trim().toLowerCase().includes('forgot'));
+        forgotTrigger?.addEventListener('click', (e) => {
+            e.preventDefault();
+            forgotModal.classList.remove('hidden');
+        });
+
+        document.getElementById('closeForgotModal')?.addEventListener('click', () => {
+            forgotModal.classList.add('hidden');
+        });
+
+        document.getElementById('forgotForm')?.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = document.getElementById('forgotEmail').value;
+            forgotModal.classList.add('hidden');
+            showToast(`Password recovery link sent to: ${email}`);
+        });
+
         loginForm.addEventListener('submit', (e) => {
             e.preventDefault();
             const email = document.getElementById('email').value.trim();
             const password = document.getElementById('password').value;
-
-            // Basic check against local mock accounts or dynamic registration
             const registeredUsers = JSON.parse(localStorage.getItem('wrogn_users')) || [];
             
-            // Standard developer default user matching global config:
-            // user.email=dev@codealpha.com, user.name=CodeAlpha Developer
             let user = registeredUsers.find(u => u.email === email && u.password === password);
 
             if (email === 'dev@codealpha.com' && password === 'admin123') {
@@ -987,7 +1508,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!activeUser) {
             window.location.href = "login.html";
         } else {
-            // Setup Profile Fields
             const userNameEl = document.getElementById('profile-user-name');
             const userEmailEl = document.getElementById('profile-user-email');
             const welcomeNameEl = document.getElementById('welcome-user-name');
@@ -996,13 +1516,11 @@ document.addEventListener('DOMContentLoaded', () => {
             if (userEmailEl) userEmailEl.textContent = activeUser.email;
             if (welcomeNameEl) welcomeNameEl.textContent = activeUser.name;
 
-            // Load Personal Info Form
             const formName = document.getElementById('profileName');
             const formEmail = document.getElementById('profileEmail');
             if (formName) formName.value = activeUser.name;
             if (formEmail) formEmail.value = activeUser.email;
 
-            // Render Orders history
             const ordersList = document.getElementById('orders-list-body');
             if (ordersList) {
                 const orders = getOrders().filter(o => o.customer === activeUser.name);
@@ -1026,7 +1544,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
 
-            // Tab Switching Navigation
             const menuBtns = document.querySelectorAll('.profile-menu-item button');
             const panes = document.querySelectorAll('.tab-pane');
             
@@ -1044,7 +1561,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
             });
 
-            // Logout Action
             window.handleLogout = function() {
                 localStorage.removeItem('wrogn_active_user');
                 showToast("Logged out successfully");
@@ -1058,7 +1574,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- 10. Admin Page (admin.html) ---
     const adminContainer = document.getElementById('admin-container');
     if (adminContainer) {
-        // Authenticate admin user
         const activeUser = getActiveUser();
         if (!activeUser || !activeUser.isAdmin) {
             adminContainer.innerHTML = `
@@ -1078,7 +1593,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 document.getElementById('admin-total-orders').textContent = orders.length;
                 document.getElementById('admin-total-products').textContent = products.length;
 
-                // Load Order list table
                 const ordersBody = document.getElementById('admin-orders-body');
                 if (ordersBody) {
                     if (orders.length === 0) {
@@ -1096,7 +1610,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 }
 
-                // Load Product catalog table
                 const productsBody = document.getElementById('admin-products-body');
                 if (productsBody) {
                     productsBody.innerHTML = products.map(p => `
@@ -1112,25 +1625,18 @@ document.addEventListener('DOMContentLoaded', () => {
                     `).join('');
                 }
 
-                // Render dynamic CSS sales chart
                 renderAdminChart(orders);
             }
 
             function renderAdminChart(orders) {
-                // Compile sales by category or mock trends
                 const categories = { Topwear: 1500, Bottomwear: 2000, Accessories: 1000 };
-                
-                // Add actual order totals to categories if we have matches
-                const products = getProducts();
                 orders.forEach(o => {
-                    // Spread values proportionally as mock data or assign based on orders
                     categories.Topwear += Math.round(o.total * 0.4);
                     categories.Bottomwear += Math.round(o.total * 0.45);
                     categories.Accessories += Math.round(o.total * 0.15);
                 });
 
                 const maxVal = Math.max(...Object.values(categories));
-
                 const chartContainer = document.getElementById('admin-sales-chart');
                 if (chartContainer) {
                     chartContainer.innerHTML = Object.entries(categories).map(([cat, val]) => {
@@ -1156,7 +1662,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 updateAdminStats();
             };
 
-            // Add Product form submission
             const addProductForm = document.getElementById('adminAddProductForm');
             addProductForm?.addEventListener('submit', (e) => {
                 e.preventDefault();
@@ -1169,10 +1674,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 const products = getProducts();
                 const newId = products.length > 0 ? Math.max(...products.map(p => p.id)) + 1 : 1;
 
-                // Pick a default image based on category
-                let image = "Images/jacket-1.jpg";
-                if (category === 'Bottomwear') image = "Images/sports-1.jpg";
-                if (category === 'Accessories') image = "Images/watch-1.jpg";
+                // Pick a random image from our existing pool of assets (to prevent blank/broken files)
+                const imagePool = [
+                    "Images/jacket-1.jpg", "Images/jacket-2.jpg", "Images/jacket-3.jpg", "Images/jacket-4.jpg", "Images/jacket-5.jpg", "Images/jacket-6.jpg",
+                    "Images/sports-1.jpg", "Images/sports-2.jpg", "Images/sports-3.jpg", "Images/sports-4.jpg", "Images/sports-5.jpg", "Images/sports-6.jpg",
+                    "Images/shirt-1.jpg", "Images/shirt-2.jpg",
+                    "Images/shoe-1.jpg", "Images/shoe-2.jpg", "Images/shoe-3.jpg", "Images/shoe-4.jpg", "Images/shoe-5.jpg",
+                    "Images/watch-1.jpg", "Images/watch-2.jpg", "Images/watch-3.jpg", "Images/watch-4.jpg",
+                    "Images/belt.jpg"
+                ];
+                const randomImage = imagePool[Math.floor(Math.random() * imagePool.length)];
 
                 const newProd = {
                     id: newId,
@@ -1183,9 +1694,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     rating: 4.5,
                     ratingCount: 1,
                     description: desc,
-                    image,
-                    images: [image, image, image],
-                    badge: "New"
+                    image: randomImage,
+                    images: [randomImage, randomImage, randomImage],
+                    badge: "New",
+                    color: "Black",
+                    tags: [category.toLowerCase()]
                 };
 
                 products.push(newProd);
@@ -1206,11 +1719,7 @@ document.addEventListener('DOMContentLoaded', () => {
             header.addEventListener('click', () => {
                 const item = header.parentElement;
                 const isActive = item.classList.contains('active');
-                
-                // Close all accordion items
                 document.querySelectorAll('.accordion-item').forEach(i => i.classList.remove('active'));
-                
-                // Toggle clicked
                 if (!isActive) {
                     item.classList.add('active');
                 }
@@ -1218,4 +1727,3 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
-
