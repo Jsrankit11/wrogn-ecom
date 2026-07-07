@@ -1,10 +1,10 @@
-/* Custom variables and theme tokens */
+
 :root[data-theme="dark"] {
     --bg-color: #060606;
     --header-bg: #060606;
     --text-color: #ffffff;
     --text-muted: #8e8e93;
-    --accent-color: #f5a623; /* Warm yellow-orange matching logo and moon */
+    --accent-color: #f5a623; 
     --accent-hover: #e09216;
     --accent-light: rgba(245, 166, 35, 0.1);
     --search-bg: #121212;
@@ -27,7 +27,7 @@
     --header-bg: #ffffff;
     --text-color: #111115;
     --text-muted: #72727a;
-    --accent-color: #e67e22; /* Deeper orange for readability in light mode */
+    --accent-color: #e67e22; 
     --accent-hover: #d35400;
     --accent-light: rgba(230, 126, 34, 0.1);
     --search-bg: #f1f2f6;
@@ -45,7 +45,7 @@
     --shadow-color: rgba(0, 0, 0, 0.1);
 }
 
-/* Global Reset */
+
 * {
     margin: 0;
     padding: 0;
@@ -62,7 +62,7 @@ body {
     overflow-x: hidden;
 }
 
-/* Header & Navbar Top */
+
 .header {
     width: 100%;
     position: sticky;
@@ -90,7 +90,7 @@ body {
     gap: 20px;
 }
 
-/* Logo */
+
 .logo {
     display: flex;
     align-items: center;
@@ -109,7 +109,7 @@ body {
     color: var(--accent-color);
 }
 
-/* Search Bar */
+
 .search-bar-container {
     flex: 1;
     max-width: 580px;
@@ -150,7 +150,7 @@ body {
     opacity: 0.8;
 }
 
-/* Microphone Voice Search Button */
+
 .mic-btn {
     background: transparent;
     border: none;
@@ -173,7 +173,7 @@ body {
     display: block;
 }
 
-/* Search submit button */
+
 .search-btn {
     width: 36px;
     height: 36px;
@@ -203,7 +203,7 @@ body {
     display: block;
 }
 
-/* Right-side Action Items */
+
 .action-group {
     display: flex;
     align-items: center;
@@ -233,12 +233,12 @@ body {
     background-color: rgba(0, 0, 0, 0.05);
 }
 
-/* Active profile button custom effect */
+
 .profile-btn:hover {
     transform: translateY(-2px) scale(1.05);
 }
 
-/* Wishlist custom state */
+
 .wishlist-btn {
     color: var(--text-color);
 }
@@ -247,7 +247,7 @@ body {
     color: #ff7675;
 }
 
-/* Shopping Cart Badge */
+
 .cart-icon-wrapper {
     position: relative;
 }
@@ -282,19 +282,19 @@ body {
     }
 }
 
-/* Mobile Hamburg Button */
+
 .mobile-menu-btn {
     display: none;
 }
 
-/* Divider Line between top & bottom navbar */
+
 .navbar-divider {
     height: 1px;
     background-color: var(--divider-color);
     width: 100%;
 }
 
-/* Bottom Navbar Navigation links */
+
 .navbar-bottom-wrapper {
     background-color: var(--header-bg);
     width: 100%;
@@ -302,7 +302,7 @@ body {
 
 .navbar-bottom {
     display: flex;
-    justify-content: flex-start; /* Matches screenshots alignment */
+    justify-content: flex-start; 
     align-items: center;
     height: 48px;
     position: relative;
@@ -345,7 +345,7 @@ body {
     color: var(--accent-color);
 }
 
-/* Active bottom yellow-orange bar matching screenshot */
+
 .nav-link.active::after {
     content: '';
     position: absolute;
@@ -356,7 +356,7 @@ body {
     background-color: var(--accent-color);
 }
 
-/* Dropdown Caret icon styling */
+
 .dropdown-caret {
     transition: transform 0.3s ease;
     opacity: 0.8;
@@ -367,7 +367,7 @@ body {
     color: var(--accent-color);
 }
 
-/* Mega Dropdown Box */
+
 .dropdown-menu {
     position: absolute;
     top: 100%;
@@ -388,7 +388,7 @@ body {
     min-width: 600px;
 }
 
-/* Hover to open dropdown */
+
 .nav-item:hover .dropdown-menu {
     opacity: 1;
     visibility: visible;
@@ -433,19 +433,19 @@ body {
     padding-left: 4px;
 }
 
-/* Utilities */
+
 .hidden {
     display: none !important;
 }
 
-/* Main Content Area styling */
+
 .main-content {
     min-height: calc(100vh - 124px);
     display: flex;
     flex-direction: column;
 }
 
-/* Hero Section */
+
 .hero {
     position: relative;
     height: 520px;
@@ -459,7 +459,7 @@ body {
     overflow: hidden;
 }
 
-/* Fallback background if image does not load */
+
 .hero::before {
     content: '';
     position: absolute;
@@ -520,7 +520,7 @@ body {
     max-width: 500px;
 }
 
-/* Premium Buttons */
+
 .hero-buttons {
     display: flex;
     gap: 16px;
@@ -566,7 +566,7 @@ body {
     transform: translateY(-2px);
 }
 
-/* Toast alert notification styling */
+
 .toast {
     position: fixed;
     bottom: 24px;
@@ -591,7 +591,7 @@ body {
     opacity: 1;
 }
 
-/* RESPONSIVE MEDIA QUERIES */
+
 
 @media (max-width: 992px) {
     .nav-links {
@@ -605,11 +605,11 @@ body {
     }
     
     .search-bar-container {
-        order: 3; /* Push search to next line or overlay */
+        order: 3; 
         flex: 0 0 100%;
         max-width: 100%;
         margin: 8px 0;
-        display: none; /* We toggle it, or put it in hamburger menu */
+        display: none; 
     }
 
     .search-bar-container.mobile-active {
@@ -635,16 +635,16 @@ body {
         font-size: 24px;
     }
 
-    /* Show hamburger menu toggle icon */
+    
     .mobile-menu-btn {
         display: flex;
     }
 
-    /* Transform secondary bottom row into Slide-out Navigation Drawer */
+    
     .navbar-bottom-wrapper {
         position: fixed;
         top: 0;
-        right: -100%; /* Hidden offscreen by default */
+        right: -100%; 
         width: 320px;
         height: 100vh;
         background-color: var(--card-bg);
@@ -703,14 +703,14 @@ body {
     }
 
     .nav-link.active::after {
-        display: none; /* Hide top bar underline on mobile */
+        display: none; 
     }
 
     .nav-link.active {
         border-bottom-color: var(--accent-color);
     }
 
-    /* Mobile Dropdown styles (Accordion style) */
+    
     .dropdown-menu {
         position: relative;
         top: 0;
@@ -724,7 +724,7 @@ body {
         padding: 0 0 10px 15px;
         min-width: 100%;
         background-color: transparent;
-        display: none; /* Toggled via JS class */
+        display: none; 
         transition: none;
     }
 
@@ -749,7 +749,7 @@ body {
         font-size: 12.5px;
     }
 
-    /* Hamburger Animation to Close Icon */
+    
     .mobile-menu-btn.open #line1 {
         transform: rotate(45deg) translate(5px, 5px);
     }
@@ -760,7 +760,7 @@ body {
         transform: rotate(-45deg) translate(7px, -6px);
     }
 
-    /* Hero Responsive sizing */
+    
     .hero {
         height: 420px;
     }
@@ -774,9 +774,7 @@ body {
     }
 }
 
-/* ==========================================================================
-   Page Layouts & Common Components
-   ========================================================================== */
+
 
 .container {
     max-width: 1240px;
@@ -805,7 +803,7 @@ body {
     font-size: 15px;
 }
 
-/* --- Form Elements --- */
+
 .form-group {
     margin-bottom: 20px;
 }
@@ -838,7 +836,7 @@ body {
     box-shadow: 0 0 0 3px var(--accent-light);
 }
 
-/* --- Card & Authentication Box --- */
+
 .auth-card {
     max-width: 450px;
     margin: 40px auto;
@@ -885,7 +883,7 @@ body {
     text-decoration: underline;
 }
 
-/* --- Product Grid & Cards --- */
+
 .product-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
@@ -911,7 +909,7 @@ body {
 
 .product-image-container {
     position: relative;
-    padding-top: 125%; /* 4:5 aspect ratio standard for clothing */
+    padding-top: 125%; 
     background-color: #151515;
     overflow: hidden;
 }
@@ -1052,7 +1050,7 @@ body {
     transform: scale(1.1);
 }
 
-/* --- Cart & Tables --- */
+
 .cart-layout {
     display: grid;
     grid-template-columns: 1fr 380px;
@@ -1241,7 +1239,7 @@ body {
     flex: 1;
 }
 
-/* --- Checkout Layout --- */
+
 .checkout-layout {
     display: grid;
     grid-template-columns: 1fr 400px;
@@ -1332,7 +1330,7 @@ body {
     color: var(--text-muted);
 }
 
-/* --- Product Details Layout --- */
+
 .details-layout {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -1527,7 +1525,7 @@ body {
     background-color: #ff7675;
 }
 
-/* --- Shop Layout (Sidebar + Content) --- */
+
 .shop-layout {
     display: grid;
     grid-template-columns: 260px 1fr;
@@ -1550,7 +1548,7 @@ body {
 
 @media (max-width: 768px) {
     .filter-sidebar {
-        display: none; /* Can be toggled on mobile if needed, or simplified */
+        display: none; 
     }
     .filter-sidebar.active-mobile {
         display: block;
@@ -1650,7 +1648,7 @@ body {
     cursor: pointer;
 }
 
-/* --- Profiles & Address Management --- */
+
 .profile-layout {
     display: grid;
     grid-template-columns: 280px 1fr;
@@ -1796,7 +1794,7 @@ body {
     color: #2ecc71;
 }
 
-/* --- Accordions for FAQ --- */
+
 .faq-container {
     max-width: 800px;
     margin: 0 auto;
@@ -1852,7 +1850,7 @@ body {
     max-height: 200px;
 }
 
-/* --- Admin Dashboard --- */
+
 .admin-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -1921,7 +1919,7 @@ body {
     padding-bottom: 10px;
 }
 
-/* Bar Chart Graphic */
+
 .chart-container {
     padding: 10px 0;
 }
@@ -1961,7 +1959,7 @@ body {
     font-weight: 700;
 }
 
-/* --- 404 Styling --- */
+
 .error-container {
     text-align: center;
     max-width: 550px;
@@ -1991,7 +1989,7 @@ body {
     margin-bottom: 35px;
 }
 
-/* --- Contact & About Details --- */
+
 .contact-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -2045,7 +2043,7 @@ body {
     color: var(--text-muted);
 }
 
-/* About Layout */
+
 .about-hero {
     text-align: center;
     margin-bottom: 50px;
@@ -2110,11 +2108,9 @@ body {
     line-height: 1.5;
 }
 
-/* ==========================================================================
-   Wrogn Premium Widgets & Additions
-   ========================================================================== */
 
-/* --- Cart Drawer Overlay & Panel --- */
+
+
 .cart-drawer-overlay {
     position: fixed;
     top: 0;
@@ -2282,7 +2278,7 @@ body {
     margin-bottom: 20px;
 }
 
-/* --- Support Chat Widget --- */
+
 .support-widget-container {
     position: fixed;
     bottom: 30px;
@@ -2497,7 +2493,7 @@ body {
     transform: scale(1.05);
 }
 
-/* --- Search Suggestions Dropdown --- */
+
 .search-suggestions {
     position: absolute;
     top: calc(100% + 8px);
@@ -2571,7 +2567,7 @@ body {
     margin-top: 2px;
 }
 
-/* --- Color Swatch Grid --- */
+
 .color-swatch-grid {
     display: flex;
     flex-wrap: wrap;
@@ -2599,7 +2595,7 @@ body {
     box-shadow: 0 0 0 2px var(--bg-color), 0 0 0 4px var(--accent-color);
 }
 
-/* --- UPI payment QR Code renderer --- */
+
 .qr-code-container {
     display: flex;
     flex-direction: column;
@@ -2627,7 +2623,7 @@ body {
     box-shadow: 0 4px 12px rgba(0,0,0,0.15);
 }
 
-/* Simulated QR Blocks inside QR code box via CSS linear gradients */
+
 .qr-code-pattern {
     width: 100%;
     height: 100%;
@@ -2664,7 +2660,7 @@ body {
     box-shadow: inset 0 0 0 5px #fff;
 }
 
-/* --- Invoice & Forgot Password Modals --- */
+
 .invoice-modal-overlay, .forgot-modal-overlay {
     position: fixed;
     top: 0;

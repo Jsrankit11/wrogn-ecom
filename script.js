@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // --- Global Theme & Selectors ---
+    
     const themeToggleBtn = document.getElementById('themeToggle');
     const moonIcon = themeToggleBtn?.querySelector('.theme-icon-moon');
     const sunIcon = themeToggleBtn?.querySelector('.theme-icon-sun');
@@ -21,7 +21,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const profileBtn = document.querySelector('.profile-btn');
     const toast = document.getElementById('toast');
 
-    // --- Database Initialization (localStorage) ---
     const defaultProducts = [
         {
             id: 1,
@@ -145,13 +144,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     ];
 
-    // Force database reset if color schema is missing in existing localStorage
     const existingProductsStr = localStorage.getItem('wrogn_products');
     if (!existingProductsStr || !JSON.parse(existingProductsStr)[0]?.hasOwnProperty('color')) {
         localStorage.setItem('wrogn_products', JSON.stringify(defaultProducts));
     }
 
-    // --- State Accessors ---
     function getProducts() {
         return JSON.parse(localStorage.getItem('wrogn_products')) || defaultProducts;
     }
@@ -180,7 +177,6 @@ document.addEventListener('DOMContentLoaded', () => {
         localStorage.setItem('wrogn_orders', JSON.stringify(orders));
     }
 
-    // --- Toast Notification Helper ---
     function showToast(message) {
         if (!toast) return;
         toast.textContent = message;
@@ -195,7 +191,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 3000);
     }
 
-    // --- Global Theme & Navigation ---
     const currentTheme = localStorage.getItem('theme') || 'dark';
     document.documentElement.setAttribute('data-theme', currentTheme);
     updateThemeIcons(currentTheme);
@@ -220,7 +215,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Map Header navigation icons to the correct pages
     if (wishlistBtn) wishlistBtn.href = "wishlist.html";
     if (cartBtn) {
         cartBtn.addEventListener('click', (e) => {
@@ -246,7 +240,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- Mobile Drawer Navigation (Open/Close) ---
     mobileMenuBtn?.addEventListener('click', () => {
         const isOpen = navbarBottomWrapper.classList.contains('open');
         if (isOpen) {
@@ -290,14 +283,12 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // --- Header Counter Updater ---
     function updateHeaderCounters() {
         if (cartBadge) {
             const cart = getCart();
             const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
             cartBadge.textContent = totalItems;
             
-            // Micro-animation
             cartBadge.style.transform = 'scale(1.25)';
             setTimeout(() => {
                 cartBadge.style.transform = 'scale(1)';
@@ -306,11 +297,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     updateHeaderCounters();
 
-    // ==========================================================================
-    // Dynamic Global Components Injection (Cart Drawer & Support Widget)
-    // ==========================================================================
-
-    // 1. Cart Side Drawer Overlay & Panel
     const drawerOverlay = document.createElement('div');
     drawerOverlay.className = "cart-drawer-overlay";
     drawerOverlay.id = "cartDrawerOverlay";
@@ -425,7 +411,6 @@ document.addEventListener('DOMContentLoaded', () => {
         showToast("Item removed from bag");
     };
 
-    // 2. Floating Mobile Support Chat Widget
     const supportContainer = document.createElement('div');
     supportContainer.className = "support-widget-container";
     supportContainer.innerHTML = `
@@ -536,7 +521,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // 3. Search Autocomplete Suggestions Dropdown
     if (searchInput && searchForm) {
         const suggestBox = document.createElement('div');
         suggestBox.className = "search-suggestions";
@@ -578,7 +562,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- Search Submit Interaction ---
     searchForm?.addEventListener('submit', (e) => {
         e.preventDefault();
         const query = searchInput.value.trim();
@@ -602,7 +585,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 2200);
     });
 
-    // --- Dynamic Add to Cart / Wishlist Actions ---
     window.handleAddToCart = function(productId, size = 'M', quantity = 1) {
         const products = getProducts();
         const product = products.find(p => p.id === parseInt(productId));
@@ -619,7 +601,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
         saveCart(cart);
         showToast(`Added ${product.title} (${size}) to Cart!`);
-        openCartDrawer(); // Immediately open Cart Drawer visualizer
+        openCartDrawer(); 
     };
 
     window.handleToggleWishlist = function(productId, btnElement) {
@@ -642,7 +624,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // Helper to generate a generic product card HTML
     function createProductCardHTML(product) {
         const wishlist = getWishlist();
         const isWishlisted = wishlist.includes(product.id) ? 'active' : '';
@@ -683,11 +664,6 @@ document.addEventListener('DOMContentLoaded', () => {
         `;
     }
 
-    // ==========================================================================
-    // Page-Specific Scripts
-    // ==========================================================================
-
-    // --- 1. Home Page (index.html) ---
     if (document.title.includes("Navbar") || document.getElementById('homepage-marker')) {
         const mainContent = document.querySelector('.main-content');
         if (mainContent && !document.getElementById('homepage-marker')) {
@@ -705,13 +681,12 @@ document.addEventListener('DOMContentLoaded', () => {
             
             const grid = document.getElementById('home-featured-grid');
             if (grid) {
-                const products = getProducts().slice(0, 4); // Show top 4
+                const products = getProducts().slice(0, 4); 
                 grid.innerHTML = products.map(p => createProductCardHTML(p)).join('');
             }
         }
     }
 
-    // --- 2. Shop Page (shop.html) ---
     const shopGrid = document.getElementById('shop-products-grid');
     if (shopGrid) {
         const urlParams = new URLSearchParams(window.location.search);
@@ -724,7 +699,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const sidebar = document.querySelector('.filter-sidebar');
         if (sidebar) {
-            // Dynamically inject color swatch selector widget
+            
             const colorWidget = document.createElement('div');
             colorWidget.className = "filter-widget";
             colorWidget.innerHTML = `
@@ -740,7 +715,6 @@ document.addEventListener('DOMContentLoaded', () => {
             `;
             sidebar.appendChild(colorWidget);
 
-            // Dynamically inject "Jeans Only" tags checkbox widget
             const tagWidget = document.createElement('div');
             tagWidget.className = "filter-widget";
             tagWidget.innerHTML = `
@@ -763,7 +737,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const sortSelect = document.getElementById('shopSort');
         const resultsCountText = document.getElementById('results-count');
 
-        // Categories click handlers
         sidebarLinks.forEach(link => {
             link.addEventListener('click', (e) => {
                 e.preventDefault();
@@ -774,7 +747,6 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
 
-        // Price slider handler
         if (priceSlider) {
             priceSlider.addEventListener('input', (e) => {
                 maxPrice = parseInt(e.target.value);
@@ -783,13 +755,11 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
 
-        // Sort handler
         sortSelect?.addEventListener('change', (e) => {
             currentSort = e.target.value;
             renderShop();
         });
 
-        // Color swatches click handlers
         const swatches = document.querySelectorAll('.color-swatch');
         swatches.forEach(sw => {
             sw.addEventListener('click', () => {
@@ -800,7 +770,6 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
 
-        // Tag filter checkbox handler
         const tagJeansBox = document.getElementById('tagJeansCheckbox');
         tagJeansBox?.addEventListener('change', (e) => {
             jeansOnly = e.target.checked;
@@ -810,31 +779,25 @@ document.addEventListener('DOMContentLoaded', () => {
         function renderShop() {
             let products = getProducts();
 
-            // 1. Category Filter
             if (selectedCategory && selectedCategory !== 'All') {
                 products = products.filter(p => p.category.toLowerCase() === selectedCategory.toLowerCase());
             }
 
-            // 2. Search query Filter
             if (searchQuery) {
                 const query = searchQuery.toLowerCase();
                 products = products.filter(p => p.title.toLowerCase().includes(query) || p.category.toLowerCase().includes(query));
             }
 
-            // 3. Price Filter
             products = products.filter(p => p.price <= maxPrice);
 
-            // 4. Color Filter
             if (selectedColor && selectedColor !== 'All') {
                 products = products.filter(p => p.color.toLowerCase() === selectedColor.toLowerCase());
             }
 
-            // 5. Tag Filter
             if (jeansOnly) {
                 products = products.filter(p => p.tags.includes('jeans'));
             }
 
-            // 6. Sorting logic
             if (currentSort === 'low-high') {
                 products.sort((a, b) => a.price - b.price);
             } else if (currentSort === 'high-low') {
@@ -843,7 +806,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 products.sort((a, b) => b.rating - a.rating);
             }
 
-            // Render output
             if (products.length === 0) {
                 shopGrid.innerHTML = `
                     <div style="grid-column: 1/-1; text-align: center; padding: 60px 0; color: var(--text-muted);">
@@ -863,7 +825,6 @@ document.addEventListener('DOMContentLoaded', () => {
         renderShop();
     }
 
-    // --- 3. Product Details Page (product-details.html) ---
     const detailsContainer = document.getElementById('details-container');
     if (detailsContainer) {
         const urlParams = new URLSearchParams(window.location.search);
@@ -961,7 +922,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // --- 4. Cart Page (cart.html) ---
     const cartContainer = document.getElementById('cart-page-container');
     if (cartContainer) {
         function renderCartPage() {
@@ -1014,7 +974,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }).join('');
 
                 const shipping = subtotal > 3000 ? 0 : 150;
-                const discount = localStorage.getItem('wrogn_promo') ? Math.round(subtotal * 0.15) : 0; // 15% off
+                const discount = localStorage.getItem('wrogn_promo') ? Math.round(subtotal * 0.15) : 0; 
                 const total = subtotal + shipping - discount;
 
                 cartContainer.innerHTML = `
@@ -1106,7 +1066,6 @@ document.addEventListener('DOMContentLoaded', () => {
         renderCartPage();
     }
 
-    // --- 5. Wishlist Page (wishlist.html) ---
     const wishlistGrid = document.getElementById('wishlist-grid');
     if (wishlistGrid) {
         function renderWishlist() {
@@ -1174,7 +1133,6 @@ document.addEventListener('DOMContentLoaded', () => {
         renderWishlist();
     }
 
-    // --- 6. Checkout Page (checkout.html) ---
     const checkoutSummary = document.getElementById('checkout-order-summary');
     if (checkoutSummary) {
         const cart = getCart();
@@ -1183,7 +1141,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const discount = localStorage.getItem('wrogn_promo') ? Math.round(subtotal * 0.15) : 0;
         const total = subtotal + shipping - discount;
 
-        // Render Checkout summary side-panel
         checkoutSummary.innerHTML = `
             <h3>Your Order</h3>
             ${cart.map(item => `
@@ -1213,7 +1170,6 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>
         `;
 
-        // Payment Toggle Selection
         const methods = document.querySelectorAll('.payment-method');
         methods.forEach(m => {
             m.addEventListener('click', () => {
@@ -1225,7 +1181,6 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
 
-        // UPI QR code renderer
         const upiRadio = document.getElementById('payUPI');
         function updatePaymentSelection() {
             const existingQR = document.getElementById('checkoutQR');
@@ -1247,7 +1202,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         updatePaymentSelection();
 
-        // Checkout form submission
         const checkoutForm = document.getElementById('checkoutForm');
         checkoutForm?.addEventListener('submit', (e) => {
             e.preventDefault();
@@ -1268,7 +1222,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const address = document.getElementById('address').value;
             const phone = document.getElementById('phone').value;
 
-            // Save order in history
             const orders = getOrders();
             const orderId = `WR-${Math.floor(100000 + Math.random() * 900000)}`;
             const newOrder = {
@@ -1282,7 +1235,6 @@ document.addEventListener('DOMContentLoaded', () => {
             orders.push(newOrder);
             saveOrders(orders);
 
-            // Generate receipt overlay modal
             const invoiceModal = document.createElement('div');
             invoiceModal.className = "invoice-modal-overlay";
             invoiceModal.id = "invoiceModalOverlay";
@@ -1400,10 +1352,9 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- 7. Login Page (login.html) ---
     const loginForm = document.getElementById('loginForm');
     if (loginForm) {
-        // Inject Forgot Password Modal dynamically
+        
         const forgotModal = document.createElement('div');
         forgotModal.id = "forgotModalOverlay";
         forgotModal.className = "forgot-modal-overlay hidden";
@@ -1468,7 +1419,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- 8. Register Page (register.html) ---
     const registerForm = document.getElementById('registerForm');
     if (registerForm) {
         registerForm.addEventListener('submit', (e) => {
@@ -1501,7 +1451,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- 9. Profile Page (profile.html) ---
     const profileContainer = document.getElementById('profile-container');
     if (profileContainer) {
         const activeUser = getActiveUser();
@@ -1571,7 +1520,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // --- 10. Admin Page (admin.html) ---
     const adminContainer = document.getElementById('admin-container');
     if (adminContainer) {
         const activeUser = getActiveUser();
@@ -1674,7 +1622,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 const products = getProducts();
                 const newId = products.length > 0 ? Math.max(...products.map(p => p.id)) + 1 : 1;
 
-                // Pick a random image from our existing pool of assets (to prevent blank/broken files)
                 const imagePool = [
                     "Images/jacket-1.jpg", "Images/jacket-2.jpg", "Images/jacket-3.jpg", "Images/jacket-4.jpg", "Images/jacket-5.jpg", "Images/jacket-6.jpg",
                     "Images/sports-1.jpg", "Images/sports-2.jpg", "Images/sports-3.jpg", "Images/sports-4.jpg", "Images/sports-5.jpg", "Images/sports-6.jpg",
@@ -1712,7 +1659,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // --- 11. FAQ Page (faq.html) ---
     const faqAccordions = document.querySelectorAll('.accordion-header');
     if (faqAccordions.length > 0) {
         faqAccordions.forEach(header => {
