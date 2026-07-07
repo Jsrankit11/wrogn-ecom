@@ -2711,4 +2711,90 @@ body {
     to { opacity: 1; }
 }
 
+/* --- Footer & Mobile Responsive Overrides --- */
+@media (max-width: 992px) {
+    footer > div {
+        grid-template-columns: 1fr 1fr !important;
+        gap: 30px !important;
+    }
+}
+
+@media (max-width: 576px) {
+    footer > div {
+        grid-template-columns: 1fr !important;
+        gap: 24px !important;
+        text-align: center !important;
+    }
+    footer > div > div p {
+        margin: 0 auto 20px auto !important;
+    }
+    footer > div + div {
+        flex-direction: column !important;
+        gap: 15px !important;
+        text-align: center !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .support-widget-container {
+        right: 15px !important;
+        bottom: 15px !important;
+        width: calc(100vw - 30px) !important;
+    }
+    .support-chat-btn {
+        float: right !important;
+    }
+    .support-chat-window {
+        width: 100% !important;
+        height: 420px !important;
+        bottom: 75px !important;
+    }
+}
+
+@media (max-width: 600px) {
+    .cart-table, .cart-table thead, .cart-table tbody, .cart-table tr, .cart-table td {
+        display: block !important;
+        width: 100% !important;
+    }
+    .cart-table thead {
+        display: none !important;
+    }
+    .cart-table tr {
+        position: relative;
+        padding: 15px 0;
+        border-bottom: 1.5px solid var(--divider-color) !important;
+    }
+    .cart-table td {
+        border-bottom: none !important;
+        padding: 6px 0 !important;
+        text-align: left !important;
+    }
+    .cart-table td:nth-child(2)::before {
+        content: "Price: " !important;
+        font-weight: 700 !important;
+        color: var(--text-muted) !important;
+    }
+    .cart-table td:nth-child(3) {
+        display: flex !important;
+        align-items: center !important;
+        gap: 10px !important;
+    }
+    .cart-table td:nth-child(3)::before {
+        content: "Qty: " !important;
+        font-weight: 700 !important;
+        color: var(--text-muted) !important;
+    }
+    .cart-table td:nth-child(4)::before {
+        content: "Subtotal: " !important;
+        font-weight: 700 !important;
+        color: var(--text-muted) !important;
+    }
+    .cart-table td:last-child {
+        position: absolute !important;
+        top: 15px !important;
+        right: 0 !important;
+        width: auto !important;
+    }
+}
+
 
