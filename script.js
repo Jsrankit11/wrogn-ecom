@@ -1263,8 +1263,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
             `).join('');
 
-            const paymentName = document.querySelector('input[name="paymentRadio"]:checked').closest('.payment-method').querySelector('.payment-method-details span').textContent;
-
             invoiceModal.innerHTML = `
                 <div class="invoice-paper">
                     <div style="text-align: center;">
