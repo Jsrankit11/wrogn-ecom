@@ -8,10 +8,16 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles.css?v=2">
 </head>
 <body>
     <header class="header">
+        <!-- Infinite Announcement Marquee -->
+        <div class="wrogn-announcement-marquee" id="wrognMarqueeBar">
+            <div class="wrogn-marquee-content">
+                ⚡ FLASH SALE LIVE: GET FLAT 40% OFF FOR REBEL CLUB MEMBERS • FREE EXPRESS SHIPPING ON ALL ORDERS ABOVE RS. 3000 • CHAT WITH VOICE AI SUPPORT ⚡
+            </div>
+        </div>
         
         <div class="navbar-top-wrapper">
             <div class="navbar-container navbar-top">
@@ -54,6 +60,14 @@
                 
                 <div class="action-group">
                     
+                    <!-- Search Toggle for Mobile -->
+                    <button class="action-btn mobile-search-toggle" id="mobileSearchToggle" title="Search" aria-label="Toggle Search">
+                        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                        </svg>
+                    </button>
+
                     <button class="action-btn theme-toggle" id="themeToggle" title="Toggle Theme" aria-label="Toggle light or dark theme">
                         <svg class="theme-icon-moon" viewBox="0 0 24 24" width="22" height="22">
                             <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" fill="#f5a623" stroke="#f5a623" stroke-width="1"/>
@@ -175,15 +189,15 @@
                     </li>
                     
                     <li class="nav-item">
-                        <a href="shop.html" class="nav-link">NEW ARRIVALS</a>
+                        <a href="shop.html?filter=new" class="nav-link">NEW ARRIVALS</a>
                     </li>
                     
                     <li class="nav-item">
-                        <a href="shop.html" class="nav-link">DEALS</a>
+                        <a href="shop.html?filter=deals" class="nav-link">DEALS</a>
                     </li>
                     
                     <li class="nav-item">
-                        <a href="shop.html" class="nav-link">BEST SELLERS</a>
+                        <a href="shop.html?filter=best" class="nav-link">BEST SELLERS</a>
                     </li>
                     
                     <li class="nav-item">
@@ -194,28 +208,255 @@
         </div>
     </header>
 
-    
+    <!-- Category Quick-Nav Bar (Flipkart style navigation icons) -->
+    <div class="category-quick-nav scroll-reveal">
+        <a class="quick-nav-item" data-category="all">
+            <div class="quick-nav-icon">✨</div>
+            <span>All Styles</span>
+        </a>
+        <a class="quick-nav-item" data-category="Mobiles">
+            <div class="quick-nav-icon">📱</div>
+            <span>Mobiles</span>
+        </a>
+        <a class="quick-nav-item" data-category="Fashion">
+            <div class="quick-nav-icon">👕</div>
+            <span>Fashion</span>
+        </a>
+        <a class="quick-nav-item" data-category="Laptops">
+            <div class="quick-nav-icon">💻</div>
+            <span>Laptops</span>
+        </a>
+        <a class="quick-nav-item" data-category="Watches">
+            <div class="quick-nav-icon">⌚</div>
+            <span>Watches</span>
+        </a>
+        <a class="quick-nav-item" data-category="Earbuds">
+            <div class="quick-nav-icon">🎧</div>
+            <span>Earbuds</span>
+        </a>
+        <a class="quick-nav-item" data-category="Home & Kitchen">
+            <div class="quick-nav-icon">🏠</div>
+            <span>Home</span>
+        </a>
+        <a class="quick-nav-item" data-category="Beauty">
+            <div class="quick-nav-icon">💄</div>
+            <span>Beauty</span>
+        </a>
+        <a class="quick-nav-item" data-category="Furniture">
+            <div class="quick-nav-icon">🛋️</div>
+            <span>Furniture</span>
+        </a>
+        <a class="quick-nav-item" data-category="Sports">
+            <div class="quick-nav-icon">⚽</div>
+            <span>Sports</span>
+        </a>
+        <a class="quick-nav-item" data-category="Books">
+            <div class="quick-nav-icon">📚</div>
+            <span>Books</span>
+        </a>
+        <a class="quick-nav-item" data-category="Gaming">
+            <div class="quick-nav-icon">🎮</div>
+            <span>Gaming</span>
+        </a>
+    </div>
+
     <main class="main-content">
-        <section class="hero">
-            <div class="hero-bg-overlay"></div>
-            <div class="hero-content">
-                <span class="hero-tagline">BREAK THE RULES</span>
-                <h1 class="hero-title">WROGN COLLECTION 2026</h1>
-                <p class="hero-description">Experience the offbeat style that speaks for your non-conformist attitude. Bold graphics, quirky fits, and unmatched comfort.</p>
-                <div class="hero-buttons">
-                    <a href="shop.html" class="btn btn-primary">Shop Men's Clothing</a>
-                    <a href="shop.html?category=Accessories" class="btn btn-secondary">Explore Accessories</a>
+        <!-- Hero Auto Carousel Slider -->
+        <div class="hero-slider-container">
+            <div class="hero-slide active">
+                <img src="https://images.unsplash.com/photo-1483985988355-763728e1935b?w=1600&auto=format&fit=crop&q=80" class="hero-slide-img" alt="Slider 1">
+                <div class="hero-bg-overlay"></div>
+                <div class="hero-slide-content">
+                    <span class="hero-slide-tagline">NEW LEVEL DROPS</span>
+                    <h2 class="hero-slide-title">UNCONVENTIONAL APPAREL</h2>
+                    <p class="hero-slide-desc">Experience our handpicked aesthetic collection representing bold graphics and modern utility.</p>
+                    <a href="shop.html" class="btn btn-primary">Shop Collection</a>
                 </div>
             </div>
+            <div class="hero-slide">
+                <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=1600&auto=format&fit=crop&q=80" class="hero-slide-img" alt="Slider 2">
+                <div class="hero-bg-overlay"></div>
+                <div class="hero-slide-content">
+                    <span class="hero-slide-tagline">PREMIUM ELECTRONICS</span>
+                    <h2 class="hero-slide-title">ACOUSTIC AUDIO & GADGETS</h2>
+                    <p class="hero-slide-desc">Level up your daily audio experience with luxury noise-cancelling headphones and earbuds.</p>
+                    <a href="shop.html?category=Earbuds" class="btn btn-primary">Explore Audio</a>
+                </div>
+            </div>
+            <div class="hero-slide">
+                <img src="https://images.unsplash.com/photo-1556906781-9a412961c28c?w=1600&auto=format&fit=crop&q=80" class="hero-slide-img" alt="Slider 3">
+                <div class="hero-bg-overlay"></div>
+                <div class="hero-slide-content">
+                    <span class="hero-slide-tagline">STREET STYLE DROP</span>
+                    <h2 class="hero-slide-title">VULCANIZED SNEAKERS</h2>
+                    <p class="hero-slide-desc">Step offbeat with our custom colorway vintage kicks and high-top sneakers.</p>
+                    <a href="shop.html" class="btn btn-primary">View Sneakers</a>
+                </div>
+            </div>
+            <div class="hero-slider-nav" id="heroSliderNav">
+                <button class="hero-slider-dot active"></button>
+                <button class="hero-slider-dot"></button>
+                <button class="hero-slider-dot"></button>
+            </div>
+        </div>
+
+        <!-- FLASH SALE SECTION -->
+        <section class="scroll-reveal" style="padding: 40px 24px; max-width: 1240px; margin: 0 auto;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h3 style="font-size: 22px; font-weight: 800; color: var(--text-color);">🔥 FLASH SALE</h3>
+                <span style="font-size: 13px; font-weight: bold; color: #ff7675; background: rgba(255, 118, 117, 0.1); padding: 4px 12px; border-radius: 20px;">Ends In: 02h 45m</span>
+            </div>
+            <div class="product-grid homepage-horizontal-scroll" id="flash-sale-grid">
+                <!-- Skeletons loaded dynamically, then replaced with cards -->
+            </div>
         </section>
-        
-        
+
+        <!-- TRENDING PRODUCTS SECTION -->
+        <section class="scroll-reveal" style="padding: 40px 24px; max-width: 1240px; margin: 0 auto;">
+            <h3 style="font-size: 22px; font-weight: 800; margin-bottom: 20px; color: var(--text-color);">⚡ TRENDING NOW</h3>
+            <div class="product-grid homepage-horizontal-scroll" id="trending-grid">
+                <!-- Loaded dynamically -->
+            </div>
+        </section>
+
+        <!-- BEST SELLERS SECTION -->
+        <section class="scroll-reveal" style="padding: 40px 24px; max-width: 1240px; margin: 0 auto;">
+            <h3 style="font-size: 22px; font-weight: 800; margin-bottom: 20px; color: var(--text-color);">👑 BEST SELLERS</h3>
+            <div class="product-grid homepage-horizontal-scroll" id="best-sellers-grid">
+                <!-- Loaded dynamically -->
+            </div>
+        </section>
+
+        <!-- NEW ARRIVALS SECTION -->
+        <section class="scroll-reveal" style="padding: 40px 24px; max-width: 1240px; margin: 0 auto;">
+            <h3 style="font-size: 22px; font-weight: 800; margin-bottom: 20px; color: var(--text-color);">🆕 NEW ARRIVALS</h3>
+            <div class="product-grid homepage-horizontal-scroll" id="new-arrivals-grid">
+                <!-- Loaded dynamically -->
+            </div>
+        </section>
+
+        <!-- MOBILES SECTION -->
+        <section class="scroll-reveal" style="padding: 40px 24px; max-width: 1240px; margin: 0 auto;">
+            <h3 style="font-size: 22px; font-weight: 800; margin-bottom: 20px; color: var(--text-color);">📱 SMARTPHONES & MOBILES</h3>
+            <div class="product-grid homepage-horizontal-scroll" id="mobiles-grid">
+                <!-- Loaded dynamically -->
+            </div>
+        </section>
+
+        <!-- FASHION SECTION -->
+        <section class="scroll-reveal" style="padding: 40px 24px; max-width: 1240px; margin: 0 auto;">
+            <h3 style="font-size: 22px; font-weight: 800; margin-bottom: 20px; color: var(--text-color);">👕 TRENDY FASHION</h3>
+            <div class="product-grid homepage-horizontal-scroll" id="fashion-grid">
+                <!-- Loaded dynamically -->
+            </div>
+        </section>
+
+        <!-- LAPTOPS SECTION -->
+        <section class="scroll-reveal" style="padding: 40px 24px; max-width: 1240px; margin: 0 auto;">
+            <h3 style="font-size: 22px; font-weight: 800; margin-bottom: 20px; color: var(--text-color);">💻 HIGH-PERFORMANCE LAPTOPS</h3>
+            <div class="product-grid homepage-horizontal-scroll" id="laptops-grid">
+                <!-- Loaded dynamically -->
+            </div>
+        </section>
+
+        <!-- WATCHES SECTION -->
+        <section class="scroll-reveal" style="padding: 40px 24px; max-width: 1240px; margin: 0 auto;">
+            <h3 style="font-size: 22px; font-weight: 800; margin-bottom: 20px; color: var(--text-color);">⌚ LUXURY & SPORT WATCHES</h3>
+            <div class="product-grid homepage-horizontal-scroll" id="watches-grid">
+                <!-- Loaded dynamically -->
+            </div>
+        </section>
+
+        <!-- EARBUDS SECTION -->
+        <section class="scroll-reveal" style="padding: 40px 24px; max-width: 1240px; margin: 0 auto;">
+            <h3 style="font-size: 22px; font-weight: 800; margin-bottom: 20px; color: var(--text-color);">🎧 WIRELESS EARBUDS & HEADPHONES</h3>
+            <div class="product-grid homepage-horizontal-scroll" id="earbuds-grid">
+                <!-- Loaded dynamically -->
+            </div>
+        </section>
+
+        <!-- HOME & KITCHEN SECTION -->
+        <section class="scroll-reveal" style="padding: 40px 24px; max-width: 1240px; margin: 0 auto;">
+            <h3 style="font-size: 22px; font-weight: 800; margin-bottom: 20px; color: var(--text-color);">🏠 HOME & KITCHEN APPLIANCES</h3>
+            <div class="product-grid homepage-horizontal-scroll" id="home-kitchen-grid">
+                <!-- Loaded dynamically -->
+            </div>
+        </section>
+
+        <!-- BEAUTY SECTION -->
+        <section class="scroll-reveal" style="padding: 40px 24px; max-width: 1240px; margin: 0 auto;">
+            <h3 style="font-size: 22px; font-weight: 800; margin-bottom: 20px; color: var(--text-color);">💄 BEAUTY & PERSONAL CARE</h3>
+            <div class="product-grid homepage-horizontal-scroll" id="beauty-grid">
+                <!-- Loaded dynamically -->
+            </div>
+        </section>
+
+        <!-- FURNITURE SECTION -->
+        <section class="scroll-reveal" style="padding: 40px 24px; max-width: 1240px; margin: 0 auto;">
+            <h3 style="font-size: 22px; font-weight: 800; margin-bottom: 20px; color: var(--text-color);">🛋️ HOME FURNITURE</h3>
+            <div class="product-grid homepage-horizontal-scroll" id="furniture-grid">
+                <!-- Loaded dynamically -->
+            </div>
+        </section>
+
+        <!-- SPORTS SECTION -->
+        <section class="scroll-reveal" style="padding: 40px 24px; max-width: 1240px; margin: 0 auto;">
+            <h3 style="font-size: 22px; font-weight: 800; margin-bottom: 20px; color: var(--text-color);">⚽ SPORTS & FITNESS GEAR</h3>
+            <div class="product-grid homepage-horizontal-scroll" id="sports-grid">
+                <!-- Loaded dynamically -->
+            </div>
+        </section>
+
+        <!-- BOOKS SECTION -->
+        <section class="scroll-reveal" style="padding: 40px 24px; max-width: 1240px; margin: 0 auto;">
+            <h3 style="font-size: 22px; font-weight: 800; margin-bottom: 20px; color: var(--text-color);">📚 BEST SELLING BOOKS</h3>
+            <div class="product-grid homepage-horizontal-scroll" id="books-grid">
+                <!-- Loaded dynamically -->
+            </div>
+        </section>
+
+        <!-- GAMING SECTION -->
+        <section class="scroll-reveal" style="padding: 40px 24px; max-width: 1240px; margin: 0 auto;">
+            <h3 style="font-size: 22px; font-weight: 800; margin-bottom: 20px; color: var(--text-color);">🎮 GAMING CONSOLES & TECH</h3>
+            <div class="product-grid homepage-horizontal-scroll" id="gaming-grid">
+                <!-- Loaded dynamically -->
+            </div>
+        </section>
+
+
+        <!-- BRAND LOGOS ROW -->
+        <div class="brand-logos-container scroll-reveal">
+            <div class="brand-logos-track">
+                <div class="brand-logo-item">WROGN</div>
+                <div class="brand-logo-item">NIKE</div>
+                <div class="brand-logo-item">PUMA</div>
+                <div class="brand-logo-item">ADIDAS</div>
+                <div class="brand-logo-item">LEVI'S</div>
+                <div class="brand-logo-item">ROLEX</div>
+                <div class="brand-logo-item">APPLE</div>
+                <div class="brand-logo-item">SAMSUNG</div>
+            </div>
+        </div>
+
+        <!-- NEWSLETTER SECTION -->
+        <section class="scroll-reveal" style="background: linear-gradient(135deg, var(--card-bg), var(--search-bg)); border-top: 1px solid var(--divider-color); padding: 70px 24px; text-align: center; border-radius: 20px; max-width: 1240px; margin: 40px auto;">
+            <div style="max-width: 600px; margin: 0 auto;">
+                <span style="font-size: 32px;">✉️</span>
+                <h2 style="font-size: 28px; font-weight: 900; margin: 15px 0 10px 0; color: var(--text-color);">JOIN THE REBEL CLUB</h2>
+                <p style="color: var(--text-muted); font-size: 13.5px; margin-bottom: 25px; line-height: 1.5;">Subscribe to receive early drops notification, member-only discounts, and seasonal releases. Zero spam.</p>
+                <form id="wrognNewsletterForm" class="newsletter-form">
+                    <input type="email" placeholder="Enter your email address" required style="flex: 1; padding: 12px 20px; border-radius: 10px; border: 1px solid var(--divider-color); background-color: var(--header-bg); color: var(--text-color); font-family: inherit; font-size: 13.5px;">
+                    <button type="submit" class="btn btn-primary" style="padding: 0 24px; font-weight: bold; border-radius: 10px;">Subscribe</button>
+                </form>
+            </div>
+        </section>
+
         <div class="toast" id="toast">Action triggered successfully!</div>
     </main>
 
     
     <footer style="background-color: var(--card-bg); border-top: 1px solid var(--divider-color); padding: 50px 24px 30px 24px; color: var(--text-color);">
-        <div style="max-width: 1240px; margin: 0 auto; display: grid; grid-template-columns: 2fr repeat(3, 1fr); gap: 40px; font-family: inherit;">
+        <div class="footer-grid">
             <div>
                 <h3 style="font-size: 20px; font-weight: 800; margin-bottom: 15px;"><span style="color: var(--text-color);">W</span><span style="color: var(--accent-color);">rogn</span></h3>
                 <p style="color: var(--text-muted); font-size: 13.5px; line-height: 1.6; max-width: 280px; margin-bottom: 20px;">Wrogn is an offbeat, quirky fashion brand for the non-conformists. Break the rules of style.</p>
@@ -252,6 +493,7 @@
         </div>
     </footer>
 
+    <button class="back-to-top-btn" id="backToTopBtn" title="Back to Top" aria-label="Scroll back to top">↑</button>
     <script src="script.js"></script>
 </body>
 </html>

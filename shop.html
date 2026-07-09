@@ -7,7 +7,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles.css?v=2">
 </head>
 <body>
     <header class="header">
@@ -41,6 +41,14 @@
                     </form>
                 </div>
                 <div class="action-group">
+                    <!-- Search Toggle for Mobile -->
+                    <button class="action-btn mobile-search-toggle" id="mobileSearchToggle" title="Search" aria-label="Toggle Search">
+                        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                        </svg>
+                    </button>
+
                     <button class="action-btn theme-toggle" id="themeToggle" title="Toggle Theme" aria-label="Toggle light or dark theme">
                         <svg class="theme-icon-moon" viewBox="0 0 24 24" width="22" height="22">
                             <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" fill="#f5a623" stroke="#f5a623" stroke-width="1"/>
@@ -140,9 +148,9 @@
                             </div>
                         </div>
                     </li>
-                    <li class="nav-item"><a href="shop.html" class="nav-link">NEW ARRIVALS</a></li>
-                    <li class="nav-item"><a href="shop.html" class="nav-link">DEALS</a></li>
-                    <li class="nav-item"><a href="shop.html" class="nav-link">BEST SELLERS</a></li>
+                    <li class="nav-item"><a href="shop.html?filter=new" class="nav-link">NEW ARRIVALS</a></li>
+                    <li class="nav-item"><a href="shop.html?filter=deals" class="nav-link">DEALS</a></li>
+                    <li class="nav-item"><a href="shop.html?filter=best" class="nav-link">BEST SELLERS</a></li>
                     <li class="nav-item"><a href="contact.html" class="nav-link">CONTACT US</a></li>
                 </ul>
             </div>
@@ -157,19 +165,27 @@
                     <h3>Categories</h3>
                     <ul class="filter-list">
                         <li><a href="#" class="active" data-category="All">All Categories</a></li>
-                        <li><a href="#" data-category="Topwear">Topwear</a></li>
-                        <li><a href="#" data-category="Bottomwear">Bottomwear</a></li>
-                        <li><a href="#" data-category="Accessories">Accessories</a></li>
+                        <li><a href="#" data-category="Mobiles">Mobiles</a></li>
+                        <li><a href="#" data-category="Fashion">Fashion</a></li>
+                        <li><a href="#" data-category="Laptops">Laptops</a></li>
+                        <li><a href="#" data-category="Watches">Watches</a></li>
+                        <li><a href="#" data-category="Earbuds">Earbuds</a></li>
+                        <li><a href="#" data-category="Home & Kitchen">Home & Kitchen</a></li>
+                        <li><a href="#" data-category="Beauty">Beauty</a></li>
+                        <li><a href="#" data-category="Furniture">Furniture</a></li>
+                        <li><a href="#" data-category="Sports">Sports</a></li>
+                        <li><a href="#" data-category="Books">Books</a></li>
+                        <li><a href="#" data-category="Gaming">Gaming</a></li>
                     </ul>
                 </div>
                 
                 <div class="filter-widget">
                     <h3>Filter By Price</h3>
                     <div class="price-range">
-                        <input type="range" id="priceRange" class="price-slider" min="500" max="8000" step="100" value="8000">
+                        <input type="range" id="priceRange" class="price-slider" min="500" max="200000" step="1000" value="200000">
                         <div class="price-values">
                             <span>Min: ₹500</span>
-                            <span id="priceDisplay">Max: ₹8000</span>
+                            <span id="priceDisplay">Max: ₹200000</span>
                         </div>
                     </div>
                 </div>
@@ -198,7 +214,7 @@
     </main>
 
     <footer style="background-color: var(--card-bg); border-top: 1px solid var(--divider-color); padding: 50px 24px 30px 24px; color: var(--text-color);">
-        <div style="max-width: 1240px; margin: 0 auto; display: grid; grid-template-columns: 2fr repeat(3, 1fr); gap: 40px; font-family: inherit;">
+        <div class="footer-grid">
             <div>
                 <h3 style="font-size: 20px; font-weight: 800; margin-bottom: 15px;"><span style="color: var(--text-color);">W</span><span style="color: var(--accent-color);">rogn</span></h3>
                 <p style="color: var(--text-muted); font-size: 13.5px; line-height: 1.6; max-width: 280px; margin-bottom: 20px;">Wrogn is an offbeat, quirky fashion brand for the non-conformists. Break the rules of style.</p>

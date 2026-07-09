@@ -22,130 +22,240 @@ document.addEventListener('DOMContentLoaded', () => {
     const toast = document.getElementById('toast');
 
     const defaultProducts = [
+        // Mobiles
         {
             id: 1,
+            title: "Wrogn Phone 14 Pro",
+            category: "Mobiles",
+            price: 79999,
+            oldPrice: 89999,
+            rating: 4.8,
+            ratingCount: 312,
+            description: "Deep Purple variant with 128GB storage, advanced camera, and dynamic island display.",
+            image: "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=500&auto=format&fit=crop",
+            images: ["https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=500&auto=format&fit=crop"],
+            badge: "Best Seller",
+            color: "Deep Purple",
+            tags: ["phone", "mobiles"]
+        },
+        {
+            id: 2,
+            title: "Wrogn Galaxy S23 Ultra",
+            category: "Mobiles",
+            price: 114999,
+            oldPrice: 124999,
+            rating: 4.9,
+            ratingCount: 145,
+            description: "Engineered with 200MP camera sensor, built-in S-Pen, and Snapdragon 8 Gen 2 processor.",
+            image: "https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?w=500&auto=format&fit=crop",
+            images: ["https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?w=500&auto=format&fit=crop"],
+            badge: "Hot Deal",
+            color: "Phantom Black",
+            tags: ["phone", "mobiles"]
+        },
+        {
+            id: 3,
+            title: "Wrogn Pixel 7 Pro",
+            category: "Mobiles",
+            price: 69999,
+            oldPrice: 74999,
+            rating: 4.7,
+            ratingCount: 92,
+            description: "Google Tensor G2 chip, exceptional photo capabilities, and clean Android experience.",
+            image: "https://images.unsplash.com/photo-1598327105666-5b89351aff97?w=500&auto=format&fit=crop",
+            images: ["https://images.unsplash.com/photo-1598327105666-5b89351aff97?w=500&auto=format&fit=crop"],
+            badge: "Trending",
+            color: "Hazel",
+            tags: ["phone", "mobiles"]
+        },
+        {
+            id: 4,
+            title: "Wrogn Phone 13 Mini",
+            category: "Mobiles",
+            price: 49999,
+            oldPrice: 59999,
+            rating: 4.6,
+            ratingCount: 108,
+            description: "Super compact size with massive power. A15 Bionic chip and brilliant dual-camera setup.",
+            image: "https://images.unsplash.com/photo-1510557880182-3d4d3cba35a5?w=500&auto=format&fit=crop",
+            images: ["https://images.unsplash.com/photo-1510557880182-3d4d3cba35a5?w=500&auto=format&fit=crop"],
+            badge: "Compact",
+            color: "Blue",
+            tags: ["phone", "mobiles"]
+        },
+        // Fashion
+        {
+            id: 5,
             title: "Wrogn Hooded Windcheater Jacket",
-            category: "Topwear",
+            category: "Fashion",
             price: 2499,
             oldPrice: 3999,
             rating: 4.6,
             ratingCount: 220,
-            description: "High-performance windcheater with an adjustable hood, water-resistant outer shell, and warm inner fleece lining. Perfect for winter streetwear styling.",
-            image: "Images/jacket-1.jpg",
-            images: ["Images/jacket-1.jpg", "Images/jacket-2.jpg", "Images/jacket-3.jpg"],
-            badge: "Best Seller",
+            description: "High-performance windcheater with adjustable hood and warm fleece lining.",
+            image: "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=500&auto=format&fit=crop",
+            images: ["https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=500&auto=format&fit=crop"],
+            badge: "Trending",
             color: "Black",
-            tags: ["jacket", "outerwear"]
+            tags: ["jacket", "fashion"]
         },
         {
-            id: 2,
-            title: "Wrogn Distressed Slim Fit Jeans",
-            category: "Bottomwear",
+            id: 6,
+            title: "Wrogn Distressed Denim Jeans",
+            category: "Fashion",
             price: 1999,
             oldPrice: 3499,
             rating: 4.4,
             ratingCount: 185,
-            description: "Premium washed cotton denim with engineered rip details, regular-rise waist, and a tapered slim fit to show off your rebel edge.",
-            image: "Images/sports-1.jpg",
-            images: ["Images/sports-1.jpg", "Images/sports-2.jpg", "Images/sports-3.jpg"],
+            description: "Premium washed cotton denim with ripped details and tapered slim fit.",
+            image: "https://images.unsplash.com/photo-1542272604-787c3835535d?w=500&auto=format&fit=crop",
+            images: ["https://images.unsplash.com/photo-1542272604-787c3835535d?w=500&auto=format&fit=crop"],
             badge: "Trending",
             color: "Blue",
-            tags: ["jeans", "denim"]
-        },
-        {
-            id: 3,
-            title: "Wrogn Chronograph Men Watch",
-            category: "Accessories",
-            price: 4999,
-            oldPrice: 7999,
-            rating: 4.8,
-            ratingCount: 95,
-            description: "Elegant quartz chronograph watch featuring a matte-black stainless steel case, luxury genuine leather strap, and 50m water resistance.",
-            image: "Images/watch-1.jpg",
-            images: ["Images/watch-1.jpg", "Images/watch-2.jpg", "Images/watch-3.jpg"],
-            badge: "Premium",
-            color: "Black",
-            tags: ["watch", "accessories"]
-        },
-        {
-            id: 4,
-            title: "Wrogn Activewear Sports Tee",
-            category: "Topwear",
-            price: 999,
-            oldPrice: 1499,
-            rating: 4.2,
-            ratingCount: 310,
-            description: "Dry-fit moisture-wicking technology keeps you cool and dry during workouts. Ergonomic seams ensure maximum flexibility.",
-            image: "Images/shirt-1.jpg",
-            images: ["Images/shirt-1.jpg", "Images/shirt-2.jpg", "Images/sports-4.jpg"],
-            badge: "Sale",
-            color: "Red",
-            tags: ["tee", "shirt"]
-        },
-        {
-            id: 5,
-            title: "Wrogn High-Top White Sneakers",
-            category: "Accessories",
-            price: 3299,
-            oldPrice: 4999,
-            rating: 4.5,
-            ratingCount: 142,
-            description: "Crisp white faux-leather upper with retro panels, padded high-top ankle collar, and vulcanized rubber sole for vintage appeal.",
-            image: "Images/shoe-1.jpg",
-            images: ["Images/shoe-1.jpg", "Images/shoe-2.jpg", "Images/shoe-3.jpg"],
-            badge: "New",
-            color: "White",
-            tags: ["shoes", "sneakers"]
-        },
-        {
-            id: 6,
-            title: "Wrogn Casual Checked Shirts",
-            category: "Topwear",
-            price: 1599,
-            oldPrice: 2499,
-            rating: 4.3,
-            ratingCount: 78,
-            description: "Pure cotton lightweight flannel shirt in a striking black and red windowpane check pattern. Perfect for layering over graphic tees.",
-            image: "Images/shirt-2.jpg",
-            images: ["Images/shirt-2.jpg", "Images/jacket-4.jpg", "Images/jacket-5.jpg"],
-            badge: "",
-            color: "Grey",
-            tags: ["shirt", "checked"]
+            tags: ["jeans", "fashion"]
         },
         {
             id: 7,
-            title: "Wrogn Casual Cargo Shorts",
-            category: "Bottomwear",
-            price: 1299,
-            oldPrice: 1999,
-            rating: 4.1,
-            ratingCount: 65,
-            description: "Multi-pocket cotton twill cargo shorts featuring a relaxed fit, secure button closures, and utility belt loops. Ideal for summer travels.",
-            image: "Images/sports-2.jpg",
-            images: ["Images/sports-2.jpg", "Images/sports-3.jpg", "Images/sports-4.jpg"],
-            badge: "",
-            color: "Grey",
-            tags: ["shorts", "cargo"]
+            title: "Wrogn Premium Cotton Polo Tee",
+            category: "Fashion",
+            price: 999,
+            oldPrice: 1499,
+            rating: 4.3,
+            ratingCount: 310,
+            description: "Breathable pique knit cotton polo tee. Structured collar with signature metal buttons.",
+            image: "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=500&auto=format&fit=crop",
+            images: ["https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=500&auto=format&fit=crop"],
+            badge: "Best Seller",
+            color: "White",
+            tags: ["tee", "fashion"]
         },
         {
             id: 8,
-            title: "Wrogn Classic Leather Belt",
-            category: "Accessories",
-            price: 899,
-            oldPrice: 1599,
-            rating: 4.7,
-            ratingCount: 204,
-            description: "Full-grain genuine oil-pulled leather belt with a brushed gunmetal single-prong buckle. Refined and durable.",
-            image: "Images/belt.jpg",
-            images: ["Images/belt.jpg", "Images/watch-3.jpg", "Images/watch-4.jpg"],
+            title: "Wrogn Casual Checked Flannel Shirt",
+            category: "Fashion",
+            price: 1599,
+            oldPrice: 2499,
+            rating: 4.2,
+            ratingCount: 78,
+            description: "Heavyweight premium cotton flannel shirt in custom windowpane layout. Warm and classy.",
+            image: "https://images.unsplash.com/photo-1598033129183-c4f50c736f10?w=500&auto=format&fit=crop",
+            images: ["https://images.unsplash.com/photo-1598033129183-c4f50c736f10?w=500&auto=format&fit=crop"],
             badge: "",
+            color: "Grey Red",
+            tags: ["shirt", "fashion"]
+        },
+        // Laptops
+        {
+            id: 9,
+            title: "Wrogn Book Pro 16",
+            category: "Laptops",
+            price: 144999,
+            oldPrice: 159999,
+            rating: 4.8,
+            ratingCount: 88,
+            description: "Supercharged by M2 Max chip with 32GB Unified Memory and liquid retina display.",
+            image: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=500&auto=format&fit=crop",
+            images: ["https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=500&auto=format&fit=crop"],
+            badge: "Premium",
+            color: "Space Grey",
+            tags: ["laptop", "laptops"]
+        },
+        {
+            id: 10,
+            title: "Wrogn ZenBook OLED 14",
+            category: "Laptops",
+            price: 84999,
+            oldPrice: 94999,
+            rating: 4.6,
+            ratingCount: 52,
+            description: "Vibrant OLED NanoEdge touch display, Ryzen 7 processor, and ultrathin aluminum body.",
+            image: "https://images.unsplash.com/photo-1496181130204-7552cc145cdb?w=500&auto=format&fit=crop",
+            images: ["https://images.unsplash.com/photo-1496181130204-7552cc145cdb?w=500&auto=format&fit=crop"],
+            badge: "Intel EVO",
+            color: "Pine Grey",
+            tags: ["laptop", "laptops"]
+        },
+        {
+            id: 11,
+            title: "Wrogn Legion Pro Gaming Laptop",
+            category: "Laptops",
+            price: 119999,
+            oldPrice: 134999,
+            rating: 4.7,
+            ratingCount: 65,
+            description: "High frame rates with RTX 4060 graphics, 165Hz display, and dual-fan cooling tech.",
+            image: "https://images.unsplash.com/photo-1603302576837-37561b2e2302?w=500&auto=format&fit=crop",
+            images: ["https://images.unsplash.com/photo-1603302576837-37561b2e2302?w=500&auto=format&fit=crop"],
+            badge: "Ray Tracing",
+            color: "Abyss Blue",
+            tags: ["laptop", "laptops"]
+        },
+        {
+            id: 12,
+            title: "Wrogn Surface UltraBook 13",
+            category: "Laptops",
+            price: 92999,
+            oldPrice: 99999,
+            rating: 4.5,
+            ratingCount: 38,
+            description: "PixelSense touch display with signature Alcantara keyboard. Slim, light, and versatile.",
+            image: "https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?w=500&auto=format&fit=crop",
+            images: ["https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?w=500&auto=format&fit=crop"],
+            badge: "Touchscreen",
+            color: "Platinum",
+            tags: ["laptop", "laptops"]
+        },
+        // Watches
+        {
+            id: 13,
+            title: "Wrogn Chronograph Men Watch",
+            category: "Watches",
+            price: 4999,
+            oldPrice: 7999,
+            rating: 4.7,
+            ratingCount: 95,
+            description: "Matte-black stainless steel case with genuine leather strap.",
+            image: "https://images.unsplash.com/photo-1524592094714-0f0654e20314?w=500&auto=format&fit=crop",
+            images: ["https://images.unsplash.com/photo-1524592094714-0f0654e20314?w=500&auto=format&fit=crop"],
+            badge: "Classy",
             color: "Black",
-            tags: ["belt", "accessories"]
+            tags: ["watch", "watches"]
+        },
+        {
+            id: 14,
+            title: "Wrogn Classic AMOLED Smartwatch",
+            category: "Watches",
+            price: 3499,
+            oldPrice: 5999,
+            rating: 4.5,
+            ratingCount: 182,
+            description: "1.43\" AMOLED display, multi-sport tracking, heart rate, and Bluetooth calling support.",
+            image: "https://images.unsplash.com/photo-1508685096489-7aacd43bd3b1?w=500&auto=format&fit=crop",
+            images: ["https://images.unsplash.com/photo-1508685096489-7aacd43bd3b1?w=500&auto=format&fit=crop"],
+            badge: "Fitness Smart",
+            color: "Sandstone Beige",
+            tags: ["watch", "watches"]
+        },
+        {
+            id: 15,
+            title: "Wrogn Luxury Gold Chronometer",
+            category: "Watches",
+            price: 18499,
+            oldPrice: 24999,
+            rating: 4.9,
+            ratingCount: 42,
+            description: "18k gold-plated case with oyster steel dial. A symbol of elite precision.",
+            image: "https://images.unsplash.com/photo-1612817159949-195b6eb9e31a?w=500&auto=format&fit=crop",
+            images: ["https://images.unsplash.com/photo-1612817159949-195b6eb9e31a?w=500&auto=format&fit=crop"],
+            badge: "Elite",
+            color: "Luxury Gold",
+            tags: ["watch", "watches"]
         }
     ];
 
+    // Reset localstorage products if they don't have all new categories
     const existingProductsStr = localStorage.getItem('wrogn_products');
-    if (!existingProductsStr || !JSON.parse(existingProductsStr)[0]?.hasOwnProperty('color')) {
+    if (!existingProductsStr || JSON.parse(existingProductsStr).length < 15) {
         localStorage.setItem('wrogn_products', JSON.stringify(defaultProducts));
     }
 
@@ -266,6 +376,29 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     });
+
+    // Mobile Search Bar Toggle
+    const mobileSearchToggle = document.getElementById('mobileSearchToggle');
+    const searchBarContainer = document.querySelector('.search-bar-container');
+    if (mobileSearchToggle && searchBarContainer) {
+        mobileSearchToggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            searchBarContainer.classList.toggle('mobile-active');
+            
+            // Auto focus input if opened
+            if (searchBarContainer.classList.contains('mobile-active')) {
+                const searchInput = searchBarContainer.querySelector('.search-input');
+                searchInput?.focus();
+            }
+        });
+        
+        // Close search bar if clicking outside
+        document.addEventListener('click', (e) => {
+            if (!searchBarContainer.contains(e.target) && !mobileSearchToggle.contains(e.target)) {
+                searchBarContainer.classList.remove('mobile-active');
+            }
+        });
+    }
 
     categoriesDropdownLink?.addEventListener('click', (e) => {
         if (window.innerWidth <= 768) {
@@ -692,8 +825,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const urlParams = new URLSearchParams(window.location.search);
         let selectedCategory = urlParams.get('category') || 'All';
         let searchQuery = urlParams.get('search') || '';
+        let specialFilter = urlParams.get('filter') || '';
         let currentSort = 'popular';
-        let maxPrice = 8000;
+        let maxPrice = 200000;
         let selectedColor = 'All';
         let jeansOnly = false;
 
@@ -736,6 +870,14 @@ document.addEventListener('DOMContentLoaded', () => {
         const priceDisplay = document.getElementById('priceDisplay');
         const sortSelect = document.getElementById('shopSort');
         const resultsCountText = document.getElementById('results-count');
+
+        // Highlight initial category in sidebar based on URL params
+        sidebarLinks.forEach(link => {
+            if (link.dataset.category.toLowerCase() === selectedCategory.toLowerCase()) {
+                sidebarLinks.forEach(l => l.classList.remove('active'));
+                link.classList.add('active');
+            }
+        });
 
         sidebarLinks.forEach(link => {
             link.addEventListener('click', (e) => {
@@ -781,6 +923,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (selectedCategory && selectedCategory !== 'All') {
                 products = products.filter(p => p.category.toLowerCase() === selectedCategory.toLowerCase());
+            }
+
+            if (specialFilter === 'new') {
+                products = products.slice(3, 9);
+            } else if (specialFilter === 'deals') {
+                products = products.filter(p => p.oldPrice > p.price);
+            } else if (specialFilter === 'best') {
+                products = products.filter(p => p.badge === "Best Seller");
             }
 
             if (searchQuery) {
@@ -845,6 +995,145 @@ document.addEventListener('DOMContentLoaded', () => {
             const wishlist = getWishlist();
             const isWishlisted = wishlist.includes(product.id) ? 'active' : '';
 
+            // Reviews storage utilities
+            function getReviews(productId) {
+                const storedReviews = localStorage.getItem(`wrogn_reviews_${productId}`);
+                if (storedReviews) {
+                    return JSON.parse(storedReviews);
+                }
+                
+                const mockReviews = [
+                    {
+                        name: "Ankit Sharma",
+                        rating: 5,
+                        date: "2026-07-08",
+                        comment: "Excellent product! Highly recommended, value for money."
+                    },
+                    {
+                        name: "Rahul Kumar",
+                        rating: 4,
+                        date: "2026-07-06",
+                        comment: "Very premium feel. The color and build quality is top-notch."
+                    },
+                    {
+                        name: "Pooja Patel",
+                        rating: 5,
+                        date: "2026-07-02",
+                        comment: "Just awesome! Delivery was fast and product is perfectly packed."
+                    }
+                ];
+                
+                localStorage.setItem(`wrogn_reviews_${productId}`, JSON.stringify(mockReviews));
+                return mockReviews;
+            }
+            
+            function saveReviews(productId, reviews) {
+                localStorage.setItem(`wrogn_reviews_${productId}`, JSON.stringify(reviews));
+            }
+
+            function renderReviewsSection() {
+                const reviews = getReviews(product.id);
+                const averageRating = (reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length).toFixed(1);
+                
+                return `
+                    <div class="reviews-section" style="margin-top: 50px; border-top: 1px solid var(--divider-color); padding-top: 40px;">
+                        <h3 style="font-size: 22px; font-weight: 800; margin-bottom: 25px; color: var(--text-color);">Customer Reviews & Ratings</h3>
+                        
+                        <div style="display: flex; gap: 40px; margin-bottom: 30px; flex-wrap: wrap; align-items: center;">
+                            <div style="background-color: var(--search-bg); padding: 24px; border-radius: 16px; text-align: center; min-width: 150px;">
+                                <strong style="font-size: 48px; color: var(--accent-color); font-weight: 900;">${averageRating}</strong>
+                                <div style="color: var(--accent-color); margin: 5px 0; font-size: 18px;">★ ★ ★ ★ ★</div>
+                                <span style="color: var(--text-muted); font-size: 13px;">Based on ${reviews.length} reviews</span>
+                            </div>
+                            
+                            <div style="flex: 1; min-width: 250px;">
+                                <h4 style="font-weight: 700; margin-bottom: 15px;">Write a Review</h4>
+                                <form id="writeReviewForm" style="display: flex; flex-direction: column; gap: 12px;">
+                                    <div style="display: flex; gap: 15px; align-items: center;">
+                                        <span style="font-size: 13.5px; color: var(--text-muted);">Your Rating:</span>
+                                        <div class="rating-stars-input" style="font-size: 20px; color: var(--text-muted); cursor: pointer; display: flex; gap: 5px;">
+                                            <span data-val="1">★</span>
+                                            <span data-val="2">★</span>
+                                            <span data-val="3">★</span>
+                                            <span data-val="4">★</span>
+                                            <span data-val="5">★</span>
+                                        </div>
+                                        <input type="hidden" id="reviewRatingInput" value="5">
+                                    </div>
+                                    <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                                        <input type="text" id="reviewName" placeholder="Your Name" required style="flex: 1; min-width: 150px; padding: 10px 15px; border-radius: 8px; border: 1px solid var(--divider-color); background-color: var(--search-bg); color: var(--text-color); font-family: inherit; font-size: 13.5px;">
+                                        <input type="email" id="reviewEmail" placeholder="Your Email" required style="flex: 1; min-width: 150px; padding: 10px 15px; border-radius: 8px; border: 1px solid var(--divider-color); background-color: var(--search-bg); color: var(--text-color); font-family: inherit; font-size: 13.5px;">
+                                    </div>
+                                    <textarea id="reviewComment" placeholder="Write your review comments here..." required rows="3" style="width: 100%; padding: 10px 15px; border-radius: 8px; border: 1px solid var(--divider-color); background-color: var(--search-bg); color: var(--text-color); font-family: inherit; font-size: 13.5px; resize: vertical;"></textarea>
+                                    <button type="submit" class="btn btn-primary" style="align-self: flex-start; padding: 10px 24px; font-weight: bold; border-radius: 8px;">Submit Review</button>
+                                </form>
+                            </div>
+                        </div>
+                        
+                        <div class="reviews-list" style="display: flex; flex-direction: column; gap: 20px;">
+                            ${reviews.map(r => `
+                                <div style="background-color: var(--card-bg); border: 1px solid var(--divider-color); padding: 20px; border-radius: 12px; display: flex; flex-direction: column; gap: 10px;">
+                                    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+                                        <div>
+                                            <strong style="font-size: 15px; color: var(--text-color);">${r.name}</strong>
+                                            <div style="color: var(--accent-color); font-size: 13px; margin-top: 3px;">
+                                                ${'★'.repeat(r.rating)}${'☆'.repeat(5 - r.rating)}
+                                            </div>
+                                        </div>
+                                        <span style="font-size: 12px; color: var(--text-muted);">${r.date}</span>
+                                    </div>
+                                    <p style="color: var(--text-muted); font-size: 13.5px; line-height: 1.5; margin: 0;">${r.comment}</p>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+
+            function bindReviewEvents() {
+                const stars = document.querySelectorAll('.rating-stars-input span');
+                const ratingInput = document.getElementById('reviewRatingInput');
+                
+                stars.forEach(star => {
+                    star.addEventListener('click', () => {
+                        const val = parseInt(star.dataset.val);
+                        ratingInput.value = val;
+                        stars.forEach((s, idx) => {
+                            if (idx < val) {
+                                s.style.color = 'var(--accent-color)';
+                            } else {
+                                s.style.color = 'var(--text-muted)';
+                            }
+                        });
+                    });
+                    
+                    if (parseInt(star.dataset.val) <= 5) {
+                        star.style.color = 'var(--accent-color)';
+                    }
+                });
+                
+                const form = document.getElementById('writeReviewForm');
+                form?.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    const name = document.getElementById('reviewName').value;
+                    const rating = parseInt(ratingInput.value);
+                    const comment = document.getElementById('reviewComment').value;
+                    const date = new Date().toISOString().split('T')[0];
+                    
+                    const reviews = getReviews(product.id);
+                    reviews.unshift({ name, rating, date, comment });
+                    saveReviews(product.id, reviews);
+                    
+                    showToast("Review submitted successfully!");
+                    
+                    const revSection = document.getElementById('reviews-wrapper');
+                    if (revSection) {
+                        revSection.innerHTML = renderReviewsSection();
+                        bindReviewEvents();
+                    }
+                });
+            }
+
             detailsContainer.innerHTML = `
                 <div class="details-layout">
                     <!-- Gallery -->
@@ -896,9 +1185,33 @@ document.addEventListener('DOMContentLoaded', () => {
                                 </svg>
                             </button>
                         </div>
+
+                        <!-- Trust Badges & 7 Days Return Policy -->
+                        <div style="margin-top: 25px; border-top: 1px dashed var(--divider-color); padding-top: 20px; display: flex; flex-direction: column; gap: 10px; font-size: 13px; color: var(--text-muted);">
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <span style="font-size: 16px;">🔄</span>
+                                <strong>7 Days Return Policy:</strong> Easy returns and exchanges within 7 days of delivery.
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <span style="font-size: 16px;">🛡️</span>
+                                <strong>100% Brand Guarantee:</strong> Original Wrogn product certified.
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <span style="font-size: 16px;">🚚</span>
+                                <strong>Fast Express Shipping:</strong> Dispatched in 24 hours, delivered in 3-5 days.
+                            </div>
+                        </div>
                     </div>
                 </div>
+                <div id="reviews-wrapper"></div>
             `;
+
+            // Initial render and binding
+            const revSection = document.getElementById('reviews-wrapper');
+            if (revSection) {
+                revSection.innerHTML = renderReviewsSection();
+                bindReviewEvents();
+            }
 
             window.switchDetailImage = function(src, element) {
                 document.getElementById('mainProductImg').src = src;
@@ -1486,28 +1799,85 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const ordersList = document.getElementById('orders-list-body');
             if (ordersList) {
-                const orders = getOrders().filter(o => o.customer === activeUser.name);
-                if (orders.length === 0) {
-                    ordersList.innerHTML = `
-                        <tr>
-                            <td colspan="4" style="text-align: center; color: var(--text-muted); padding: 30px;">
-                                You haven't placed any orders yet.
-                            </td>
-                        </tr>
-                    `;
-                } else {
-                    ordersList.innerHTML = orders.map(o => `
-                        <tr>
-                            <td><strong>#${o.orderId}</strong></td>
-                            <td>${o.date}</td>
-                            <td>₹${o.total}</td>
-                            <td><span class="status-badge ${o.status}">${o.status}</span></td>
-                            <td>
-                                <button class="btn btn-secondary" onclick="viewOrderTracking('${o.orderId}')" style="padding: 6px 12px; font-size: 11px;">Track</button>
-                            </td>
-                        </tr>
-                    `).join('');
-                }
+                window.renderUserOrdersTable = function() {
+                    const orders = getOrders().filter(o => o.customer === activeUser.name);
+                    if (orders.length === 0) {
+                        ordersList.innerHTML = `
+                            <tr>
+                                <td colspan="5" style="text-align: center; color: var(--text-muted); padding: 30px;">
+                                    You haven't placed any orders yet.
+                                </td>
+                            </tr>
+                        `;
+                    } else {
+                        ordersList.innerHTML = orders.map(o => {
+                            const isCancellable = o.status === "processing";
+                            const cancelBtn = isCancellable ? 
+                                `<button class="btn btn-danger" onclick="cancelUserOrder('${o.orderId}')" style="padding: 6px 12px; font-size: 11px; margin-left: 5px; background-color: #ff7675; border: none; color: #fff; border-radius: 4px; font-weight: bold; cursor: pointer;">Cancel</button>` : 
+                                '';
+                            
+                            // 7 Days Return Policy Check
+                            let returnBtn = '';
+                            if (o.status === "delivered") {
+                                const orderDate = new Date(o.date);
+                                const currentDate = new Date();
+                                const diffTime = Math.abs(currentDate - orderDate);
+                                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                                if (diffDays <= 7) {
+                                    returnBtn = `<button class="btn btn-warning" onclick="returnUserOrder('${o.orderId}')" style="padding: 6px 12px; font-size: 11px; margin-left: 5px; background-color: #f39c12; border: none; color: #fff; border-radius: 4px; font-weight: bold; cursor: pointer;">Return</button>`;
+                                }
+                            }
+                            
+                            return `
+                                <tr>
+                                    <td><strong>#${o.orderId}</strong></td>
+                                    <td>${o.date}</td>
+                                    <td>₹${o.total}</td>
+                                    <td><span class="status-badge ${o.status}">${o.status}</span></td>
+                                    <td>
+                                        <div style="display: flex; gap: 5px; align-items: center;">
+                                            <button class="btn btn-secondary" onclick="viewOrderTracking('${o.orderId}')" style="padding: 6px 12px; font-size: 11px;">Track</button>
+                                            ${cancelBtn}
+                                            ${returnBtn}
+                                        </div>
+                                    </td>
+                                </tr>
+                            `;
+                        }).join('');
+                    }
+                };
+
+                window.cancelUserOrder = function(orderId) {
+                    if (confirm(`Are you sure you want to cancel Order #${orderId}?`)) {
+                        let orders = getOrders();
+                        const o = orders.find(x => x.orderId === orderId);
+                        if (o) {
+                            if (o.status !== "processing") {
+                                showToast("Cannot cancel order after it has been shipped!");
+                                return;
+                            }
+                            o.status = "cancelled";
+                            saveOrders(orders);
+                            showToast(`Order #${orderId} cancelled successfully!`);
+                            window.renderUserOrdersTable();
+                        }
+                    }
+                };
+
+                window.returnUserOrder = function(orderId) {
+                    if (confirm(`Are you sure you want to return Order #${orderId} under our 7 Days Return Policy?`)) {
+                        let orders = getOrders();
+                        const o = orders.find(x => x.orderId === orderId);
+                        if (o) {
+                            o.status = "returned";
+                            saveOrders(orders);
+                            showToast(`Return request initiated for Order #${orderId}`);
+                            window.renderUserOrdersTable();
+                        }
+                    }
+                };
+
+                window.renderUserOrdersTable();
             }
 
             const menuBtns = document.querySelectorAll('.profile-menu-item button');
@@ -1837,4 +2207,280 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     };
+
+    // --- MODERN E-COMMERCE UPGRADE LOGIC ---
+
+    // Unique image pools for each category to ensure NO DUPLICATES!
+    const categoryImages = {
+        "Mobiles": [
+            "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=500&auto=format&fit=crop",
+            "https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?w=500&auto=format&fit=crop",
+            "https://images.unsplash.com/photo-1598327105666-5b89351aff97?w=500&auto=format&fit=crop",
+            "https://images.unsplash.com/photo-1510557880182-3d4d3cba35a5?w=500&auto=format&fit=crop",
+            "https://images.unsplash.com/photo-1565849906662-68a802521c7c?w=500&auto=format&fit=crop",
+            "https://images.unsplash.com/photo-1523206489230-c012c64b2b48?w=500&auto=format&fit=crop"
+        ],
+        "Fashion": [
+            "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=500&auto=format&fit=crop",
+            "https://images.unsplash.com/photo-1542272604-787c3835535d?w=500&auto=format&fit=crop",
+            "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=500&auto=format&fit=crop",
+            "https://images.unsplash.com/photo-1598033129183-c4f50c736f10?w=500&auto=format&fit=crop",
+            "https://images.unsplash.com/photo-1551028719-00167b16eac5?w=500&auto=format&fit=crop",
+            "https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=500&auto=format&fit=crop"
+        ],
+        "Laptops": [
+            "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=500&auto=format&fit=crop",
+            "https://images.unsplash.com/photo-1496181130204-7552cc145cdb?w=500&auto=format&fit=crop",
+            "https://images.unsplash.com/photo-1603302576837-37561b2e2302?w=500&auto=format&fit=crop",
+            "https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?w=500&auto=format&fit=crop",
+            "https://images.unsplash.com/photo-1525547719571-a2d4ac8945e2?w=500&auto=format&fit=crop",
+            "https://images.unsplash.com/photo-1618424181497-157f25b6ddd5?w=500&auto=format&fit=crop"
+        ],
+        "Watches": [
+            "https://images.unsplash.com/photo-1524592094714-0f0654e20314?w=500&auto=format&fit=crop",
+            "https://images.unsplash.com/photo-1508685096489-7aacd43bd3b1?w=500&auto=format&fit=crop",
+            "https://images.unsplash.com/photo-1522312346375-d1a52e2b99b3?w=500&auto=format&fit=crop",
+            "https://images.unsplash.com/photo-1612817159949-195b6eb9e31a?w=500&auto=format&fit=crop",
+            "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500&auto=format&fit=crop",
+            "https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e?w=500&auto=format&fit=crop"
+        ],
+        "Earbuds": [
+            "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500&auto=format&fit=crop",
+            "https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=500&auto=format&fit=crop",
+            "https://images.unsplash.com/photo-1583394838336-acd977736f90?w=500&auto=format&fit=crop",
+            "https://images.unsplash.com/photo-1608156639585-b3a032ef9689?w=500&auto=format&fit=crop",
+            "https://images.unsplash.com/photo-1487215078519-e21cc028cb29?w=500&auto=format&fit=crop",
+            "https://images.unsplash.com/photo-1546435770-a3e426bf472b?w=500&auto=format&fit=crop"
+        ],
+        "Home & Kitchen": [
+            "https://images.unsplash.com/photo-1517256064527-09c53b2d0bc6?w=500&auto=format&fit=crop",
+            "https://images.unsplash.com/photo-1584269600464-37b1b58a9fe7?w=500&auto=format&fit=crop",
+            "https://images.unsplash.com/photo-1576092768241-dec231879fc3?w=500&auto=format&fit=crop",
+            "https://images.unsplash.com/photo-1585238342024-78d387f4a707?w=500&auto=format&fit=crop",
+            "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=500&auto=format&fit=crop",
+            "https://images.unsplash.com/photo-1610970881699-44a5587caaec?w=500&auto=format&fit=crop"
+        ],
+        "Beauty": [
+            "https://images.unsplash.com/photo-1608248597279-f99d160bfcbc?w=500&auto=format&fit=crop",
+            "https://images.unsplash.com/photo-1586495777744-4413f21062fa?w=500&auto=format&fit=crop",
+            "https://images.unsplash.com/photo-1541643600914-78b084683601?w=500&auto=format&fit=crop",
+            "https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=500&auto=format&fit=crop",
+            "https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=500&auto=format&fit=crop",
+            "https://images.unsplash.com/photo-1601049541289-9b1b7bbbfe19?w=500&auto=format&fit=crop"
+        ],
+        "Furniture": [
+            "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=500&auto=format&fit=crop",
+            "https://images.unsplash.com/photo-1581428982868-e410dd047a90?w=500&auto=format&fit=crop",
+            "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=500&auto=format&fit=crop",
+            "https://images.unsplash.com/photo-1507473885765-e6ed057f782c?w=500&auto=format&fit=crop",
+            "https://images.unsplash.com/photo-1594620302200-9a762244a156?w=500&auto=format&fit=crop",
+            "https://images.unsplash.com/photo-1538688525198-9b88f6f53126?w=500&auto=format&fit=crop"
+        ],
+        "Sports": [
+            "https://images.unsplash.com/photo-1519766304817-4f37bda74a27?w=500&auto=format&fit=crop",
+            "https://images.unsplash.com/photo-1517838277536-f5f99be501cd?w=500&auto=format&fit=crop",
+            "https://images.unsplash.com/photo-1485965120184-e220f721d03e?w=500&auto=format&fit=crop",
+            "https://images.unsplash.com/photo-1517649763962-0c623066013b?w=500&auto=format&fit=crop",
+            "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=500&auto=format&fit=crop",
+            "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=500&auto=format&fit=crop"
+        ],
+        "Books": [
+            "https://images.unsplash.com/photo-1544947950-fa07a98d237f?w=500&auto=format&fit=crop",
+            "https://images.unsplash.com/photo-1512820790803-83ca734da794?w=500&auto=format&fit=crop",
+            "https://images.unsplash.com/photo-1543002588-bfa74002ed7e?w=500&auto=format&fit=crop",
+            "https://images.unsplash.com/photo-1506880018603-83d5b814b5a6?w=500&auto=format&fit=crop",
+            "https://images.unsplash.com/photo-1589829085413-56de8ae18c73?w=500&auto=format&fit=crop",
+            "https://images.unsplash.com/photo-1532012197267-da84d127e765?w=500&auto=format&fit=crop"
+        ],
+        "Gaming": [
+            "https://images.unsplash.com/photo-1606144042614-b2417e99c4e3?w=500&auto=format&fit=crop",
+            "https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=500&auto=format&fit=crop",
+            "https://images.unsplash.com/photo-1607604276583-eefdd6d41aa5?w=500&auto=format&fit=crop",
+            "https://images.unsplash.com/photo-1615663245857-ac93bb7c39e7?w=500&auto=format&fit=crop",
+            "https://images.unsplash.com/photo-1578301978693-85fa9c0320b9?w=500&auto=format&fit=crop",
+            "https://images.unsplash.com/photo-1593508512255-86ab42a8e620?w=500&auto=format&fit=crop"
+        ]
+    };
+
+    // Helper to generate items for category blocks dynamically to prevent empty/duplicate sections
+    function fillProductsCount(productList, targetCount = 10, defaultCategory = "all") {
+        let list = [...productList];
+        if (list.length === 0) {
+            // fallback to active products
+            list = getProducts().filter(p => defaultCategory === "all" || p.category === defaultCategory);
+        }
+        const originalLength = list.length;
+        let count = 0;
+        while (list.length < targetCount && originalLength > 0) {
+            const item = list[count % originalLength];
+            const category = item.category;
+
+            // Pick next image from pool
+            let image = item.image;
+            if (categoryImages[category] && categoryImages[category].length > 0) {
+                const pool = categoryImages[category];
+                image = pool[(count + originalLength) % pool.length];
+            }
+
+            list.push({
+                ...item,
+                id: item.id + 1000 + count,
+                title: item.title + " (Edition " + (Math.floor(count / originalLength) + 2) + ")",
+                image: image,
+                rating: parseFloat((4.1 + Math.random() * 0.8).toFixed(1)),
+                ratingCount: item.ratingCount + Math.floor(Math.random() * 45)
+            });
+            count++;
+        }
+        return list;
+    }
+
+    // Hero carousel auto sliding controls
+    const heroSlides = document.querySelectorAll('.hero-slide');
+    const heroDots = document.querySelectorAll('.hero-slider-dot');
+    let currentSlide = 0;
+    let slideInterval;
+
+    function showSlide(index) {
+        if (heroSlides.length === 0) return;
+        heroSlides.forEach((slide, i) => {
+            if (i === index) {
+                slide.classList.add('active');
+                if (heroDots[i]) heroDots[i].classList.add('active');
+            } else {
+                slide.classList.remove('active');
+                if (heroDots[i]) heroDots[i].classList.remove('active');
+            }
+        });
+        currentSlide = index;
+    }
+
+    function nextSlide() {
+        const next = (currentSlide + 1) % heroSlides.length;
+        showSlide(next);
+    }
+
+    function startSlideShow() {
+        if (heroSlides.length > 1) {
+            slideInterval = setInterval(nextSlide, 4000);
+        }
+    }
+
+    // Dots navigation listeners
+    heroDots.forEach((dot, index) => {
+        dot.addEventListener('click', () => {
+            clearInterval(slideInterval);
+            showSlide(index);
+            startSlideShow();
+        });
+    });
+
+    startSlideShow();
+
+    // Skeleton loader handlers and rendering logic
+    function renderSectionGrid(gridId, categoryName, badgeFilter = "") {
+        const grid = document.getElementById(gridId);
+        if (!grid) return;
+
+        // Render skeleton blocks
+        grid.innerHTML = Array(4).fill(0).map(() => `
+            <div class="skeleton-card">
+                <div class="skeleton-image"></div>
+                <div class="skeleton-text skeleton-title"></div>
+                <div class="skeleton-text skeleton-price"></div>
+                <div class="skeleton-btn"></div>
+            </div>
+        `).join('');
+
+        // Mock delay to show loader animations
+        setTimeout(() => {
+            const allProducts = getProducts();
+            let filtered = [];
+
+            if (categoryName === "Flash Sale") {
+                filtered = allProducts.slice(0, 6);
+            } else if (categoryName === "Trending") {
+                filtered = allProducts.filter(p => p.rating >= 4.6);
+            } else if (categoryName === "Best Sellers") {
+                filtered = allProducts.filter(p => p.badge === "Best Seller");
+            } else if (categoryName === "New Arrivals") {
+                filtered = allProducts.slice(3, 9);
+            } else {
+                filtered = allProducts.filter(p => p.category === categoryName);
+            }
+
+            // Fill empty cards up to 8 or 10 elements
+            const targetCount = categoryName === "Flash Sale" ? 8 : 10;
+            const filledList = fillProductsCount(filtered, targetCount, categoryName);
+
+            // Populate cards inside section grid
+            grid.innerHTML = filledList.map(p => createProductCardHTML(p)).join('');
+        }, 800);
+    }
+
+    // Load category shelf sections
+    renderSectionGrid("flash-sale-grid", "Flash Sale");
+    renderSectionGrid("trending-grid", "Trending");
+    renderSectionGrid("best-sellers-grid", "Best Sellers");
+    renderSectionGrid("new-arrivals-grid", "New Arrivals");
+    renderSectionGrid("mobiles-grid", "Mobiles");
+    renderSectionGrid("fashion-grid", "Fashion");
+    renderSectionGrid("laptops-grid", "Laptops");
+    renderSectionGrid("watches-grid", "Watches");
+    renderSectionGrid("earbuds-grid", "Earbuds");
+    renderSectionGrid("home-kitchen-grid", "Home & Kitchen");
+    renderSectionGrid("beauty-grid", "Beauty");
+    renderSectionGrid("furniture-grid", "Furniture");
+    renderSectionGrid("sports-grid", "Sports");
+    renderSectionGrid("books-grid", "Books");
+    renderSectionGrid("gaming-grid", "Gaming");
+
+
+    // Back to top scroll button helper
+    const backToTopBtn = document.getElementById('backToTopBtn');
+    if (backToTopBtn) {
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 300) {
+                backToTopBtn.classList.add('visible');
+            } else {
+                backToTopBtn.classList.remove('visible');
+            }
+        });
+
+        backToTopBtn.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+    }
+
+    // Scroll animation trigger reveal
+    const revealElements = document.querySelectorAll('.scroll-reveal');
+    function revealOnScroll() {
+        const windowHeight = window.innerHeight;
+        revealElements.forEach(el => {
+            const elementTop = el.getBoundingClientRect().top;
+            const elementVisible = 100;
+            if (elementTop < windowHeight - elementVisible) {
+                el.classList.add('active');
+            }
+        });
+    }
+    window.addEventListener('scroll', revealOnScroll);
+    revealOnScroll(); // init call
+
+
+    // Quick-nav links handler
+    const quickNavItems = document.querySelectorAll('.quick-nav-item');
+    quickNavItems.forEach(item => {
+        item.addEventListener('click', () => {
+            const cat = item.dataset.category;
+            if (cat === "all") {
+                window.location.href = 'shop.html';
+            } else {
+                window.location.href = `shop.html?category=${encodeURIComponent(cat)}`;
+            }
+        });
+    });
 });
