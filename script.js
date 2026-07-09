@@ -762,6 +762,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const isWishlisted = wishlist.includes(product.id) ? 'active' : '';
         const badgeHTML = product.badge ? `<span class="card-badge">${product.badge}</span>` : '';
         
+        const needsContain = ["mobiles", "laptops", "watches", "earbuds", "home & kitchen", "furniture", "sports", "books", "gaming"]
+            .includes(product.category.toLowerCase());
+        const imgClass = needsContain ? 'img-contain' : 'img-cover';
+        
         return `
             <div class="product-card" data-id="${product.id}">
                 ${badgeHTML}
@@ -772,7 +776,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 </button>
                 <div class="product-image-container">
                     <a href="product-details.html?id=${product.id}">
-                        <img src="${product.image}" alt="${product.title}">
+                        <img src="${product.image}" class="${imgClass}" alt="${product.title}">
                     </a>
                 </div>
                 <div class="product-info">
