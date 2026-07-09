@@ -1562,10 +1562,23 @@ body {
     padding: 24px;
 }
 
+.mobile-filter-btn {
+    display: none;
+}
+
 @media (max-width: 768px) {
+    .mobile-filter-btn {
+        display: flex !important;
+        background-color: var(--card-bg) !important;
+        border: 1px solid var(--divider-color) !important;
+        color: var(--text-color) !important;
+    }
+    
     .filter-sidebar {
         display: none; 
+        margin-bottom: 20px;
     }
+    
     .filter-sidebar.active-mobile {
         display: block;
     }

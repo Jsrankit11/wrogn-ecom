@@ -875,6 +875,19 @@ document.addEventListener('DOMContentLoaded', () => {
         const sortSelect = document.getElementById('shopSort');
         const resultsCountText = document.getElementById('results-count');
 
+        const mobileFilterBtn = document.getElementById('mobileFilterBtn');
+        const filterSidebar = document.querySelector('.filter-sidebar');
+        if (mobileFilterBtn && filterSidebar) {
+            mobileFilterBtn.addEventListener('click', () => {
+                filterSidebar.classList.toggle('active-mobile');
+                if (filterSidebar.classList.contains('active-mobile')) {
+                    mobileFilterBtn.innerHTML = '<span>❌</span> Close Filters';
+                } else {
+                    mobileFilterBtn.innerHTML = '<span>🔍</span> Filters';
+                }
+            });
+        }
+
         // Highlight initial category in sidebar based on URL params
         sidebarLinks.forEach(link => {
             if (link.dataset.category.toLowerCase() === selectedCategory.toLowerCase()) {
