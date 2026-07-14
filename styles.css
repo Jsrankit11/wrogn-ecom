@@ -2740,7 +2740,7 @@ body {
     to { opacity: 1; }
 }
 
-/* --- Footer & Mobile Responsive Overrides --- */
+/* Styles for footer columns and layout on tablet and mobile screens */
 @media (max-width: 992px) {
     footer > div {
         grid-template-columns: 1fr 1fr !important;
@@ -2826,9 +2826,9 @@ body {
     }
 }
 
-/* --- MODERN E-COMMERCE UPGRADE STYLES --- */
+/* Extra design upgrades for an modern and premium look */
 
-/* Infinite Announcement Marquee */
+/* Styling for the moving banner showing special promotions at the top */
 .wrogn-announcement-marquee {
     background-color: var(--accent-color);
     color: #000000;
@@ -2850,7 +2850,7 @@ body {
     100% { transform: translate3d(-100%, 0, 0); }
 }
 
-/* Category Quick-Nav Bar */
+/* Quick Department Nav: a horizontal bar with circular filter icons */
 .category-quick-nav {
     display: flex;
     justify-content: space-between;
@@ -2861,10 +2861,10 @@ body {
     overflow-x: auto;
     white-space: nowrap;
     gap: 15px;
-    scrollbar-width: none; /* Hide scrollbar for Firefox */
+    scrollbar-width: none; /* Hide standard scrollbar scroll indicator */
 }
 .category-quick-nav::-webkit-scrollbar {
-    display: none; /* Hide scrollbar for Chrome, Safari, Opera */
+    display: none; /* Hide scrollbars for Chrome, Safari, and newer browsers */
 }
 .quick-nav-item {
     display: flex;
@@ -2899,7 +2899,7 @@ body {
     background-color: var(--accent-light);
 }
 
-/* Hero Carousel Auto Slider */
+/* Slider component styling for automatic image slide animations */
 .hero-slider-container {
     width: 100%;
     position: relative;
@@ -3001,7 +3001,7 @@ body {
     border-radius: 10px;
 }
 
-/* Skeleton Loading Shimmer */
+/* Animated loading skeleton layout to show placeholders while loading */
 .skeleton-card {
     background-color: var(--card-bg);
     border: 1px solid var(--divider-color);
@@ -3060,7 +3060,7 @@ body {
     margin-top: auto;
 }
 
-/* Back to Top Button */
+/* Floating circular button to scroll page back to top */
 .back-to-top-btn {
     position: fixed;
     bottom: 30px;
@@ -3092,7 +3092,7 @@ body {
     box-shadow: 0 6px 20px var(--accent-light);
 }
 
-/* Scroll reveal helper */
+/* Smooth fade-in scroll animation effect */
 .scroll-reveal {
     opacity: 0;
     transform: translateY(20px);
@@ -3103,7 +3103,7 @@ body {
     transform: translateY(0);
 }
 
-/* Brand Logos Slider */
+/* Brand Partner Logos row layout */
 .brand-logos-container {
     padding: 40px 24px;
     background-color: var(--search-bg);
@@ -3133,7 +3133,7 @@ body {
     color: var(--accent-color);
 }
 
-/* Horizontal Scroll Container for Homepage Categories */
+/* Horizontal scroll layout container configuration */
 .homepage-horizontal-scroll {
     display: flex !important;
     flex-wrap: nowrap !important;
@@ -3144,7 +3144,7 @@ body {
     scrollbar-width: thin !important;
     scrollbar-color: var(--accent-color) transparent !important;
     scroll-behavior: smooth !important;
-    -webkit-overflow-scrolling: touch !important; /* Smooth touch scroll for iOS */
+    -webkit-overflow-scrolling: touch !important; /* Enable native elastic momentum scrolling on iOS devices */
 }
 
 .homepage-horizontal-scroll::-webkit-scrollbar {
@@ -3160,7 +3160,7 @@ body {
     border-radius: 10px !important;
 }
 
-/* Ensure cards do not squeeze or shrink inside the horizontal flexbox */
+/* Enforce fixed width for cards in horizontal scrolling grids */
 .homepage-horizontal-scroll .product-card,
 .homepage-horizontal-scroll .skeleton-card {
     flex: 0 0 260px !important;
@@ -3168,9 +3168,9 @@ body {
     margin-bottom: 0 !important;
 }
 
-/* --- MOBILE RESPONSIVE STYLING ADJUSTMENTS --- */
+/* Mobile Responsiveness media queries to optimize for smaller screen sizes */
 
-/* Footer Grid Responsive */
+/* Grid adjustments for the footer area on mobile devices */
 .footer-grid {
     display: grid;
     grid-template-columns: 2fr repeat(3, 1fr);
@@ -3188,7 +3188,7 @@ body {
     }
 }
 
-/* Newsletter Form Responsive */
+/* Form alignment styling for the newsletter subscription box */
 .newsletter-form {
     display: flex;
     gap: 10px;
@@ -3204,7 +3204,7 @@ body {
     }
 }
 
-/* Brand Logos Responsive */
+/* Center logo items on mobile screens */
 @media (max-width: 768px) {
     .brand-logos-track {
         justify-content: center !important;
@@ -3212,7 +3212,7 @@ body {
     }
 }
 
-/* Hero Carousel Responsive */
+/* Optimize slider display heights and sizes for mobile screens */
 @media (max-width: 768px) {
     .hero-slider-container {
         height: 300px !important;
@@ -3232,10 +3232,10 @@ body {
     }
 }
 
-/* --- MOBILE HEADER & 2-COLUMN GRID ADJUSTMENTS --- */
+/* Mobile header layout tweaks and 2-column catalog grids */
 
 @media (max-width: 768px) {
-    /* Reduce header action group gap and padding */
+    /* Reduce gap and sizes of top header icons on mobile screens */
     .action-group {
         gap: 8px !important;
     }
@@ -3250,25 +3250,25 @@ body {
         height: 18px !important;
     }
     
-    /* Hide Wishlist button on mobile to save space */
+    /* Hide the wishlist button on mobile header to save space */
     .wishlist-btn {
         display: none !important;
     }
     
-    /* Make the logo slightly smaller on mobile */
+    /* Reduce logo text size on mobile screens */
     .logo {
         font-size: 22px !important;
     }
 }
 
 @media (max-width: 580px) {
-    /* Set product grid on catalog/shop to 2 columns */
+    /* Display catalog listings in a clean 2-column layout on mobile */
     .product-grid {
         grid-template-columns: repeat(2, 1fr) !important;
         gap: 12px !important;
     }
     
-    /* Product card and skeleton adjustments */
+    /* Adjust layout, font sizes, and image heights for product cards on mobile */
     .product-card,
     .skeleton-card,
     .homepage-horizontal-scroll .product-card,
@@ -3332,7 +3332,7 @@ body {
         height: 12px !important;
     }
     
-    /* Make wishlist icon scale down on mobile */
+    /* Make card wishlist heart icon slightly smaller */
     .card-wishlist-btn {
         top: 6px !important;
         right: 6px !important;

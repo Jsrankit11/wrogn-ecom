@@ -283,29 +283,108 @@
 
     <script src="script.js"></script>
     <script>
-        // Custom updates for initials and personal profile form saving
-        const user = JSON.parse(localStorage.getItem('wrogn_active_user'));
-        if (user) {
-            document.getElementById('profile-initials').textContent = user.name.split(' ').map(n=>n[0]).join('').toUpperCase().slice(0, 2);
+        const token = localStorage.getItem('wrogn_token');
+        let activeUser = JSON.parse(localStorage.getItem('wrogn_active_user'));
+
+        if (!activeUser) {
+            window.location.href = "login.html";
         }
-        document.getElementById('profileInfoForm')?.addEventListener('submit', (e) => {
+
+        function populateUI(user) {
+            if (!user) return;
+            const name = user.fullName || user.name || "User";
+            const initials = name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
+            
+            const initialsEl = document.getElementById('profile-initials');
+            if (initialsEl) initialsEl.textContent = initials;
+
+            const welcomeNameEl = document.getElementById('welcome-user-name');
+            if (welcomeNameEl) welcomeNameEl.textContent = name;
+
+            const userNameEl = document.getElementById('profile-user-name');
+            if (userNameEl) userNameEl.textContent = name;
+
+            const userEmailEl = document.getElementById('profile-user-email');
+            if (userEmailEl) userEmailEl.textContent = user.email || '';
+
+            const formName = document.getElementById('profileName');
+            if (formName) formName.value = name;
+
+            const formEmail = document.getElementById('profileEmail');
+            if (formEmail) formEmail.value = user.email || '';
+        }
+
+        // Fast render from local storage first
+        populateUI(activeUser);
+
+        // Fetch latest details from API if online
+        async function fetchLatestProfile() {
+            if (!token) return;
+            try {
+                const data = await window.apiCall('/api/users/profile', 'GET', null, true);
+                if (data.success && data.user) {
+                    const user = data.user;
+                    user.name = user.fullName;
+                    localStorage.setItem('wrogn_active_user', JSON.stringify(user));
+                    activeUser = user;
+                    populateUI(user);
+                }
+            } catch (err) {
+                console.warn("API profile fetch failed, using offline cache", err);
+            }
+        }
+        setTimeout(fetchLatestProfile, 100);
+
+        // Update form submission
+        document.getElementById('profileInfoForm')?.addEventListener('submit', async (e) => {
             e.preventDefault();
-            const newName = document.getElementById('profileName').value.trim();
-            if (newName && user) {
-                user.name = newName;
-                localStorage.setItem('wrogn_active_user', JSON.stringify(user));
-                document.getElementById('welcome-user-name').textContent = newName;
-                document.getElementById('profile-user-name').textContent = newName;
-                document.getElementById('profile-initials').textContent = newName.split(' ').map(n=>n[0]).join('').toUpperCase().slice(0, 2);
-                
-                const toast = document.getElementById('toast');
-                if (toast) {
-                    toast.textContent = "Profile updated successfully!";
-                    toast.classList.add('show');
-                    setTimeout(() => toast.classList.remove('show'), 3000);
+            const fullName = document.getElementById('profileName').value.trim();
+            
+            if (token) {
+                try {
+                    const data = await window.apiCall('/api/users/profile', 'PUT', { fullName }, true);
+                    if (data.success && data.user) {
+                        const user = data.user;
+                        user.name = user.fullName;
+                        localStorage.setItem('wrogn_active_user', JSON.stringify(user));
+                        activeUser = user;
+                        populateUI(user);
+                        showToast("Profile details updated! (Synced to cloud)");
+                        return;
+                    }
+                } catch (err) {
+                    console.warn("API profile update failed, falling back to local storage", err);
                 }
             }
+
+            // Local fallback
+            if (activeUser) {
+                activeUser.name = fullName;
+                activeUser.fullName = fullName;
+                localStorage.setItem('wrogn_active_user', JSON.stringify(activeUser));
+                
+                // Update registered users list too
+                const registeredUsers = JSON.parse(localStorage.getItem('wrogn_users')) || [];
+                const idx = registeredUsers.findIndex(u => u.email === activeUser.email);
+                if (idx !== -1) {
+                    registeredUsers[idx].name = fullName;
+                    registeredUsers[idx].fullName = fullName;
+                    localStorage.setItem('wrogn_users', JSON.stringify(registeredUsers));
+                }
+
+                populateUI(activeUser);
+                showToast("Profile updated successfully! (Offline Mode)");
+            }
         });
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            if (toast) {
+                toast.textContent = message;
+                toast.classList.add('show');
+                setTimeout(() => toast.classList.remove('show'), 3000);
+            }
+        }
     </script>
 </body>
 </html>

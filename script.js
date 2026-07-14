@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
     
     const themeToggleBtn = document.getElementById('themeToggle');
     const moonIcon = themeToggleBtn?.querySelector('.theme-icon-moon');
@@ -21,6 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const profileBtn = document.querySelector('.profile-btn');
     const toast = document.getElementById('toast');
 
+    
     const defaultProducts = [
         // Mobiles
         {
@@ -253,37 +254,224 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     ];
 
-    // Reset localstorage products if they don't have all new categories
-    const existingProductsStr = localStorage.getItem('wrogn_products');
-    if (!existingProductsStr || JSON.parse(existingProductsStr).length < 15) {
-        localStorage.setItem('wrogn_products', JSON.stringify(defaultProducts));
+    let cachedProducts = [];
+    let cachedCart = [];
+    let cachedWishlist = [];
+    let cachedActiveUser = null;
+    let cachedOrders = [];
+
+    // API helper
+    async function apiCall(url, method = 'GET', data = null, requiresAuth = false) {
+        const headers = { 'Content-Type': 'application/json' };
+        if (requiresAuth) {
+            const token = localStorage.getItem('wrogn_token');
+            if (token) headers['Authorization'] = `Bearer ${token}`;
+        }
+        const config = { method, headers };
+        if (data) config.body = JSON.stringify(data);
+        try {
+            const res = await fetch(url, config);
+            const json = await res.json();
+            if (!res.ok) throw new Error(json.message || 'Something went wrong');
+            return json;
+        } catch (error) {
+            console.error(`API Call error: ${url}`, error);
+            throw error;
+        }
+    }
+    window.apiCall = apiCall;
+
+    async function loadAllCaches() {
+        try {
+            const res = await fetch('/api/products');
+            const data = await res.json();
+            if (data.success) {
+                cachedProducts = data.products;
+            } else {
+                cachedProducts = defaultProducts;
+            }
+        } catch (err) {
+            console.error("Error loading products", err);
+            cachedProducts = defaultProducts;
+        }
+
+        const token = localStorage.getItem('wrogn_token');
+        if (token) {
+            try {
+                const data = await apiCall('/api/users/profile', 'GET', null, true);
+                if (data.success && data.user) {
+                    cachedActiveUser = data.user;
+                    cachedActiveUser.name = cachedActiveUser.fullName;
+                    localStorage.setItem('wrogn_active_user', JSON.stringify(cachedActiveUser));
+                } else {
+                    cachedActiveUser = JSON.parse(localStorage.getItem('wrogn_active_user')) || null;
+                }
+            } catch (err) {
+                console.warn("Error loading profile from API, using local storage fallback", err);
+                cachedActiveUser = JSON.parse(localStorage.getItem('wrogn_active_user')) || null;
+            }
+        } else {
+            cachedActiveUser = JSON.parse(localStorage.getItem('wrogn_active_user')) || null;
+        }
+
+        if (token) {
+            try {
+                const data = await apiCall('/api/cart', 'GET', null, true);
+                if (data.success) {
+                    cachedCart = data.cart;
+                } else {
+                    cachedCart = JSON.parse(localStorage.getItem('wrogn_cart')) || [];
+                }
+            } catch (err) {
+                console.error("Error loading cart, falling back to local storage", err);
+                cachedCart = JSON.parse(localStorage.getItem('wrogn_cart')) || [];
+            }
+        } else {
+            cachedCart = JSON.parse(localStorage.getItem('wrogn_cart')) || [];
+        }
+
+        // Sanitize cart items
+        const productsListForSanitize = getProducts();
+        cachedCart = (cachedCart || []).map(item => {
+            if (!item) return null;
+            let productObj = item.product;
+            if (!productObj) {
+                const searchId = item.productId || item.id;
+                if (searchId) {
+                    productObj = productsListForSanitize.find(p => p.id === parseInt(searchId));
+                }
+            }
+            if (!productObj) return null;
+            return {
+                product: productObj,
+                quantity: Number(item.quantity) || 1,
+                size: item.size || 'M',
+                color: item.color || productObj.color || 'Black'
+            };
+        }).filter(item => item !== null);
+
+        if (token) {
+            try {
+                const data = await apiCall('/api/wishlist', 'GET', null, true);
+                if (data.success) {
+                    cachedWishlist = data.wishlist;
+                } else {
+                    cachedWishlist = JSON.parse(localStorage.getItem('wrogn_wishlist')) || [];
+                }
+            } catch (err) {
+                console.error("Error loading wishlist, falling back to local storage", err);
+                cachedWishlist = JSON.parse(localStorage.getItem('wrogn_wishlist')) || [];
+            }
+        } else {
+            cachedWishlist = JSON.parse(localStorage.getItem('wrogn_wishlist')) || [];
+        }
+
+        if (token) {
+            try {
+                const data = await apiCall('/api/orders', 'GET', null, true);
+                if (data.success) {
+                    cachedOrders = data.orders.map(o => ({
+                        ...o,
+                        date: new Date(o.orderDate).toLocaleDateString(),
+                        total: o.amount,
+                        status: o.deliveryStatus.toLowerCase(),
+                        customer: cachedActiveUser ? cachedActiveUser.fullName : 'Guest'
+                    }));
+                } else {
+                    cachedOrders = JSON.parse(localStorage.getItem('wrogn_orders')) || [];
+                }
+            } catch (err) {
+                console.error("Error loading orders, falling back to local storage", err);
+                cachedOrders = JSON.parse(localStorage.getItem('wrogn_orders')) || [];
+            }
+        } else {
+            cachedOrders = JSON.parse(localStorage.getItem('wrogn_orders')) || [];
+        }
     }
 
+    window.loadAllCaches = loadAllCaches;
+
+    // Initial load
+    await loadAllCaches();
+
     function getProducts() {
-        return JSON.parse(localStorage.getItem('wrogn_products')) || defaultProducts;
+        return cachedProducts.length > 0 ? cachedProducts : defaultProducts;
     }
     function getCart() {
-        return JSON.parse(localStorage.getItem('wrogn_cart')) || [];
+        return cachedCart;
     }
     function saveCart(cart) {
-        localStorage.setItem('wrogn_cart', JSON.stringify(cart));
+        const productsListForSanitize = getProducts();
+        cachedCart = (cart || []).map(item => {
+            if (!item) return null;
+            let productObj = item.product;
+            if (!productObj) {
+                const searchId = item.productId || item.id;
+                if (searchId) {
+                    productObj = productsListForSanitize.find(p => p.id === parseInt(searchId));
+                }
+            }
+            if (!productObj) return null;
+            return {
+                product: productObj,
+                quantity: Number(item.quantity) || 1,
+                size: item.size || 'M',
+                color: item.color || productObj.color || 'Black'
+            };
+        }).filter(item => item !== null);
+
+        localStorage.setItem('wrogn_cart', JSON.stringify(cachedCart));
         updateHeaderCounters();
         renderCartDrawerItems();
+        
+        const token = localStorage.getItem('wrogn_token');
+        if (token) {
+            const dbItems = cachedCart.map(item => ({
+                productId: item.product.id,
+                quantity: item.quantity,
+                size: item.size,
+                color: item.color || item.product.color || 'Black',
+                price: item.product.price
+            }));
+            apiCall('/api/cart', 'PUT', { items: dbItems }, true)
+                .catch(err => console.error("Error syncing cart to server", err));
+        }
     }
     function getWishlist() {
-        return JSON.parse(localStorage.getItem('wrogn_wishlist')) || [];
+        return cachedWishlist;
     }
     function saveWishlist(wishlist) {
+        const oldWishlist = [...cachedWishlist];
+        cachedWishlist = wishlist;
         localStorage.setItem('wrogn_wishlist', JSON.stringify(wishlist));
         updateHeaderCounters();
+        
+        const token = localStorage.getItem('wrogn_token');
+        if (token) {
+            const added = wishlist.filter(x => !oldWishlist.includes(x));
+            const removed = oldWishlist.filter(x => !wishlist.includes(x));
+            
+            if (added.length > 0) {
+                apiCall('/api/wishlist', 'POST', { productId: added[0] }, true)
+                    .catch(err => console.error("Error adding to wishlist on server", err));
+            }
+            if (removed.length > 0) {
+                apiCall(`/api/wishlist/${removed[0]}`, 'DELETE', null, true)
+                    .catch(err => console.error("Error removing from wishlist on server", err));
+            }
+        }
     }
     function getActiveUser() {
-        return JSON.parse(localStorage.getItem('wrogn_active_user')) || null;
+        if (cachedActiveUser) {
+            cachedActiveUser.name = cachedActiveUser.fullName || cachedActiveUser.name;
+        }
+        return cachedActiveUser;
     }
     function getOrders() {
-        return JSON.parse(localStorage.getItem('wrogn_orders')) || [];
+        return cachedOrders;
     }
     function saveOrders(orders) {
+        cachedOrders = orders;
         localStorage.setItem('wrogn_orders', JSON.stringify(orders));
     }
 
@@ -1016,7 +1204,18 @@ document.addEventListener('DOMContentLoaded', () => {
             function getReviews(productId) {
                 const storedReviews = localStorage.getItem(`wrogn_reviews_${productId}`);
                 if (storedReviews) {
-                    return JSON.parse(storedReviews);
+                    try {
+                        const parsed = JSON.parse(storedReviews);
+                        // Self-cleaning: check if any review contains potential XSS tags/attributes
+                        const hasXSS = parsed.some(r => r.comment && (r.comment.includes('<') || r.comment.includes('>') || r.comment.includes('onerror') || r.comment.includes('javascript:')));
+                        if (hasXSS) {
+                            localStorage.removeItem(`wrogn_reviews_${productId}`);
+                        } else {
+                            return parsed;
+                        }
+                    } catch (e) {
+                        localStorage.removeItem(`wrogn_reviews_${productId}`);
+                    }
                 }
                 
                 const mockReviews = [
@@ -1132,10 +1331,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 const form = document.getElementById('writeReviewForm');
                 form?.addEventListener('submit', (e) => {
                     e.preventDefault();
-                    const name = document.getElementById('reviewName').value;
+                    const rawName = document.getElementById('reviewName').value;
                     const rating = parseInt(ratingInput.value);
-                    const comment = document.getElementById('reviewComment').value;
+                    const rawComment = document.getElementById('reviewComment').value;
                     const date = new Date().toISOString().split('T')[0];
+                    
+                    // Sanitize inputs to prevent XSS
+                    const name = rawName.replace(/<\/?[^>]+(>|$)/g, "").trim();
+                    const comment = rawComment.replace(/<\/?[^>]+(>|$)/g, "").trim();
                     
                     const reviews = getReviews(product.id);
                     reviews.unshift({ name, rating, date, comment });
@@ -1533,9 +1736,10 @@ document.addEventListener('DOMContentLoaded', () => {
         updatePaymentSelection();
 
         const checkoutForm = document.getElementById('checkoutForm');
-        checkoutForm?.addEventListener('submit', (e) => {
+        checkoutForm?.addEventListener('submit', async (e) => {
             e.preventDefault();
             
+            const cart = getCart();
             if (cart.length === 0) {
                 showToast("Your cart is empty. Cannot place order.");
                 return;
@@ -1551,151 +1755,331 @@ document.addEventListener('DOMContentLoaded', () => {
             const fullName = document.getElementById('fullName').value;
             const address = document.getElementById('address').value;
             const phone = document.getElementById('phone').value;
+            const pincode = document.getElementById('pincode')?.value || '560001';
+            const city = document.getElementById('city')?.value || 'Bangalore';
+            const state = document.getElementById('state')?.value || 'Karnataka';
 
-            const orders = getOrders();
-            const orderId = `WR-${Math.floor(100000 + Math.random() * 900000)}`;
             const paymentName = document.querySelector('input[name="paymentRadio"]:checked').closest('.payment-method').querySelector('.payment-method-details span').textContent;
-            const newOrder = {
-                orderId,
-                date: new Date().toLocaleDateString(),
-                customer: activeUser.name,
-                total,
-                status: "processing",
-                items: cart.map(item => ({
-                    id: item.product.id,
+            
+            const couponCode = localStorage.getItem('wrogn_promo') ? 'REBEL15' : '';
+
+            try {
+                const dbItems = cart.map(item => ({
+                    productId: item.product.id,
+                    quantity: item.quantity,
+                    size: item.size,
+                    color: item.color || item.product.color || 'Black'
+                }));
+
+                const data = await apiCall('/api/orders', 'POST', {
+                    items: dbItems,
+                    shippingAddress: {
+                        fullName,
+                        address,
+                        city,
+                        state,
+                        pincode,
+                        phone
+                    },
+                    paymentMethod: paymentName,
+                    couponCode
+                }, true);
+
+                if (data.success && data.order) {
+                    const order = data.order;
+                    const orderId = order.orderId;
+                    
+                    // Clear cart locally and on backend (already cleared on backend)
+                    cachedCart = [];
+                    localStorage.removeItem('wrogn_cart');
+                    localStorage.removeItem('wrogn_promo');
+                    updateHeaderCounters();
+                    
+                    // Reload orders
+                    await loadAllCaches();
+
+                    const invoiceModal = document.createElement('div');
+                    invoiceModal.className = "invoice-modal-overlay";
+                    invoiceModal.id = "invoiceModalOverlay";
+                    
+                    const dateStr = new Date(order.orderDate).toLocaleString();
+                    const itemsReceiptHTML = order.items.map(item => `
+                        <div style="display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 6px;">
+                            <span>${item.title.slice(0, 20)}.. (${item.size}) x${item.quantity}</span>
+                            <span>₹${item.price * item.quantity}</span>
+                        </div>
+                    `).join('');
+
+                    // Calculate breakdown for receipt display
+                    const subtotal = order.items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+                    const shipping = subtotal > 3000 ? 0 : 150;
+                    const discount = subtotal + shipping - order.amount;
+
+                    invoiceModal.innerHTML = `
+                        <div class="invoice-paper">
+                            <div style="text-align: center;">
+                                <h2 style="font-weight: 900; letter-spacing: 2px; margin-bottom: 5px;">WROGN</h2>
+                                <p style="font-size: 11px; color: #555;">BREAK THE RULES CO.</p>
+                                <p style="font-size: 10px; color: #777;">INDIRANAGAR, BANGALORE</p>
+                            </div>
+                            
+                            <div class="invoice-dashed-line"></div>
+                            
+                            <div style="font-size: 11px; margin-bottom: 10px;">
+                                <div><strong>INVOICE ID:</strong> ${orderId}</div>
+                                <div><strong>DATE:</strong> ${dateStr}</div>
+                                <div><strong>CUSTOMER:</strong> ${fullName}</div>
+                                <div><strong>PHONE:</strong> ${phone}</div>
+                                <div><strong>PAYMENT:</strong> ${paymentName}</div>
+                            </div>
+                            
+                            <div class="invoice-dashed-line"></div>
+                            
+                            <div style="margin-bottom: 10px;">
+                                <div style="display: flex; justify-content: space-between; font-size: 11px; font-weight: bold; margin-bottom: 8px;">
+                                    <span>ITEM DESCRIPTION</span>
+                                    <span>PRICE</span>
+                                </div>
+                                ${itemsReceiptHTML}
+                            </div>
+                            
+                            <div class="invoice-dashed-line"></div>
+                            
+                            <div style="font-size: 12px;">
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+                                    <span>SUBTOTAL:</span>
+                                    <span>₹${subtotal}</span>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+                                    <span>SHIPPING:</span>
+                                    <span>${shipping === 0 ? "FREE" : "₹" + shipping}</span>
+                                </div>
+                                ${discount > 0 ? `
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 4px; color: #27ae60;">
+                                    <span>DISCOUNT:</span>
+                                    <span>-₹${discount}</span>
+                                </div>
+                                ` : ''}
+                                <div style="display: flex; justify-content: space-between; font-weight: bold; font-size: 14px; margin-top: 8px;">
+                                    <span>TOTAL PAID:</span>
+                                    <span>₹${order.amount}</span>
+                                </div>
+                            </div>
+                            
+                            <div class="invoice-dashed-line"></div>
+                            
+                            <div style="text-align: center; font-size: 10px; margin-top: 15px; color: #555;">
+                                <p>THANK YOU FOR SHOPPING WROGN!</p>
+                                <p>NO RETURNS ON SALE ITEMS.</p>
+                            </div>
+                            
+                            <div style="display: flex; gap: 10px; margin-top: 25px;">
+                                <button class="btn btn-secondary btn-full" onclick="downloadInvoiceText('${orderId}', '${fullName}', '${order.amount}', '${dateStr}')" style="background-color: #111; color: #fff; border-color: #111; font-size: 12.5px;">Download Invoice</button>
+                                <button class="btn btn-primary btn-full" onclick="closeInvoiceRedirect()" style="color: #000; background-color: var(--accent-color); font-size: 12.5px;">Back to Profile</button>
+                            </div>
+                        </div>
+                    `;
+                    document.body.appendChild(invoiceModal);
+
+                    window.downloadInvoiceText = function(id, name, totalAmt, date) {
+                        let content = `========================================\n`;
+                        content += `             WROGN INVOICE              \n`;
+                        content += `========================================\n`;
+                        content += `Invoice ID: ${id}\n`;
+                        content += `Date: ${date}\n`;
+                        content += `Customer: ${name}\n`;
+                        content += `Payment Method: ${paymentName}\n`;
+                        content += `----------------------------------------\n`;
+                        order.items.forEach(item => {
+                            content += `${item.title} (${item.size}) x${item.quantity} - Rs.${item.price * item.quantity}\n`;
+                        });
+                        content += `----------------------------------------\n`;
+                        content += `Subtotal: Rs.${subtotal}\n`;
+                        content += `Shipping: Rs.${shipping}\n`;
+                        if (discount > 0) content += `Discount: -Rs.${discount}\n`;
+                        content += `Total Paid: Rs.${totalAmt}\n`;
+                        content += `========================================\n`;
+                        content += `Thank you for shopping with WROGN!\n`;
+                        
+                        const blob = new Blob([content], { type: "text/plain" });
+                        const link = document.createElement("a");
+                        link.href = URL.createObjectURL(blob);
+                        link.download = `wrogn-invoice-${id}.txt`;
+                        link.click();
+                        showToast("Invoice downloaded successfully!");
+                    };
+
+                    window.closeInvoiceRedirect = function() {
+                        invoiceModal.remove();
+                        window.location.href = "profile.html";
+                    };
+                }
+            } catch (err) {
+                console.warn("Failed to place order on server, placing locally via offline fallback", err);
+                
+                const orderId = 'WRG-' + Math.floor(100000 + Math.random() * 900000);
+                const orderDate = new Date().toISOString();
+                const dateStr = new Date(orderDate).toLocaleString();
+                const dateOnlyStr = new Date(orderDate).toLocaleDateString();
+
+                // Build items list
+                const localOrderItems = cart.map(item => ({
+                    productId: item.product.id,
                     title: item.product.title,
                     price: item.product.price,
-                    image: item.product.image,
                     quantity: item.quantity,
-                    size: item.size
-                })),
-                shippingAddress: {
-                    fullName,
-                    address,
-                    city,
-                    pincode,
-                    phone
-                },
-                paymentMethod: paymentName
-            };
-            orders.push(newOrder);
-            saveOrders(orders);
+                    size: item.size,
+                    color: item.color || item.product.color || 'Black'
+                }));
 
-            const invoiceModal = document.createElement('div');
-            invoiceModal.className = "invoice-modal-overlay";
-            invoiceModal.id = "invoiceModalOverlay";
-            
-            const dateStr = new Date().toLocaleString();
-            const itemsReceiptHTML = cart.map(item => `
-                <div style="display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 6px;">
-                    <span>${item.product.title.slice(0, 20)}.. (${item.size}) x${item.quantity}</span>
-                    <span>₹${item.product.price * item.quantity}</span>
-                </div>
-            `).join('');
+                const subtotal = localOrderItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+                const shipping = subtotal > 3000 ? 0 : 150;
+                const discount = subtotal + shipping - total; // total is calculated outer block
 
-            invoiceModal.innerHTML = `
-                <div class="invoice-paper">
-                    <div style="text-align: center;">
-                        <h2 style="font-weight: 900; letter-spacing: 2px; margin-bottom: 5px;">WROGN</h2>
-                        <p style="font-size: 11px; color: #555;">BREAK THE RULES CO.</p>
-                        <p style="font-size: 10px; color: #777;">INDIRANAGAR, BANGALORE</p>
-                    </div>
-                    
-                    <div class="invoice-dashed-line"></div>
-                    
-                    <div style="font-size: 11px; margin-bottom: 10px;">
-                        <div><strong>INVOICE ID:</strong> ${orderId}</div>
-                        <div><strong>DATE:</strong> ${dateStr}</div>
-                        <div><strong>CUSTOMER:</strong> ${fullName}</div>
-                        <div><strong>PHONE:</strong> ${phone}</div>
-                        <div><strong>PAYMENT:</strong> ${paymentName}</div>
-                    </div>
-                    
-                    <div class="invoice-dashed-line"></div>
-                    
-                    <div style="margin-bottom: 10px;">
-                        <div style="display: flex; justify-content: space-between; font-size: 11px; font-weight: bold; margin-bottom: 8px;">
-                            <span>ITEM DESCRIPTION</span>
-                            <span>PRICE</span>
-                        </div>
-                        ${itemsReceiptHTML}
-                    </div>
-                    
-                    <div class="invoice-dashed-line"></div>
-                    
-                    <div style="font-size: 12px;">
-                        <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
-                            <span>SUBTOTAL:</span>
-                            <span>₹${subtotal}</span>
-                        </div>
-                        <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
-                            <span>SHIPPING:</span>
-                            <span>${shipping === 0 ? "FREE" : "₹" + shipping}</span>
-                        </div>
-                        ${discount > 0 ? `
-                        <div style="display: flex; justify-content: space-between; margin-bottom: 4px; color: #27ae60;">
-                            <span>DISCOUNT (15%):</span>
-                            <span>-₹${discount}</span>
-                        </div>
-                        ` : ''}
-                        <div style="display: flex; justify-content: space-between; font-weight: bold; font-size: 14px; margin-top: 8px;">
-                            <span>TOTAL PAID:</span>
-                            <span>₹${total}</span>
-                        </div>
-                    </div>
-                    
-                    <div class="invoice-dashed-line"></div>
-                    
-                    <div style="text-align: center; font-size: 10px; margin-top: 15px; color: #555;">
-                        <p>THANK YOU FOR SHOPPING WROGN!</p>
-                        <p>NO RETURNS ON SALE ITEMS.</p>
-                    </div>
-                    
-                    <div style="display: flex; gap: 10px; margin-top: 25px;">
-                        <button class="btn btn-secondary btn-full" onclick="downloadInvoiceText('${orderId}', '${fullName}', '${total}', '${dateStr}')" style="background-color: #111; color: #fff; border-color: #111; font-size: 12.5px;">Download Invoice</button>
-                        <button class="btn btn-primary btn-full" onclick="closeInvoiceRedirect()" style="color: #000; background-color: var(--accent-color); font-size: 12.5px;">Back to Profile</button>
-                    </div>
-                </div>
-            `;
-            document.body.appendChild(invoiceModal);
+                const orderObj = {
+                    orderId,
+                    orderDate,
+                    date: dateOnlyStr,
+                    amount: total,
+                    total: total,
+                    deliveryStatus: 'processing',
+                    status: 'processing',
+                    customer: activeUser.fullName || activeUser.name || 'Guest',
+                    items: localOrderItems,
+                    shippingAddress: {
+                        fullName,
+                        address,
+                        city,
+                        state,
+                        pincode,
+                        phone
+                    },
+                    paymentMethod: paymentName
+                };
 
-            window.downloadInvoiceText = function(id, name, totalAmt, date) {
-                let content = `========================================\n`;
-                content += `             WROGN INVOICE              \n`;
-                content += `========================================\n`;
-                content += `Invoice ID: ${id}\n`;
-                content += `Date: ${date}\n`;
-                content += `Customer: ${name}\n`;
-                content += `Payment Method: ${paymentName}\n`;
-                content += `----------------------------------------\n`;
-                cart.forEach(item => {
-                    content += `${item.product.title} (${item.size}) x${item.quantity} - Rs.${item.product.price * item.quantity}\n`;
-                });
-                content += `----------------------------------------\n`;
-                content += `Subtotal: Rs.${subtotal}\n`;
-                content += `Shipping: Rs.${shipping}\n`;
-                if (discount > 0) content += `Discount: -Rs.${discount}\n`;
-                content += `Total Paid: Rs.${totalAmt}\n`;
-                content += `========================================\n`;
-                content += `Thank you for shopping with WROGN!\n`;
-                
-                const blob = new Blob([content], { type: "text/plain" });
-                const link = document.createElement("a");
-                link.href = URL.createObjectURL(blob);
-                link.download = `wrogn-invoice-${id}.txt`;
-                link.click();
-                showToast("Invoice downloaded successfully!");
-            };
+                const orders = JSON.parse(localStorage.getItem('wrogn_orders')) || [];
+                orders.push(orderObj);
+                localStorage.setItem('wrogn_orders', JSON.stringify(orders));
+                cachedOrders = orders;
 
-            window.closeInvoiceRedirect = function() {
-                invoiceModal.remove();
-                saveCart([]);
+                // Clear cart locally
+                cachedCart = [];
+                localStorage.removeItem('wrogn_cart');
                 localStorage.removeItem('wrogn_promo');
-                window.location.href = "profile.html";
-            };
+                updateHeaderCounters();
+
+                const invoiceModal = document.createElement('div');
+                invoiceModal.className = "invoice-modal-overlay";
+                invoiceModal.id = "invoiceModalOverlay";
+                
+                const itemsReceiptHTML = localOrderItems.map(item => `
+                    <div style="display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 6px;">
+                        <span>${item.title.slice(0, 20)}.. (${item.size}) x${item.quantity}</span>
+                        <span>₹${item.price * item.quantity}</span>
+                    </div>
+                `).join('');
+
+                invoiceModal.innerHTML = `
+                    <div class="invoice-paper">
+                        <div style="text-align: center;">
+                            <h2 style="font-weight: 900; letter-spacing: 2px; margin-bottom: 5px;">WROGN</h2>
+                            <p style="font-size: 11px; color: #555;">BREAK THE RULES CO.</p>
+                            <p style="font-size: 10px; color: #777;">INDIRANAGAR, BANGALORE</p>
+                        </div>
+                        
+                        <div class="invoice-dashed-line"></div>
+                        
+                        <div style="font-size: 11px; margin-bottom: 10px;">
+                            <div><strong>INVOICE ID:</strong> ${orderId} (Offline Mode)</div>
+                            <div><strong>DATE:</strong> ${dateStr}</div>
+                            <div><strong>CUSTOMER:</strong> ${fullName}</div>
+                            <div><strong>PHONE:</strong> ${phone}</div>
+                            <div><strong>PAYMENT:</strong> ${paymentName}</div>
+                        </div>
+                        
+                        <div class="invoice-dashed-line"></div>
+                        
+                        <div style="margin-bottom: 10px;">
+                            <div style="display: flex; justify-content: space-between; font-size: 11px; font-weight: bold; margin-bottom: 8px;">
+                                <span>ITEM DESCRIPTION</span>
+                                <span>PRICE</span>
+                            </div>
+                            ${itemsReceiptHTML}
+                        </div>
+                        
+                        <div class="invoice-dashed-line"></div>
+                        
+                        <div style="font-size: 12px;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+                                <span>SUBTOTAL:</span>
+                                <span>₹${subtotal}</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+                                <span>SHIPPING:</span>
+                                <span>${shipping === 0 ? "FREE" : "₹" + shipping}</span>
+                            </div>
+                            ${discount > 0 ? `
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 4px; color: #27ae60;">
+                                <span>DISCOUNT:</span>
+                                <span>-₹${discount}</span>
+                            </div>
+                            ` : ''}
+                            <div style="display: flex; justify-content: space-between; font-weight: bold; font-size: 14px; margin-top: 8px;">
+                                <span>TOTAL PAID:</span>
+                                <span>₹${total}</span>
+                            </div>
+                        </div>
+                        
+                        <div class="invoice-dashed-line"></div>
+                        
+                        <div style="text-align: center; font-size: 10px; margin-top: 15px; color: #555;">
+                            <p>THANK YOU FOR SHOPPING WROGN!</p>
+                            <p>NO RETURNS ON SALE ITEMS.</p>
+                        </div>
+                        
+                        <div style="display: flex; gap: 10px; margin-top: 25px;">
+                            <button class="btn btn-secondary btn-full" onclick="downloadInvoiceText('${orderId}', '${fullName}', '${total}', '${dateStr}')" style="background-color: #111; color: #fff; border-color: #111; font-size: 12.5px;">Download Invoice</button>
+                            <button class="btn btn-primary btn-full" onclick="closeInvoiceRedirect()" style="color: #000; background-color: var(--accent-color); font-size: 12.5px;">Back to Profile</button>
+                        </div>
+                    </div>
+                `;
+                document.body.appendChild(invoiceModal);
+
+                window.downloadInvoiceText = function(id, name, totalAmt, date) {
+                    let content = `========================================\n`;
+                    content += `       WROGN INVOICE (OFFLINE MODE)     \n`;
+                    content += `========================================\n`;
+                    content += `Invoice ID: ${id}\n`;
+                    content += `Date: ${date}\n`;
+                    content += `Customer: ${name}\n`;
+                    content += `Payment Method: ${paymentName}\n`;
+                    content += `----------------------------------------\n`;
+                    localOrderItems.forEach(item => {
+                        content += `${item.title} (${item.size}) x${item.quantity} - Rs.${item.price * item.quantity}\n`;
+                    });
+                    content += `----------------------------------------\n`;
+                    content += `Subtotal: Rs.${subtotal}\n`;
+                    content += `Shipping: Rs.${shipping}\n`;
+                    if (discount > 0) content += `Discount: -Rs.${discount}\n`;
+                    content += `Total Paid: Rs.${totalAmt}\n`;
+                    content += `========================================\n`;
+                    content += `Thank you for shopping with WROGN!\n`;
+                    
+                    const blob = new Blob([content], { type: "text/plain" });
+                    const link = document.createElement("a");
+                    link.href = URL.createObjectURL(blob);
+                    link.download = `wrogn-invoice-${id}.txt`;
+                    link.click();
+                    showToast("Invoice downloaded successfully!");
+                };
+
+                window.closeInvoiceRedirect = function() {
+                    invoiceModal.remove();
+                    window.location.href = "profile.html";
+                };
+            }
         });
     }
-
     const loginForm = document.getElementById('loginForm');
     if (loginForm) {
         
@@ -1728,46 +2112,110 @@ document.addEventListener('DOMContentLoaded', () => {
             forgotModal.classList.add('hidden');
         });
 
-        document.getElementById('forgotForm')?.addEventListener('submit', (e) => {
+        document.getElementById('forgotForm')?.addEventListener('submit', async (e) => {
             e.preventDefault();
             const email = document.getElementById('forgotEmail').value;
-            forgotModal.classList.add('hidden');
-            showToast(`Password recovery link sent to: ${email}`);
+            try {
+                const data = await apiCall('/api/auth/forgot-password', 'POST', { email });
+                forgotModal.classList.add('hidden');
+                showToast(`Password recovery link sent to: ${email}`);
+                
+                if (data.resetToken) {
+                    console.log("Demo reset token:", data.resetToken);
+                    setTimeout(() => {
+                        const newPass = prompt("Demo mode: Enter your new password to reset it immediately:");
+                        if (newPass) {
+                            apiCall('/api/auth/reset-password', 'POST', { resetToken: data.resetToken, password: newPass })
+                                .then(() => showToast("Password reset successfully!"))
+                                .catch(err => showToast(err.message));
+                        }
+                    }, 2000);
+                }
+            } catch (err) {
+                showToast(err.message || "Error sending recovery instructions.");
+            }
         });
 
-        loginForm.addEventListener('submit', (e) => {
+        loginForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             const email = document.getElementById('email').value.trim();
             const password = document.getElementById('password').value;
-            const registeredUsers = JSON.parse(localStorage.getItem('wrogn_users')) || [];
-            
-            let user = registeredUsers.find(u => u.email === email && u.password === password);
 
-            if (email === 'dev@codealpha.com' && password === 'admin123') {
-                user = { name: "CodeAlpha Developer", email: "dev@codealpha.com", isAdmin: true };
-            }
-
-            if (user) {
-                localStorage.setItem('wrogn_active_user', JSON.stringify(user));
-                showToast(`Welcome back, ${user.name}!`);
-                setTimeout(() => {
-                    if (user.isAdmin) {
-                        window.location.href = "admin.html";
-                    } else {
-                        window.location.href = "profile.html";
+            try {
+                const data = await apiCall('/api/auth/login', 'POST', { email, password });
+                if (data.success) {
+                    localStorage.setItem('wrogn_token', data.token);
+                    data.user.name = data.user.fullName;
+                    localStorage.setItem('wrogn_active_user', JSON.stringify(data.user));
+                    cachedActiveUser = data.user;
+                    
+                    // Sync guest cart on login
+                    const guestCart = JSON.parse(localStorage.getItem('wrogn_cart')) || [];
+                    if (guestCart.length > 0) {
+                        await apiCall('/api/cart/sync', 'POST', { items: guestCart }, true).catch(err => console.error("Error syncing guest cart", err));
+                        localStorage.removeItem('wrogn_cart');
                     }
-                }, 1500);
-            } else {
-                showToast("Invalid credentials. Try dev@codealpha.com / admin123");
+                    
+                    // Sync guest wishlist on login
+                    const guestWishlist = JSON.parse(localStorage.getItem('wrogn_wishlist')) || [];
+                    for (const pid of guestWishlist) {
+                        await apiCall('/api/wishlist', 'POST', { productId: pid }, true).catch(() => {});
+                    }
+                    localStorage.removeItem('wrogn_wishlist');
+
+                    // Reload caches
+                    await loadAllCaches();
+
+                    showToast(`Welcome back, ${data.user.fullName}!`);
+                    setTimeout(() => {
+                        if (data.user.isAdmin) {
+                            window.location.href = "admin.html";
+                        } else {
+                            window.location.href = "profile.html";
+                        }
+                    }, 1500);
+                }
+            } catch (err) {
+                console.warn("Server login failed, trying local storage fallback", err);
+                const registeredUsers = JSON.parse(localStorage.getItem('wrogn_users')) || [];
+                let user = registeredUsers.find(u => u.email === email && u.password === password);
+                
+                // Allow fallback admin login as well
+                if (!user && email === 'dev@codealpha.com' && password === 'admin123') {
+                    user = {
+                        id: 'admin_offline',
+                        name: 'Developer Admin',
+                        fullName: 'Developer Admin',
+                        email: 'dev@codealpha.com',
+                        isAdmin: true
+                    };
+                }
+
+                if (user) {
+                    user.name = user.name || user.fullName;
+                    localStorage.setItem('wrogn_active_user', JSON.stringify(user));
+                    cachedActiveUser = user;
+                    await loadAllCaches();
+                    showToast(`Welcome back, ${user.name}! (Offline Mode)`);
+                    setTimeout(() => {
+                        if (user.isAdmin) {
+                            window.location.href = "admin.html";
+                        } else {
+                            window.location.href = "profile.html";
+                        }
+                    }, 1500);
+                } else {
+                    showToast("Invalid credentials.");
+                }
             }
         });
     }
 
     const registerForm = document.getElementById('registerForm');
     if (registerForm) {
-        registerForm.addEventListener('submit', (e) => {
+        registerForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            const name = document.getElementById('regName').value.trim();
+            const fullName = document.getElementById('regName').value.trim();
             const email = document.getElementById('regEmail').value.trim();
             const password = document.getElementById('regPassword').value;
             const confirmPassword = document.getElementById('regConfirmPassword').value;
@@ -1777,21 +2225,68 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
-            const registeredUsers = JSON.parse(localStorage.getItem('wrogn_users')) || [];
-            if (registeredUsers.some(u => u.email === email)) {
-                showToast("User with this email already exists.");
-                return;
+            try {
+                // Generate username from email
+                const username = email.split('@')[0] + Math.floor(Math.random() * 100);
+                const data = await apiCall('/api/auth/register', 'POST', {
+                    fullName,
+                    username,
+                    email,
+                    password
+                });
+
+                if (data.success) {
+                    localStorage.setItem('wrogn_token', data.token);
+                    data.user.name = data.user.fullName;
+                    localStorage.setItem('wrogn_active_user', JSON.stringify(data.user));
+                    cachedActiveUser = data.user;
+
+                    // Sync guest cart & wishlist
+                    const guestCart = JSON.parse(localStorage.getItem('wrogn_cart')) || [];
+                    if (guestCart.length > 0) {
+                        await apiCall('/api/cart/sync', 'POST', { items: guestCart }, true).catch(() => {});
+                        localStorage.removeItem('wrogn_cart');
+                    }
+                    const guestWishlist = JSON.parse(localStorage.getItem('wrogn_wishlist')) || [];
+                    for (const pid of guestWishlist) {
+                        await apiCall('/api/wishlist', 'POST', { productId: pid }, true).catch(() => {});
+                    }
+                    localStorage.removeItem('wrogn_wishlist');
+
+                    // Reload caches
+                    await loadAllCaches();
+
+                    showToast("Account registered successfully!");
+                    setTimeout(() => {
+                        window.location.href = "profile.html";
+                    }, 1500);
+                }
+            } catch (err) {
+                console.warn("Server registration failed, trying local storage fallback", err);
+                const registeredUsers = JSON.parse(localStorage.getItem('wrogn_users')) || [];
+                if (registeredUsers.some(u => u.email === email)) {
+                    showToast("User with this email already exists.");
+                    return;
+                }
+                const newUser = {
+                    id: Date.now(),
+                    name: fullName,
+                    fullName,
+                    email,
+                    username: email.split('@')[0],
+                    password,
+                    isAdmin: false
+                };
+                registeredUsers.push(newUser);
+                localStorage.setItem('wrogn_users', JSON.stringify(registeredUsers));
+                localStorage.setItem('wrogn_active_user', JSON.stringify(newUser));
+                cachedActiveUser = newUser;
+                await loadAllCaches();
+                showToast("Account registered successfully! (Offline Mode)");
+                setTimeout(() => {
+                    window.location.href = "profile.html";
+                }, 1500);
             }
-
-            const newUser = { name, email, password, isAdmin: false };
-            registeredUsers.push(newUser);
-            localStorage.setItem('wrogn_users', JSON.stringify(registeredUsers));
-            localStorage.setItem('wrogn_active_user', JSON.stringify(newUser));
-
-            showToast("Account registered successfully!");
-            setTimeout(() => {
-                window.location.href = "profile.html";
-            }, 1500);
         });
     }
 
@@ -1864,19 +2359,37 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 };
 
-                window.cancelUserOrder = function(orderId) {
-                    if (confirm(`Are you sure you want to cancel Order #${orderId}?`)) {
-                        let orders = getOrders();
-                        const o = orders.find(x => x.orderId === orderId);
-                        if (o) {
-                            if (o.status !== "processing") {
-                                showToast("Cannot cancel order after it has been shipped!");
+                window.cancelUserOrder = async function(orderId) {
+                    const reason = prompt(`Are you sure you want to cancel Order #${orderId}? Please enter a reason:`);
+                    if (reason !== null) {
+                        try {
+                            const data = await apiCall(`/api/orders/${orderId}/cancel`, 'POST', { reason: reason || 'Cancelled by user' }, true);
+                            if (data.success) {
+                                showToast(`Order #${orderId} cancelled successfully!`);
+                                await loadAllCaches(); // reload orders cache
+                                if (window.renderUserOrdersTable) {
+                                    window.renderUserOrdersTable();
+                                }
                                 return;
                             }
-                            o.status = "cancelled";
-                            saveOrders(orders);
-                            showToast(`Order #${orderId} cancelled successfully!`);
-                            window.renderUserOrdersTable();
+                        } catch (err) {
+                            console.warn("Failed to cancel order on server, trying local storage fallback", err);
+                        }
+
+                        // Local storage fallback for cancellation
+                        let orders = JSON.parse(localStorage.getItem('wrogn_orders')) || [];
+                        const o = orders.find(x => x.orderId === orderId);
+                        if (o) {
+                            o.status = 'cancelled';
+                            o.deliveryStatus = 'Cancelled';
+                            localStorage.setItem('wrogn_orders', JSON.stringify(orders));
+                            cachedOrders = orders;
+                            showToast(`Order #${orderId} cancelled successfully! (Offline Mode)`);
+                            if (window.renderUserOrdersTable) {
+                                window.renderUserOrdersTable();
+                            }
+                        } else {
+                            showToast("Failed to cancel order: Order not found.");
                         }
                     }
                 };
@@ -1916,6 +2429,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
             window.handleLogout = function() {
                 localStorage.removeItem('wrogn_active_user');
+                localStorage.removeItem('wrogn_token');
+                cachedActiveUser = null;
+                cachedCart = [];
+                cachedWishlist = [];
+                cachedOrders = [];
                 showToast("Logged out successfully");
                 setTimeout(() => {
                     window.location.href = "index.html";
@@ -1936,102 +2454,194 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
             `;
         } else {
-            function updateAdminStats() {
-                const orders = getOrders();
-                const totalSales = orders.reduce((sum, o) => sum + o.total, 0);
-                const products = getProducts();
+            async function updateAdminStats() {
+                try {
+                    // 1. Load Analytics
+                    const analyticData = await apiCall('/api/admin/analytics', 'GET', null, true);
+                    if (analyticData.success) {
+                        const stats = analyticData.analytics;
+                        document.getElementById('admin-total-sales').textContent = `₹${stats.totalSales}`;
+                        document.getElementById('admin-total-orders').textContent = stats.totalOrders;
+                        document.getElementById('admin-total-products').textContent = stats.totalProducts;
+                        
+                        // Render chart
+                        renderAdminChart(stats.categoryShare);
+                    }
 
-                document.getElementById('admin-total-sales').textContent = `₹${totalSales}`;
-                document.getElementById('admin-total-orders').textContent = orders.length;
-                document.getElementById('admin-total-products').textContent = products.length;
+                    // 2. Load latest orders
+                    const ordersData = await apiCall('/api/orders/all', 'GET', null, true);
+                    const ordersBody = document.getElementById('admin-orders-body');
+                    if (ordersBody && ordersData.success) {
+                        const orders = ordersData.orders;
+                        if (orders.length === 0) {
+                            ordersBody.innerHTML = `<tr><td colspan="5" style="text-align: center;">No orders logged yet.</td></tr>`;
+                        } else {
+                            ordersBody.innerHTML = orders.map(o => `
+                                <tr>
+                                    <td><strong style="color: var(--accent-color);">#${o.orderId}</strong></td>
+                                    <td>${o.userId ? o.userId.fullName : 'Guest'}</td>
+                                    <td>${new Date(o.orderDate).toLocaleDateString()}</td>
+                                    <td>₹${o.amount}</td>
+                                    <td>
+                                        <select class="form-control" onchange="window.changeOrderStatus('${o.orderId}', this.value)" style="height: 32px; padding: 4px 8px; font-size: 11px; background-color: var(--search-bg); width: 120px; border-radius: 4px; color: var(--text-color); border: 1px solid var(--divider-color);">
+                                            <option value="Processing" ${o.deliveryStatus === 'Processing' ? 'selected' : ''}>Processing</option>
+                                            <option value="Shipped" ${o.deliveryStatus === 'Shipped' ? 'selected' : ''}>Shipped</option>
+                                            <option value="Delivered" ${o.deliveryStatus === 'Delivered' ? 'selected' : ''}>Delivered</option>
+                                            <option value="Cancelled" ${o.deliveryStatus === 'Cancelled' ? 'selected' : ''}>Cancelled</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                            `).join('');
+                        }
+                    }
 
-                const ordersBody = document.getElementById('admin-orders-body');
-                if (ordersBody) {
-                    if (orders.length === 0) {
-                        ordersBody.innerHTML = `<tr><td colspan="5" style="text-align: center;">No orders logged yet.</td></tr>`;
-                    } else {
-                        ordersBody.innerHTML = orders.slice().reverse().map(o => `
+                    // 3. Load catalog products
+                    const productsData = await apiCall('/api/products', 'GET');
+                    const productsBody = document.getElementById('admin-products-body');
+                    if (productsBody && productsData.success) {
+                        const products = productsData.products;
+                        productsBody.innerHTML = products.map(p => `
                             <tr>
-                                <td>#${o.orderId}</td>
-                                <td>${o.customer}</td>
-                                <td>${o.date}</td>
-                                <td>₹${o.total}</td>
+                                <td><img src="${p.image}" style="width: 35px; height: 42px; object-fit: cover; border-radius: 4px;"></td>
+                                <td><strong>${p.title}</strong></td>
+                                <td>${p.category}</td>
+                                <td>₹${p.price}</td>
                                 <td>
-                                    <select class="form-control" onchange="changeOrderStatus('${o.orderId}', this.value)" style="height: 32px; padding: 4px 8px; font-size: 11px; background-color: var(--search-bg); width: 120px;">
-                                        <option value="pending" ${o.status === 'pending' ? 'selected' : ''}>Pending</option>
-                                        <option value="processing" ${o.status === 'processing' ? 'selected' : ''}>Processing</option>
-                                        <option value="shipped" ${o.status === 'shipped' ? 'selected' : ''}>Shipped</option>
-                                        <option value="delivered" ${o.status === 'delivered' ? 'selected' : ''}>Delivered</option>
-                                    </select>
+                                    <div style="display: flex; gap: 5px;">
+                                        <button class="btn btn-secondary" onclick="window.editAdminProduct(${p.id})" style="padding: 4px 8px; font-size: 11px;">Edit</button>
+                                        <button class="remove-item-btn" onclick="window.deleteAdminProduct(${p.id})" style="padding: 4px 8px; font-size: 11px; background-color: #ff7675;">Delete</button>
+                                    </div>
                                 </td>
                             </tr>
                         `).join('');
                     }
-                }
 
-                const productsBody = document.getElementById('admin-products-body');
-                if (productsBody) {
-                    productsBody.innerHTML = products.map(p => `
-                        <tr>
-                            <td><img src="${p.image}" style="width: 35px; height: 42px; object-fit: cover; border-radius: 4px;"></td>
-                            <td><strong>${p.title}</strong></td>
-                            <td>${p.category}</td>
-                            <td>₹${p.price}</td>
-                            <td>
-                                <button class="remove-item-btn" onclick="deleteAdminProduct(${p.id})" style="padding: 4px 8px;">Delete</button>
-                            </td>
-                        </tr>
-                    `).join('');
+                } catch (error) {
+                    console.error("Error updating admin dashboards", error);
                 }
-
-                renderAdminChart(orders);
             }
 
-            function renderAdminChart(orders) {
-                const categories = { Topwear: 1500, Bottomwear: 2000, Accessories: 1000 };
-                orders.forEach(o => {
-                    categories.Topwear += Math.round(o.total * 0.4);
-                    categories.Bottomwear += Math.round(o.total * 0.45);
-                    categories.Accessories += Math.round(o.total * 0.15);
-                });
-
-                const maxVal = Math.max(...Object.values(categories));
+            function renderAdminChart(categoryShare) {
                 const chartContainer = document.getElementById('admin-sales-chart');
-                if (chartContainer) {
-                    chartContainer.innerHTML = Object.entries(categories).map(([cat, val]) => {
-                        const pct = maxVal > 0 ? (val / maxVal) * 100 : 0;
-                        return `
-                            <div class="chart-bar-row">
-                                <div class="chart-label">${cat}</div>
-                                <div class="chart-track">
-                                    <div class="chart-fill" style="width: ${pct}%;"></div>
-                                </div>
-                                <div class="chart-value">₹${val}</div>
-                            </div>
-                        `;
-                    }).join('');
+                if (!chartContainer) return;
+
+                if (!categoryShare || categoryShare.length === 0) {
+                    chartContainer.innerHTML = `<div style="text-align: center; color: var(--text-muted); padding: 20px;">No sales data for category share.</div>`;
+                    return;
                 }
+
+                const maxVal = Math.max(...categoryShare.map(x => x.sales), 1);
+                chartContainer.innerHTML = categoryShare.map(item => {
+                    const pct = (item.sales / maxVal) * 100;
+                    return `
+                        <div class="chart-bar-row">
+                            <div class="chart-label">${item.category}</div>
+                            <div class="chart-track">
+                                <div class="chart-fill" style="width: ${pct}%;"></div>
+                            </div>
+                            <div class="chart-value">₹${item.sales}</div>
+                        </div>
+                    `;
+                }).join('');
             }
 
-            window.deleteAdminProduct = function(id) {
-                let products = getProducts();
-                products = products.filter(p => p.id !== id);
-                localStorage.setItem('wrogn_products', JSON.stringify(products));
-                showToast("Product deleted from inventory.");
-                updateAdminStats();
+            // Expose globally
+            window.changeOrderStatus = async function(orderId, status) {
+                try {
+                    const data = await apiCall(`/api/orders/${orderId}/status`, 'PUT', { deliveryStatus: status }, true);
+                    if (data.success) {
+                        showToast(`Order #${orderId} updated to ${status}`);
+                        updateAdminStats();
+                    }
+                } catch (err) {
+                    showToast(err.message || "Failed to update order status.");
+                }
             };
 
+            window.deleteAdminProduct = async function(id) {
+                if (confirm("Are you sure you want to delete this product from the inventory?")) {
+                    try {
+                        const data = await apiCall(`/api/products/${id}`, 'DELETE', null, true);
+                        if (data.success) {
+                            showToast("Product deleted successfully.");
+                            updateAdminStats();
+                        }
+                    } catch (err) {
+                        showToast(err.message || "Failed to delete product.");
+                    }
+                }
+            };
+
+            window.editAdminProduct = async function(id) {
+                let p = null;
+                try {
+                    const data = await apiCall(`/api/products/${id}`, 'GET');
+                    if (data.success && data.product) {
+                        p = data.product;
+                    }
+                } catch (err) {
+                    console.warn("Failed to fetch product from API for edit, searching locally", err);
+                    p = getProducts().find(x => x.id === id);
+                }
+
+                if (!p) {
+                    showToast("Product not found.");
+                    return;
+                }
+
+                const newTitle = prompt("Edit Product Title:", p.title);
+                if (newTitle === null) return;
+                
+                const newPriceStr = prompt("Edit Product Price (₹):", p.price);
+                if (newPriceStr === null) return;
+                const newPrice = Number(newPriceStr) || p.price;
+                
+                const newStockStr = prompt("Edit Inventory Stock Quantity:", p.stock || 0);
+                if (newStockStr === null) return;
+                const newStock = Number(newStockStr) || 0;
+
+                const newDesc = prompt("Edit Product Description:", p.description);
+                if (newDesc === null) return;
+
+                const payload = {
+                    title: newTitle.trim(),
+                    price: newPrice,
+                    stock: newStock,
+                    description: newDesc.trim()
+                };
+
+                try {
+                    const updateRes = await apiCall(`/api/products/${id}`, 'PUT', payload, true);
+                    if (updateRes.success) {
+                        showToast("Product updated successfully!");
+                        updateAdminStats();
+                    }
+                } catch (err) {
+                    console.warn("Failed to update product on server, updating locally", err);
+                    let products = getProducts();
+                    const idx = products.findIndex(x => x.id === id);
+                    if (idx !== -1) {
+                        products[idx].title = payload.title;
+                        products[idx].price = payload.price;
+                        products[idx].stock = payload.stock;
+                        products[idx].description = payload.description;
+                        localStorage.setItem('wrogn_products', JSON.stringify(products));
+                        cachedProducts = products;
+                        showToast("Product updated successfully (Offline Mode).");
+                        updateAdminStats();
+                    }
+                }
+            };
+
+            // Add Product Form
             const addProductForm = document.getElementById('adminAddProductForm');
-            addProductForm?.addEventListener('submit', (e) => {
+            addProductForm?.addEventListener('submit', async (e) => {
                 e.preventDefault();
                 const title = document.getElementById('adminProdTitle').value.trim();
                 const category = document.getElementById('adminProdCategory').value;
                 const price = parseInt(document.getElementById('adminProdPrice').value);
                 const oldPrice = parseInt(document.getElementById('adminProdOldPrice').value) || price + 500;
                 const desc = document.getElementById('adminProdDesc').value.trim();
-
-                const products = getProducts();
-                const newId = products.length > 0 ? Math.max(...products.map(p => p.id)) + 1 : 1;
 
                 const imagePool = [
                     "Images/jacket-1.jpg", "Images/jacket-2.jpg", "Images/jacket-3.jpg", "Images/jacket-4.jpg", "Images/jacket-5.jpg", "Images/jacket-6.jpg",
@@ -2043,27 +2653,42 @@ document.addEventListener('DOMContentLoaded', () => {
                 ];
                 const randomImage = imagePool[Math.floor(Math.random() * imagePool.length)];
 
-                const newProd = {
-                    id: newId,
+                const payload = {
                     title,
                     category,
                     price,
                     oldPrice,
-                    rating: 4.5,
-                    ratingCount: 1,
                     description: desc,
                     image: randomImage,
-                    images: [randomImage, randomImage, randomImage],
-                    badge: "New",
-                    color: "Black",
-                    tags: [category.toLowerCase()]
+                    sizes: ['S', 'M', 'L', 'XL'],
+                    colors: ['Black']
                 };
 
-                products.push(newProd);
-                localStorage.setItem('wrogn_products', JSON.stringify(products));
-                showToast("Product added successfully!");
-                addProductForm.reset();
-                updateAdminStats();
+                try {
+                    const data = await apiCall('/api/products', 'POST', payload, true);
+                    if (data.success) {
+                        showToast("Product added successfully!");
+                        addProductForm.reset();
+                        updateAdminStats();
+                    }
+                } catch (err) {
+                    console.warn("Failed to add product on server, adding locally", err);
+                    let products = getProducts();
+                    const newId = products.length > 0 ? Math.max(...products.map(p => p.id)) + 1 : 1;
+                    const newProduct = {
+                        id: newId,
+                        ...payload,
+                        rating: 4.5,
+                        ratingCount: 1,
+                        stock: 50
+                    };
+                    products.push(newProduct);
+                    localStorage.setItem('wrogn_products', JSON.stringify(products));
+                    cachedProducts = products;
+                    showToast("Product added successfully! (Offline Mode)");
+                    addProductForm.reset();
+                    updateAdminStats();
+                }
             });
 
             updateAdminStats();
