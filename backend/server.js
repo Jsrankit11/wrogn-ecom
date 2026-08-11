@@ -5,6 +5,7 @@ const path = require('path');
 const dotenv = require('dotenv');
 const connectDB = require('./config/db');
 
+dotenv.config({ path: path.join(__dirname, '../.env') });
 dotenv.config();
 connectDB();
 

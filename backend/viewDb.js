@@ -3,7 +3,9 @@ const dotenv = require('dotenv');
 const connectDB = require('./config/db');
 const User = require('./models/User');
 const Order = require('./models/Order');
+const path = require('path');
 
+dotenv.config({ path: path.join(__dirname, '../.env') });
 dotenv.config();
 
 const viewDatabase = async () => {

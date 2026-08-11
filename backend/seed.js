@@ -10,6 +10,9 @@ const Order = require('./models/Order');
 const Cancellation = require('./models/Cancellation');
 const Contact = require('./models/Contact');
 
+const path = require('path');
+
+dotenv.config({ path: path.join(__dirname, '../.env') });
 dotenv.config();
 
 const defaultProducts = [
