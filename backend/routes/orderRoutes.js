@@ -1,3 +1,6 @@
+// ==============================================================================
+// 📦 ORDER ROUTES (/api/orders)
+// ==============================================================================
 const express = require('express');
 const router = express.Router();
 const {
@@ -9,16 +12,19 @@ const {
 } = require('../controllers/orderController');
 const { protect, admin } = require('../middleware/auth');
 
-router.use(protect); // All order routes require authentication
+// Saari order routes ke liye login zaroori hai
+router.use(protect);
 
+// 📋 Logged-in user ke orders dekhna ya 🛒 Naya order place karna
 router.route('/')
     .get(getMyOrders)
     .post(placeOrder);
 
+// 🚫 Order cancel request
 router.post('/:id/cancel', cancelOrder);
 
-// Admin routes
-router.get('/all', admin, getAllOrders);
-router.put('/:id/status', admin, updateOrderStatus);
+// 👑 ADMIN ROUTES
+router.get('/all', admin, getAllOrders);             // Saare customers ke orders dekhna
+router.put('/:id/status', admin, updateOrderStatus); // Order delivery status update karna
 
 module.exports = router;
