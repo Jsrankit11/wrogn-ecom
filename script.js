@@ -96,7 +96,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             description: "High-performance windcheater with adjustable hood and warm fleece lining.",
             image: "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=500&auto=format&fit=crop",
             images: ["https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=500&auto=format&fit=crop"],
-            badge: "Trending",
+            badge: "HOT DROP",
             color: "Black",
             tags: ["jacket", "fashion"]
         },
@@ -141,8 +141,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             description: "Heavyweight premium cotton flannel shirt in custom windowpane layout. Warm and classy.",
             image: "https://images.unsplash.com/photo-1598033129183-c4f50c736f10?w=500&auto=format&fit=crop",
             images: ["https://images.unsplash.com/photo-1598033129183-c4f50c736f10?w=500&auto=format&fit=crop"],
-            badge: "",
-            color: "Grey Red",
+            badge: "HOT DROP",
+            color: "Red",
             tags: ["shirt", "fashion"]
         },
         // Laptops
@@ -158,7 +158,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             image: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=500&auto=format&fit=crop",
             images: ["https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=500&auto=format&fit=crop"],
             badge: "Premium",
-            color: "Space Grey",
+            color: "Grey",
             tags: ["laptop", "laptops"]
         },
         {
@@ -173,7 +173,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             image: "https://images.unsplash.com/photo-1496181130204-7552cc145cdb?w=500&auto=format&fit=crop",
             images: ["https://images.unsplash.com/photo-1496181130204-7552cc145cdb?w=500&auto=format&fit=crop"],
             badge: "Intel EVO",
-            color: "Pine Grey",
+            color: "Grey",
             tags: ["laptop", "laptops"]
         },
         {
@@ -188,7 +188,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             image: "https://images.unsplash.com/photo-1603302576837-37561b2e2302?w=500&auto=format&fit=crop",
             images: ["https://images.unsplash.com/photo-1603302576837-37561b2e2302?w=500&auto=format&fit=crop"],
             badge: "Ray Tracing",
-            color: "Abyss Blue",
+            color: "Blue",
             tags: ["laptop", "laptops"]
         },
         {
@@ -203,7 +203,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             image: "https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?w=500&auto=format&fit=crop",
             images: ["https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?w=500&auto=format&fit=crop"],
             badge: "Touchscreen",
-            color: "Platinum",
+            color: "White",
             tags: ["laptop", "laptops"]
         },
         // Watches
@@ -218,7 +218,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             description: "Matte-black stainless steel case with genuine leather strap.",
             image: "https://images.unsplash.com/photo-1524592094714-0f0654e20314?w=500&auto=format&fit=crop",
             images: ["https://images.unsplash.com/photo-1524592094714-0f0654e20314?w=500&auto=format&fit=crop"],
-            badge: "Classy",
+            badge: "HOT DROP",
             color: "Black",
             tags: ["watch", "watches"]
         },
@@ -234,7 +234,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             image: "https://images.unsplash.com/photo-1508685096489-7aacd43bd3b1?w=500&auto=format&fit=crop",
             images: ["https://images.unsplash.com/photo-1508685096489-7aacd43bd3b1?w=500&auto=format&fit=crop"],
             badge: "Fitness Smart",
-            color: "Sandstone Beige",
+            color: "White",
             tags: ["watch", "watches"]
         },
         {
@@ -249,8 +249,234 @@ document.addEventListener('DOMContentLoaded', async () => {
             image: "https://images.unsplash.com/photo-1612817159949-195b6eb9e31a?w=500&auto=format&fit=crop",
             images: ["https://images.unsplash.com/photo-1612817159949-195b6eb9e31a?w=500&auto=format&fit=crop"],
             badge: "Elite",
-            color: "Luxury Gold",
+            color: "Red",
             tags: ["watch", "watches"]
+        },
+        // Drops & Accessories 16-30
+        {
+            id: 16,
+            title: "Wrogn Rebel Oversized Graphic Tee",
+            category: "Fashion",
+            price: 1299,
+            oldPrice: 1999,
+            rating: 4.7,
+            ratingCount: 142,
+            description: "Heavyweight 240 GSM organic cotton streetwear oversized tee with cybernetic back print.",
+            image: "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?w=500&auto=format&fit=crop",
+            images: ["https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?w=500&auto=format&fit=crop"],
+            badge: "HOT DROP",
+            color: "Black",
+            tags: ["tee", "fashion"]
+        },
+        {
+            id: 17,
+            title: "Wrogn Urban Tactical Cargo Trousers",
+            category: "Fashion",
+            price: 2299,
+            oldPrice: 3499,
+            rating: 4.6,
+            ratingCount: 98,
+            description: "Utility street cargo pants with 6 functional pockets, adjustable ankle cuffs, and ripstop fabric.",
+            image: "https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?w=500&auto=format&fit=crop",
+            images: ["https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?w=500&auto=format&fit=crop"],
+            badge: "Trending",
+            color: "Black",
+            tags: ["jeans", "fashion"]
+        },
+        {
+            id: 18,
+            title: "Wrogn Vulcanized High-Top Sneakers",
+            category: "Fashion",
+            price: 3499,
+            oldPrice: 4999,
+            rating: 4.8,
+            ratingCount: 215,
+            description: "Handcrafted canvas high-top kicks with thick rubber outsole and cushioned memory foam footbed.",
+            image: "https://images.unsplash.com/photo-1552346154-21d32810aba3?w=500&auto=format&fit=crop",
+            images: ["https://images.unsplash.com/photo-1552346154-21d32810aba3?w=500&auto=format&fit=crop"],
+            badge: "LIMITED EDITION",
+            color: "Red",
+            tags: ["sneakers", "fashion"]
+        },
+        {
+            id: 19,
+            title: "Wrogn Pro ANC Wireless Earbuds",
+            category: "Earbuds",
+            price: 2999,
+            oldPrice: 4999,
+            rating: 4.7,
+            ratingCount: 340,
+            description: "35dB Active Noise Cancellation, low latency gaming mode, 32-hour playback battery life.",
+            image: "https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=500&auto=format&fit=crop",
+            images: ["https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=500&auto=format&fit=crop"],
+            badge: "Best Seller",
+            color: "Black",
+            tags: ["earbuds", "audio"]
+        },
+        {
+            id: 20,
+            title: "Wrogn Studio Pro Over-Ear Headphones",
+            category: "Earbuds",
+            price: 5999,
+            oldPrice: 8999,
+            rating: 4.9,
+            ratingCount: 168,
+            description: "Hi-Res studio acoustics with 45mm neodymium drivers, plush memory foam ear cushions.",
+            image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500&auto=format&fit=crop",
+            images: ["https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500&auto=format&fit=crop"],
+            badge: "HOT DROP",
+            color: "Black",
+            tags: ["earbuds", "audio"]
+        },
+        {
+            id: 21,
+            title: "Wrogn Matrix Curved Gaming Monitor 27\"",
+            category: "Gaming",
+            price: 18999,
+            oldPrice: 24999,
+            rating: 4.8,
+            ratingCount: 76,
+            description: "165Hz QHD 1ms curved VA panel, HDR400 support, AMD FreeSync Premium with RGB ambient glow.",
+            image: "https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?w=500&auto=format&fit=crop",
+            images: ["https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?w=500&auto=format&fit=crop"],
+            badge: "HOT DROP",
+            color: "Black",
+            tags: ["gaming", "electronics"]
+        },
+        {
+            id: 22,
+            title: "Wrogn Mechanical RGB Gaming Keyboard",
+            category: "Gaming",
+            price: 3299,
+            oldPrice: 4999,
+            rating: 4.6,
+            ratingCount: 120,
+            description: "Hot-swappable tactile linear switches, per-key RGB backlighting, aircraft aluminum top plate.",
+            image: "https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=500&auto=format&fit=crop",
+            images: ["https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=500&auto=format&fit=crop"],
+            badge: "Trending",
+            color: "Black",
+            tags: ["gaming", "accessories"]
+        },
+        {
+            id: 23,
+            title: "Wrogn Genuine Leather Weekender Duffle",
+            category: "Fashion",
+            price: 4499,
+            oldPrice: 6999,
+            rating: 4.8,
+            ratingCount: 89,
+            description: "Full-grain distressed leather holdall with shoe compartment and reinforced brass zippers.",
+            image: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=500&auto=format&fit=crop",
+            images: ["https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=500&auto=format&fit=crop"],
+            badge: "HOT DROP",
+            color: "Red",
+            tags: ["accessories", "fashion"]
+        },
+        {
+            id: 24,
+            title: "Wrogn Polarized Matte Aviator Sunglasses",
+            category: "Fashion",
+            price: 1499,
+            oldPrice: 2499,
+            rating: 4.5,
+            ratingCount: 195,
+            description: "UV400 anti-glare TAC polarized lenses with ultra-lightweight titanium alloy frame.",
+            image: "https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=500&auto=format&fit=crop",
+            images: ["https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=500&auto=format&fit=crop"],
+            badge: "Best Seller",
+            color: "Black",
+            tags: ["accessories", "fashion"]
+        },
+        {
+            id: 25,
+            title: "Wrogn Barista Espresso Machine",
+            category: "Home & Kitchen",
+            price: 8999,
+            oldPrice: 12999,
+            rating: 4.7,
+            ratingCount: 64,
+            description: "15-Bar Italian pump pressure coffee maker with milk frother steam wand and digital temp control.",
+            image: "https://images.unsplash.com/photo-1517256064527-09c53b2d0bc6?w=500&auto=format&fit=crop",
+            images: ["https://images.unsplash.com/photo-1517256064527-09c53b2d0bc6?w=500&auto=format&fit=crop"],
+            badge: "LIMITED EDITION",
+            color: "Black",
+            tags: ["home & kitchen"]
+        },
+        {
+            id: 26,
+            title: "Wrogn Rapid Air Fryer 5.5L",
+            category: "Home & Kitchen",
+            price: 4999,
+            oldPrice: 7999,
+            rating: 4.6,
+            ratingCount: 112,
+            description: "360° thermo IQ technology, 8 preset touch screen cooking modes with non-stick detachable basket.",
+            image: "https://images.unsplash.com/photo-1584269600464-37b1b58a9fe7?w=500&auto=format&fit=crop",
+            images: ["https://images.unsplash.com/photo-1584269600464-37b1b58a9fe7?w=500&auto=format&fit=crop"],
+            badge: "Trending",
+            color: "Black",
+            tags: ["home & kitchen"]
+        },
+        {
+            id: 27,
+            title: "Wrogn Luxe Velvet Accent Lounge Chair",
+            category: "Furniture",
+            price: 12999,
+            oldPrice: 17999,
+            rating: 4.9,
+            ratingCount: 38,
+            description: "Ergonomic curved mid-century armchair with high-density foam padding and gold metal legs.",
+            image: "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=500&auto=format&fit=crop",
+            images: ["https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=500&auto=format&fit=crop"],
+            badge: "HOT DROP",
+            color: "Blue",
+            tags: ["furniture"]
+        },
+        {
+            id: 28,
+            title: "Wrogn Adjustable Dumbbell Set 20KG",
+            category: "Sports",
+            price: 3999,
+            oldPrice: 5999,
+            rating: 4.7,
+            ratingCount: 154,
+            description: "All-in-one solid cast iron weight plates with non-slip neoprene coated handles and connecting rod.",
+            image: "https://images.unsplash.com/photo-1584735935682-2f2b69dff9d2?w=500&auto=format&fit=crop",
+            images: ["https://images.unsplash.com/photo-1584735935682-2f2b69dff9d2?w=500&auto=format&fit=crop"],
+            badge: "Fitness Pro",
+            color: "Black",
+            tags: ["sports"]
+        },
+        {
+            id: 29,
+            title: "Wrogn Stealth Insulated Thermos 1L",
+            category: "Sports",
+            price: 899,
+            oldPrice: 1499,
+            rating: 4.8,
+            ratingCount: 280,
+            description: "Double-wall vacuum insulated 18/8 stainless steel flask. Keeps beverages cold 24h & hot 12h.",
+            image: "https://images.unsplash.com/photo-1602143407151-7111542de6e8?w=500&auto=format&fit=crop",
+            images: ["https://images.unsplash.com/photo-1602143407151-7111542de6e8?w=500&auto=format&fit=crop"],
+            badge: "Best Seller",
+            color: "Black",
+            tags: ["sports", "accessories"]
+        },
+        {
+            id: 30,
+            title: "Wrogn RFID Shield Leather Bifold Wallet",
+            category: "Fashion",
+            price: 799,
+            oldPrice: 1299,
+            rating: 4.6,
+            ratingCount: 310,
+            description: "Genuine slim leather wallet equipped with advanced RFID blocking frequency lining for card security.",
+            image: "https://images.unsplash.com/photo-1627123424574-724758594e93?w=500&auto=format&fit=crop",
+            images: ["https://images.unsplash.com/photo-1627123424574-724758594e93?w=500&auto=format&fit=crop"],
+            badge: "HOT DROP",
+            color: "Black",
+            tags: ["accessories", "fashion"]
         }
     ];
 
@@ -906,10 +1132,111 @@ document.addEventListener('DOMContentLoaded', async () => {
         }, 2200);
     });
 
-    window.handleAddToCart = function(productId, size = 'M', quantity = 1) {
+    function getProductSizes(product) {
+        if (!product) return { title: "Select Option", default: "Standard", options: ["Standard"] };
+        
+        const cat = (product.category || "").toLowerCase();
+        const title = (product.title || "").toLowerCase();
+        const tags = Array.isArray(product.tags) ? product.tags.map(t => t.toLowerCase()) : [];
+
+        // Footwear / Sneakers
+        if (tags.includes("sneakers") || title.includes("sneakers") || title.includes("shoes") || title.includes("kicks")) {
+            return {
+                title: "Select Shoe Size (UK/IN)",
+                default: "UK 8",
+                options: ["UK 6", "UK 7", "UK 8", "UK 9", "UK 10", "UK 11"]
+            };
+        }
+
+        // Jeans / Pants / Cargo Trousers
+        if (tags.includes("jeans") || tags.includes("cargo") || title.includes("jeans") || title.includes("cargo") || title.includes("trouser") || title.includes("pants")) {
+            return {
+                title: "Select Waist Size (Inches)",
+                default: "32",
+                options: ["28", "30", "32", "34", "36", "38"]
+            };
+        }
+
+        // Clothing / Fashion / Tops / Jackets / Tees / Shirts / Hoodies
+        if (cat === "fashion" || tags.includes("fashion") || tags.includes("shirt") || tags.includes("tee") || tags.includes("jacket")) {
+            return {
+                title: "Select Garment Size",
+                default: "M",
+                options: ["S", "M", "L", "XL", "XXL"]
+            };
+        }
+
+        // Mobiles & Smartphones
+        if (cat === "mobiles" || tags.includes("phone") || tags.includes("mobiles")) {
+            return {
+                title: "Select Storage Variant",
+                default: "256GB",
+                options: ["128GB", "256GB", "512GB", "1TB"]
+            };
+        }
+
+        // Laptops
+        if (cat === "laptops" || tags.includes("laptop") || tags.includes("laptops")) {
+            return {
+                title: "Select RAM / SSD Config",
+                default: "16GB / 512GB",
+                options: ["8GB / 256GB", "16GB / 512GB", "16GB / 1TB", "32GB / 1TB"]
+            };
+        }
+
+        // Watches & Smartwatches
+        if (cat === "watches" || tags.includes("watch") || tags.includes("watches")) {
+            return {
+                title: "Select Dial Size",
+                default: "44mm",
+                options: ["40mm", "42mm", "44mm", "46mm"]
+            };
+        }
+
+        // Earbuds & Audio
+        if (cat === "earbuds" || tags.includes("earbuds") || tags.includes("audio")) {
+            return {
+                title: "Select Edition",
+                default: "Standard Case",
+                options: ["Standard Case", "Wireless Case", "Pro ANC Edition"]
+            };
+        }
+
+        // Gaming Displays / Tech
+        if (cat === "gaming" || title.includes("monitor") || title.includes("screen")) {
+            return {
+                title: "Select Screen Size",
+                default: "27\" QHD",
+                options: ["24\" FHD", "27\" QHD", "32\" Curved"]
+            };
+        }
+
+        // Dumbbell / Weights
+        if (title.includes("dumbbell") || title.includes("weights")) {
+            return {
+                title: "Select Weight Pack",
+                default: "20KG Set",
+                options: ["10KG Set", "15KG Set", "20KG Set", "30KG Set"]
+            };
+        }
+
+        // Default One-Size for Accessories / Home / Kitchen / Furniture / Books / Beauty
+        return {
+            title: "Select Product Variant",
+            default: "One Size",
+            options: ["Standard One Size"]
+        };
+    }
+    window.getProductSizes = getProductSizes;
+
+    window.handleAddToCart = function(productId, size = null, quantity = 1) {
         const products = getProducts();
         const product = products.find(p => p.id === parseInt(productId));
         if (!product) return;
+
+        if (!size) {
+            size = getProductSizes(product).default;
+        }
 
         let cart = getCart();
         const existingItem = cart.find(item => item.product.id === product.id && item.size === size);
@@ -953,14 +1280,15 @@ document.addEventListener('DOMContentLoaded', async () => {
         const needsContain = ["mobiles", "laptops", "watches", "earbuds", "home & kitchen", "furniture", "sports", "books", "gaming"]
             .includes(product.category.toLowerCase());
         const imgClass = needsContain ? 'img-contain' : 'img-cover';
+
+        const starIcon = '<i class="fa-solid fa-star" style="color: #ffc107; font-size: 11px; margin-right: 3px;"></i>';
+        const ratingHTML = product.rating ? `<div style="font-size: 11px; font-weight: 700; color: var(--text-muted); margin-top: 3px; display: flex; align-items: center;">${starIcon}<span>${product.rating}</span> <span style="font-weight: 400; opacity: 0.75; margin-left: 3px;">(${product.ratingCount || 45})</span></div>` : '';
         
         return `
             <div class="product-card" data-id="${product.id}">
                 ${badgeHTML}
-                <button class="card-wishlist-btn ${isWishlisted}" onclick="handleToggleWishlist(${product.id}, this)" aria-label="Toggle wishlist">
-                    <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
-                        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-                    </svg>
+                <button class="card-wishlist-btn ${isWishlisted}" onclick="handleToggleWishlist(${product.id}, this)" aria-label="Toggle wishlist" title="Add to Wishlist">
+                    <i class="${isWishlisted ? 'fa-solid' : 'fa-regular'} fa-heart"></i>
                 </button>
                 <div class="product-image-container">
                     <a href="product-details.html?id=${product.id}">
@@ -971,17 +1299,15 @@ document.addEventListener('DOMContentLoaded', async () => {
                     <div>
                         <div class="product-category">${product.category} | ${product.color}</div>
                         <h3 class="product-title"><a href="product-details.html?id=${product.id}">${product.title}</a></h3>
+                        ${ratingHTML}
                     </div>
                     <div class="product-meta">
                         <div class="product-price-wrapper">
-                            <span class="product-price">₹${product.price}</span>
-                            <span class="product-old-price">₹${product.oldPrice}</span>
+                            <span class="product-price">₹${product.price.toLocaleString('en-IN')}</span>
+                            ${product.oldPrice ? `<span class="product-old-price">₹${product.oldPrice.toLocaleString('en-IN')}</span>` : ''}
                         </div>
-                        <button class="card-add-btn" onclick="handleAddToCart(${product.id})" aria-label="Add to cart">
-                            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                                <line x1="12" y1="5" x2="12" y2="19"></line>
-                                <line x1="5" y1="12" x2="19" y2="12"></line>
-                            </svg>
+                        <button class="card-add-btn" onclick="handleAddToCart(${product.id})" aria-label="Add to cart" title="Add to Bag">
+                            <i class="fa-solid fa-bag-shopping"></i>
                         </button>
                     </div>
                 </div>
@@ -1196,7 +1522,8 @@ document.addEventListener('DOMContentLoaded', async () => {
                 </div>
             `;
         } else {
-            let selectedSize = 'M';
+            const sizeInfo = getProductSizes(product);
+            let selectedSize = sizeInfo.default;
             const wishlist = getWishlist();
             const isWishlisted = wishlist.includes(product.id) ? 'active' : '';
 
@@ -1385,14 +1712,13 @@ document.addEventListener('DOMContentLoaded', async () => {
                         
                         <p class="details-description">${product.description}</p>
                         
-                        <!-- Size Selector -->
+                        <!-- Category-Specific Size & Variant Selector -->
                         <div class="size-selector">
-                            <h4>Select Size</h4>
-                            <div class="sizes-grid">
-                                <button class="size-btn" onclick="selectDetailSize('S', this)">S</button>
-                                <button class="size-btn active" onclick="selectDetailSize('M', this)">M</button>
-                                <button class="size-btn" onclick="selectDetailSize('L', this)">L</button>
-                                <button class="size-btn" onclick="selectDetailSize('XL', this)">XL</button>
+                            <h4>${sizeInfo.title}</h4>
+                            <div class="sizes-grid" style="display: flex; gap: 10px; flex-wrap: wrap;">
+                                ${sizeInfo.options.map(sz => `
+                                    <button class="size-btn ${sz === selectedSize ? 'active' : ''}" onclick="selectDetailSize('${sz}', this)">${sz}</button>
+                                `).join('')}
                             </div>
                         </div>
                         

@@ -8,6 +8,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- FontAwesome 6 Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="styles.css?v=2">
 </head>
 <body>
@@ -15,7 +17,7 @@
         <!-- Infinite Announcement Marquee -->
         <div class="wrogn-announcement-marquee" id="wrognMarqueeBar">
             <div class="wrogn-marquee-content">
-                ⚡ FLASH SALE LIVE: GET FLAT 40% OFF FOR REBEL CLUB MEMBERS • FREE EXPRESS SHIPPING ON ALL ORDERS ABOVE RS. 3000 • CHAT WITH VOICE AI SUPPORT ⚡
+                <i class="fa-solid fa-bolt" style="color:#ff003c; margin-right:6px;"></i> FLASH SALE LIVE: GET FLAT 40% OFF FOR REBEL CLUB MEMBERS • FREE EXPRESS SHIPPING ON ALL ORDERS ABOVE RS. 3000 • CHAT WITH VOICE AI SUPPORT <i class="fa-solid fa-bolt" style="color:#ff003c; margin-left:6px;"></i>
             </div>
         </div>
         
@@ -29,30 +31,16 @@
                 
                 <div class="search-bar-container">
                     <form class="search-form" id="searchForm" autocomplete="off">
-                        <input type="text" placeholder="Search for products, brands..." class="search-input" id="searchInput" aria-label="Search products and brands">
+                        <input type="text" placeholder="Search 30+ products, jackets, sneakers, tech..." class="search-input" id="searchInput" aria-label="Search products and brands">
                         
                         
                         <button type="button" class="mic-btn" id="micBtn" title="Voice Search" aria-label="Voice search">
-                            
-                            <svg class="mic-icon" viewBox="0 0 24 24" width="20" height="20">
-                                <defs>
-                                    <linearGradient id="micGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                                        <stop offset="0%" stop-color="#a29bfe" />
-                                        <stop offset="100%" stop-color="#6c5ce7" />
-                                    </linearGradient>
-                                </defs>
-                                <rect x="9" y="2" width="6" height="12" rx="3" fill="url(#micGrad)"/>
-                                <path d="M5 10c0 3.87 3.13 7 7 7s7-3.13 7-7" stroke="url(#micGrad)" stroke-width="2" stroke-linecap="round" fill="none"/>
-                                <line x1="12" y1="17" x2="12" y2="22" stroke="url(#micGrad)" stroke-width="2" stroke-linecap="round"/>
-                            </svg>
+                            <i class="fa-solid fa-microphone" style="color: var(--accent-color); font-size: 16px;"></i>
                         </button>
 
                         
                         <button type="submit" class="search-btn" id="searchBtn" aria-label="Submit search">
-                            <svg class="search-icon" viewBox="0 0 24 24" width="16" height="16">
-                                <circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="3" fill="none"></circle>
-                                <line x1="21" x2="16.65" y1="21" y2="16.65" stroke="currentColor" stroke-width="3" stroke-linecap="round"></line>
-                            </svg>
+                            <i class="fa-solid fa-magnifying-glass" style="font-size: 15px;"></i>
                         </button>
                     </form>
                 </div>
@@ -62,69 +50,35 @@
                     
                     <!-- A search toggle button that is only visible on mobile screens -->
                     <button class="action-btn mobile-search-toggle" id="mobileSearchToggle" title="Search" aria-label="Toggle Search">
-                        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <circle cx="11" cy="11" r="8"></circle>
-                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                        </svg>
+                        <i class="fa-solid fa-magnifying-glass"></i>
                     </button>
 
                     <button class="action-btn theme-toggle" id="themeToggle" title="Toggle Theme" aria-label="Toggle light or dark theme">
-                        <svg class="theme-icon-moon" viewBox="0 0 24 24" width="22" height="22">
-                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" fill="#f5a623" stroke="#f5a623" stroke-width="1"/>
-                        </svg>
-                        <svg class="theme-icon-sun hidden" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <circle cx="12" cy="12" r="5"></circle>
-                            <line x1="12" y1="1" x2="12" y2="3"></line>
-                            <line x1="12" y1="21" x2="12" y2="23"></line>
-                            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-                            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-                            <line x1="1" y1="12" x2="3" y2="12"></line>
-                            <line x1="21" y1="12" x2="23" y2="12"></line>
-                            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-                            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-                        </svg>
+                        <i class="fa-solid fa-moon theme-icon-moon" style="color: #ff003c; font-size: 18px;"></i>
+                        <i class="fa-solid fa-sun theme-icon-sun hidden" style="color: #f5a623; font-size: 18px;"></i>
                     </button>
 
                     
                     <a href="#" class="action-btn profile-btn" title="My Profile" aria-label="Go to profile">
-                        <svg class="profile-icon" viewBox="0 0 24 24" width="22" height="22">
-                            <defs>
-                                <linearGradient id="userGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                                    <stop offset="0%" stop-color="#a29bfe" />
-                                    <stop offset="100%" stop-color="#6c5ce7" />
-                                </linearGradient>
-                            </defs>
-                            <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4z" fill="url(#userGrad)"/>
-                            <path d="M12 14c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" fill="url(#userGrad)"/>
-                        </svg>
+                        <i class="fa-solid fa-user" style="font-size: 18px;"></i>
                     </a>
 
                     
                     <a href="#" class="action-btn wishlist-btn" title="My Wishlist" aria-label="View wishlist">
-                        <svg class="wishlist-icon" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
-                        </svg>
+                        <i class="fa-solid fa-heart" style="font-size: 18px;"></i>
                     </a>
 
                     
                     <a href="#" class="action-btn cart-btn" title="My Cart" aria-label="View shopping cart">
                         <div class="cart-icon-wrapper">
-                            <svg class="cart-icon" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <circle cx="9" cy="21" r="1"></circle>
-                                <circle cx="20" cy="21" r="1"></circle>
-                                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
-                            </svg>
+                            <i class="fa-solid fa-bag-shopping" style="font-size: 19px;"></i>
                             <span class="cart-badge">0</span>
                         </div>
                     </a>
 
                     
                     <button class="action-btn mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle menu" aria-expanded="false">
-                        <svg class="hamburger-icon" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <line x1="3" y1="12" x2="21" y2="12" id="line1"></line>
-                            <line x1="3" y1="6" x2="21" y2="6" id="line2"></line>
-                            <line x1="3" y1="18" x2="21" y2="18" id="line3"></line>
-                        </svg>
+                        <i class="fa-solid fa-bars" style="font-size: 20px;"></i>
                     </button>
                 </div>
             </div>
@@ -147,41 +101,34 @@
                     <li class="nav-item has-dropdown">
                         <a href="shop.html" class="nav-link dropdown-trigger" id="categoriesDropdownLink">
                             CATEGORIES 
-                            <svg class="dropdown-caret" viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round">
-                                <polyline points="6 9 12 15 18 9"></polyline>
-                            </svg>
+                            <i class="fa-solid fa-chevron-down dropdown-caret" style="font-size: 11px; margin-left: 4px;"></i>
                         </a>
                         
                         
                         <div class="dropdown-menu">
                             <div class="dropdown-grid">
                                 <div class="dropdown-column">
-                                    <h4>Topwear</h4>
+                                    <h4><i class="fa-solid fa-shirt" style="color:var(--accent-color); margin-right:6px;"></i>Topwear</h4>
                                     <ul>
-                                        <li><a href="shop.html?category=Topwear">T-Shirts & Polos</a></li>
-                                        <li><a href="shop.html?category=Topwear">Casual Shirts</a></li>
-                                        <li><a href="shop.html?category=Topwear">Activewear Tees</a></li>
-                                        <li><a href="shop.html?category=Topwear">Sweatshirts & Hoodies</a></li>
-                                        <li><a href="shop.html?category=Topwear">Jackets & Coats</a></li>
+                                        <li><a href="shop.html?category=Fashion">T-Shirts & Polos</a></li>
+                                        <li><a href="shop.html?category=Fashion">Casual Shirts</a></li>
+                                        <li><a href="shop.html?category=Fashion">Jackets & Coats</a></li>
                                     </ul>
                                 </div>
                                 <div class="dropdown-column">
-                                    <h4>Bottomwear</h4>
+                                    <h4><i class="fa-solid fa-user-ninja" style="color:var(--accent-color); margin-right:6px;"></i>Bottomwear</h4>
                                     <ul>
-                                        <li><a href="shop.html?category=Bottomwear">Chino Trousers</a></li>
-                                        <li><a href="shop.html?category=Bottomwear">Distressed Jeans</a></li>
-                                        <li><a href="shop.html?category=Bottomwear">Slim Fit Joggers</a></li>
-                                        <li><a href="shop.html?category=Bottomwear">Casual Shorts</a></li>
+                                        <li><a href="shop.html?category=Fashion">Distressed Jeans</a></li>
+                                        <li><a href="shop.html?category=Fashion">Tactical Cargoes</a></li>
                                     </ul>
                                 </div>
                                 <div class="dropdown-column">
-                                    <h4>Accessories</h4>
+                                    <h4><i class="fa-solid fa-glasses" style="color:var(--accent-color); margin-right:6px;"></i>Accessories & Tech</h4>
                                     <ul>
-                                        <li><a href="shop.html?category=Accessories">Chronograph Watches</a></li>
-                                        <li><a href="shop.html?category=Accessories">Premium Leather Belts</a></li>
-                                        <li><a href="shop.html?category=Accessories">Polarized Sunglasses</a></li>
-                                        <li><a href="shop.html?category=Accessories">Snapback Caps</a></li>
-                                        <li><a href="shop.html?category=Accessories">Duffle & Backpack Bags</a></li>
+                                        <li><a href="shop.html?category=Watches">Chronograph Watches</a></li>
+                                        <li><a href="shop.html?category=Earbuds">ANC Earbuds</a></li>
+                                        <li><a href="shop.html?category=Gaming">Gaming Monitors & Tech</a></li>
+                                        <li><a href="shop.html?category=Mobiles">Mobiles & Smartphones</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -211,52 +158,52 @@
     <!-- A category navigation bar with icons to filter products -->
     <div class="category-quick-nav scroll-reveal">
         <a class="quick-nav-item" data-category="all">
-            <div class="quick-nav-icon">✨</div>
-            <span>All Styles</span>
-        </a>
-        <a class="quick-nav-item" data-category="Mobiles">
-            <div class="quick-nav-icon">📱</div>
-            <span>Mobiles</span>
+            <div class="quick-nav-icon"><i class="fa-solid fa-fire-flame-curved" style="color:#ff003c;"></i></div>
+            <span>30+ All Drops</span>
         </a>
         <a class="quick-nav-item" data-category="Fashion">
-            <div class="quick-nav-icon">👕</div>
+            <div class="quick-nav-icon"><i class="fa-solid fa-shirt" style="color:#ff4d6d;"></i></div>
             <span>Fashion</span>
         </a>
+        <a class="quick-nav-item" data-category="Mobiles">
+            <div class="quick-nav-icon"><i class="fa-solid fa-mobile-screen-button" style="color:#38bdf8;"></i></div>
+            <span>Mobiles</span>
+        </a>
         <a class="quick-nav-item" data-category="Laptops">
-            <div class="quick-nav-icon">💻</div>
+            <div class="quick-nav-icon"><i class="fa-solid fa-laptop" style="color:#a78bfa;"></i></div>
             <span>Laptops</span>
         </a>
         <a class="quick-nav-item" data-category="Watches">
-            <div class="quick-nav-icon">⌚</div>
+            <div class="quick-nav-icon"><i class="fa-solid fa-stopwatch" style="color:#fbbf24;"></i></div>
             <span>Watches</span>
         </a>
         <a class="quick-nav-item" data-category="Earbuds">
-            <div class="quick-nav-icon">🎧</div>
+            <div class="quick-nav-icon"><i class="fa-solid fa-headphones" style="color:#34d399;"></i></div>
             <span>Earbuds</span>
         </a>
+        <a class="quick-nav-item" data-category="Gaming">
+            <div class="quick-nav-icon"><i class="fa-solid fa-gamepad" style="color:#f472b6;"></i></div>
+            <span>Gaming</span>
+        </a>
         <a class="quick-nav-item" data-category="Home & Kitchen">
-            <div class="quick-nav-icon">🏠</div>
+            <div class="quick-nav-icon"><i class="fa-solid fa-house-laptop" style="color:#fb923c;"></i></div>
             <span>Home</span>
         </a>
         <a class="quick-nav-item" data-category="Beauty">
-            <div class="quick-nav-icon">💄</div>
+            <div class="quick-nav-icon"><i class="fa-solid fa-wand-magic-sparkles" style="color:#e879f9;"></i></div>
             <span>Beauty</span>
         </a>
         <a class="quick-nav-item" data-category="Furniture">
-            <div class="quick-nav-icon">🛋️</div>
+            <div class="quick-nav-icon"><i class="fa-solid fa-couch" style="color:#818cf8;"></i></div>
             <span>Furniture</span>
         </a>
         <a class="quick-nav-item" data-category="Sports">
-            <div class="quick-nav-icon">⚽</div>
+            <div class="quick-nav-icon"><i class="fa-solid fa-dumbbell" style="color:#4ade80;"></i></div>
             <span>Sports</span>
         </a>
         <a class="quick-nav-item" data-category="Books">
-            <div class="quick-nav-icon">📚</div>
+            <div class="quick-nav-icon"><i class="fa-solid fa-book-open" style="color:#60a5fa;"></i></div>
             <span>Books</span>
-        </a>
-        <a class="quick-nav-item" data-category="Gaming">
-            <div class="quick-nav-icon">🎮</div>
-            <span>Gaming</span>
         </a>
     </div>
 
@@ -353,7 +300,7 @@
 
         <!-- LAPTOPS SECTION -->
         <section class="scroll-reveal" style="padding: 40px 24px; max-width: 1240px; margin: 0 auto;">
-            <h3 style="font-size: 22px; font-weight: 800; margin-bottom: 20px; color: var(--text-color);">💻 HIGH-PERFORMANCE LAPTOPS</h3>
+            <h3 style="font-size: 22px; font-weight: 800; margin-bottom: 20px; color: var(--text-color);"><i class="fa-solid fa-laptop" style="color:var(--accent-color); margin-right:8px;"></i> HIGH-PERFORMANCE LAPTOPS</h3>
             <div class="product-grid homepage-horizontal-scroll" id="laptops-grid">
                 <!-- Loaded dynamically -->
             </div>
@@ -361,7 +308,7 @@
 
         <!-- WATCHES SECTION -->
         <section class="scroll-reveal" style="padding: 40px 24px; max-width: 1240px; margin: 0 auto;">
-            <h3 style="font-size: 22px; font-weight: 800; margin-bottom: 20px; color: var(--text-color);">⌚ LUXURY & SPORT WATCHES</h3>
+            <h3 style="font-size: 22px; font-weight: 800; margin-bottom: 20px; color: var(--text-color);"><i class="fa-solid fa-stopwatch" style="color:var(--accent-color); margin-right:8px;"></i> LUXURY & SPORT WATCHES</h3>
             <div class="product-grid homepage-horizontal-scroll" id="watches-grid">
                 <!-- Loaded dynamically -->
             </div>
@@ -369,7 +316,7 @@
 
         <!-- EARBUDS SECTION -->
         <section class="scroll-reveal" style="padding: 40px 24px; max-width: 1240px; margin: 0 auto;">
-            <h3 style="font-size: 22px; font-weight: 800; margin-bottom: 20px; color: var(--text-color);">🎧 WIRELESS EARBUDS & HEADPHONES</h3>
+            <h3 style="font-size: 22px; font-weight: 800; margin-bottom: 20px; color: var(--text-color);"><i class="fa-solid fa-headphones" style="color:var(--accent-color); margin-right:8px;"></i> WIRELESS EARBUDS & HEADPHONES</h3>
             <div class="product-grid homepage-horizontal-scroll" id="earbuds-grid">
                 <!-- Loaded dynamically -->
             </div>
@@ -377,7 +324,7 @@
 
         <!-- HOME & KITCHEN SECTION -->
         <section class="scroll-reveal" style="padding: 40px 24px; max-width: 1240px; margin: 0 auto;">
-            <h3 style="font-size: 22px; font-weight: 800; margin-bottom: 20px; color: var(--text-color);">🏠 HOME & KITCHEN APPLIANCES</h3>
+            <h3 style="font-size: 22px; font-weight: 800; margin-bottom: 20px; color: var(--text-color);"><i class="fa-solid fa-house-laptop" style="color:var(--accent-color); margin-right:8px;"></i> HOME & KITCHEN APPLIANCES</h3>
             <div class="product-grid homepage-horizontal-scroll" id="home-kitchen-grid">
                 <!-- Loaded dynamically -->
             </div>
@@ -385,7 +332,7 @@
 
         <!-- BEAUTY SECTION -->
         <section class="scroll-reveal" style="padding: 40px 24px; max-width: 1240px; margin: 0 auto;">
-            <h3 style="font-size: 22px; font-weight: 800; margin-bottom: 20px; color: var(--text-color);">💄 BEAUTY & PERSONAL CARE</h3>
+            <h3 style="font-size: 22px; font-weight: 800; margin-bottom: 20px; color: var(--text-color);"><i class="fa-solid fa-wand-magic-sparkles" style="color:var(--accent-color); margin-right:8px;"></i> BEAUTY & PERSONAL CARE</h3>
             <div class="product-grid homepage-horizontal-scroll" id="beauty-grid">
                 <!-- Loaded dynamically -->
             </div>
@@ -393,7 +340,7 @@
 
         <!-- FURNITURE SECTION -->
         <section class="scroll-reveal" style="padding: 40px 24px; max-width: 1240px; margin: 0 auto;">
-            <h3 style="font-size: 22px; font-weight: 800; margin-bottom: 20px; color: var(--text-color);">🛋️ HOME FURNITURE</h3>
+            <h3 style="font-size: 22px; font-weight: 800; margin-bottom: 20px; color: var(--text-color);"><i class="fa-solid fa-couch" style="color:var(--accent-color); margin-right:8px;"></i> HOME FURNITURE</h3>
             <div class="product-grid homepage-horizontal-scroll" id="furniture-grid">
                 <!-- Loaded dynamically -->
             </div>
@@ -401,7 +348,7 @@
 
         <!-- SPORTS SECTION -->
         <section class="scroll-reveal" style="padding: 40px 24px; max-width: 1240px; margin: 0 auto;">
-            <h3 style="font-size: 22px; font-weight: 800; margin-bottom: 20px; color: var(--text-color);">⚽ SPORTS & FITNESS GEAR</h3>
+            <h3 style="font-size: 22px; font-weight: 800; margin-bottom: 20px; color: var(--text-color);"><i class="fa-solid fa-dumbbell" style="color:var(--accent-color); margin-right:8px;"></i> SPORTS & FITNESS GEAR</h3>
             <div class="product-grid homepage-horizontal-scroll" id="sports-grid">
                 <!-- Loaded dynamically -->
             </div>
@@ -409,7 +356,7 @@
 
         <!-- BOOKS SECTION -->
         <section class="scroll-reveal" style="padding: 40px 24px; max-width: 1240px; margin: 0 auto;">
-            <h3 style="font-size: 22px; font-weight: 800; margin-bottom: 20px; color: var(--text-color);">📚 BEST SELLING BOOKS</h3>
+            <h3 style="font-size: 22px; font-weight: 800; margin-bottom: 20px; color: var(--text-color);"><i class="fa-solid fa-book-open" style="color:var(--accent-color); margin-right:8px;"></i> BEST SELLING BOOKS</h3>
             <div class="product-grid homepage-horizontal-scroll" id="books-grid">
                 <!-- Loaded dynamically -->
             </div>
@@ -417,7 +364,7 @@
 
         <!-- GAMING SECTION -->
         <section class="scroll-reveal" style="padding: 40px 24px; max-width: 1240px; margin: 0 auto;">
-            <h3 style="font-size: 22px; font-weight: 800; margin-bottom: 20px; color: var(--text-color);">🎮 GAMING CONSOLES & TECH</h3>
+            <h3 style="font-size: 22px; font-weight: 800; margin-bottom: 20px; color: var(--text-color);"><i class="fa-solid fa-gamepad" style="color:var(--accent-color); margin-right:8px;"></i> GAMING CONSOLES & TECH</h3>
             <div class="product-grid homepage-horizontal-scroll" id="gaming-grid">
                 <!-- Loaded dynamically -->
             </div>
@@ -439,14 +386,14 @@
         </div>
 
         <!-- Newsletter subscription form at the bottom -->
-        <section class="scroll-reveal" style="background: linear-gradient(135deg, var(--card-bg), var(--search-bg)); border-top: 1px solid var(--divider-color); padding: 70px 24px; text-align: center; border-radius: 20px; max-width: 1240px; margin: 40px auto;">
+        <section class="scroll-reveal" style="background: linear-gradient(135deg, var(--card-bg), var(--search-bg)); border: 1px solid var(--divider-color); padding: 70px 24px; text-align: center; border-radius: 20px; max-width: 1240px; margin: 40px auto;">
             <div style="max-width: 600px; margin: 0 auto;">
-                <span style="font-size: 32px;">✉️</span>
+                <span style="font-size: 32px; color: var(--accent-color);"><i class="fa-solid fa-paper-plane"></i></span>
                 <h2 style="font-size: 28px; font-weight: 900; margin: 15px 0 10px 0; color: var(--text-color);">JOIN THE REBEL CLUB</h2>
                 <p style="color: var(--text-muted); font-size: 13.5px; margin-bottom: 25px; line-height: 1.5;">Subscribe to receive early drops notification, member-only discounts, and seasonal releases. Zero spam.</p>
                 <form id="wrognNewsletterForm" class="newsletter-form">
                     <input type="email" placeholder="Enter your email address" required style="flex: 1; padding: 12px 20px; border-radius: 10px; border: 1px solid var(--divider-color); background-color: var(--header-bg); color: var(--text-color); font-family: inherit; font-size: 13.5px;">
-                    <button type="submit" class="btn btn-primary" style="padding: 0 24px; font-weight: bold; border-radius: 10px;">Subscribe</button>
+                    <button type="submit" class="btn btn-primary" style="padding: 0 24px; font-weight: bold; border-radius: 10px;">Subscribe <i class="fa-solid fa-arrow-right" style="margin-left:6px;"></i></button>
                 </form>
             </div>
         </section>
@@ -464,7 +411,7 @@
             <div>
                 <h4 style="font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 20px; color: var(--accent-color);">Quick Links</h4>
                 <ul style="list-style: none; display: flex; flex-direction: column; gap: 10px; font-size: 13.5px;">
-                    <li><a href="shop.html" style="color: var(--text-muted); text-decoration: none; transition: color 0.2s;">Shop Catalog</a></li>
+                    <li><a href="shop.html" style="color: var(--text-muted); text-decoration: none; transition: color 0.2s;">Shop Catalog (30 Products)</a></li>
                     <li><a href="about.html" style="color: var(--text-muted); text-decoration: none; transition: color 0.2s;">About Wrogn</a></li>
                     <li><a href="contact.html" style="color: var(--text-muted); text-decoration: none; transition: color 0.2s;">Contact Us</a></li>
                     <li><a href="faq.html" style="color: var(--text-muted); text-decoration: none; transition: color 0.2s;">FAQs / Support</a></li>
@@ -489,11 +436,11 @@
         </div>
         <div style="max-width: 1240px; margin: 40px auto 0 auto; border-top: 1px solid var(--divider-color); padding-top: 20px; display: flex; justify-content: space-between; align-items: center; font-size: 12.5px; color: var(--text-muted);">
             <p>&copy; 2026 Wrogn E-Commerce. All Rights Reserved.</p>
-            <p>Made with &hearts; Team Wrogn @Ankit & Sonali @Priyanshi</p>
+            <p>Made with <i class="fa-solid fa-heart" style="color:#ff003c;"></i> Team Wrogn @Ankit & Sonali @Priyanshi</p>
         </div>
     </footer>
 
-    <button class="back-to-top-btn" id="backToTopBtn" title="Back to Top" aria-label="Scroll back to top">↑</button>
+    <button class="back-to-top-btn" id="backToTopBtn" title="Back to Top" aria-label="Scroll back to top"><i class="fa-solid fa-arrow-up"></i></button>
     <script src="script.js"></script>
 </body>
 </html>

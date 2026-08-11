@@ -1,48 +1,52 @@
 
 :root[data-theme="dark"] {
-    --bg-color: #060606;
-    --header-bg: #060606;
+    --bg-color: #000000;
+    --header-bg: rgba(0, 0, 0, 0.85);
     --text-color: #ffffff;
-    --text-muted: #8e8e93;
-    --accent-color: #f5a623; 
-    --accent-hover: #e09216;
-    --accent-light: rgba(245, 166, 35, 0.1);
-    --search-bg: #121212;
-    --search-border: #222222;
+    --text-muted: #a1a1aa;
+    --accent-color: #e11d48; 
+    --accent-hover: #be123c;
+    --accent-light: rgba(225, 29, 72, 0.15);
+    --accent-gradient: linear-gradient(135deg, #e11d48 0%, #fb923c 100%);
+    --search-bg: #0f0f11;
+    --search-border: #27272a;
     --search-text: #ffffff;
-    --divider-color: #1a1a1a;
-    --dropdown-bg: rgba(10, 10, 10, 0.95);
-    --dropdown-border: #222222;
-    --btn-primary-bg: #f5a623;
-    --btn-primary-text: #000000;
-    --btn-secondary-border: #ffffff;
+    --divider-color: #27272a;
+    --dropdown-bg: rgba(9, 9, 11, 0.95);
+    --dropdown-border: #27272a;
+    --btn-primary-bg: #e11d48;
+    --btn-primary-text: #ffffff;
+    --btn-secondary-border: #27272a;
     --btn-secondary-text: #ffffff;
-    --card-bg: #121212;
-    --overlay-bg: rgba(0, 0, 0, 0.7);
-    --shadow-color: rgba(0, 0, 0, 0.5);
+    --card-bg: #09090b;
+    --card-hover-border: rgba(225, 29, 72, 0.4);
+    --overlay-bg: rgba(0, 0, 0, 0.8);
+    --shadow-color: rgba(0, 0, 0, 0.8);
 }
 
 :root[data-theme="light"] {
-    --bg-color: #f9f9fb;
-    --header-bg: #ffffff;
-    --text-color: #111115;
-    --text-muted: #72727a;
-    --accent-color: #e67e22; 
-    --accent-hover: #d35400;
-    --accent-light: rgba(230, 126, 34, 0.1);
-    --search-bg: #f1f2f6;
-    --search-border: #e2e8f0;
-    --search-text: #1a1a1a;
-    --divider-color: #e2e8f0;
-    --dropdown-bg: rgba(255, 255, 255, 0.95);
-    --dropdown-border: #e2e8f0;
-    --btn-primary-bg: #e67e22;
+    --bg-color: #fafafa;
+    --header-bg: rgba(250, 250, 250, 0.9);
+    --text-color: #09090b;
+    --text-muted: #52525b;
+    --accent-color: #e11d48; 
+    --accent-hover: #be123c;
+    --accent-light: rgba(225, 29, 72, 0.1);
+    --accent-gradient: linear-gradient(135deg, #e11d48 0%, #f97316 100%);
+    --search-bg: #ffffff;
+    --search-border: #e4e4e7;
+    --search-text: #09090b;
+    --divider-color: #e4e4e7;
+    --dropdown-bg: rgba(255, 255, 255, 0.98);
+    --dropdown-border: #e4e4e7;
+    --btn-primary-bg: #e11d48;
     --btn-primary-text: #ffffff;
-    --btn-secondary-border: #111115;
-    --btn-secondary-text: #111115;
+    --btn-secondary-border: #e4e4e7;
+    --btn-secondary-text: #09090b;
     --card-bg: #ffffff;
-    --overlay-bg: rgba(0, 0, 0, 0.4);
-    --shadow-color: rgba(0, 0, 0, 0.1);
+    --card-hover-border: rgba(225, 29, 72, 0.3);
+    --overlay-bg: rgba(24, 24, 27, 0.5);
+    --shadow-color: rgba(0, 0, 0, 0.05);
 }
 
 
@@ -53,13 +57,21 @@
     transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
-body {
+html, body {
     font-family: 'Outfit', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     background-color: var(--bg-color);
     color: var(--text-color);
     line-height: 1.5;
     -webkit-font-smoothing: antialiased;
     overflow-x: hidden;
+    width: 100%;
+    max-width: 100vw;
+}
+
+/* Ensure backdrop filters work properly on the header */
+.header {
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
 }
 
 
@@ -1477,30 +1489,33 @@ body {
 }
 
 .size-btn {
-    border: 1.5px solid var(--divider-color);
-    background: transparent;
+    border: 1.5px solid var(--search-border);
+    background: var(--search-bg);
     color: var(--text-color);
-    width: 48px;
-    height: 48px;
-    border-radius: 4px;
-    display: flex;
+    min-width: 48px;
+    height: 44px;
+    padding: 0 18px;
+    border-radius: 8px;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
     font-weight: 600;
     font-family: inherit;
-    font-size: 14px;
+    font-size: 13.5px;
     cursor: pointer;
-    transition: border-color 0.2s, background-color 0.2s;
+    transition: all 0.2s ease;
 }
 
 .size-btn:hover {
-    border-color: var(--text-color);
+    border-color: var(--accent-color);
+    transform: translateY(-1px);
 }
 
 .size-btn.active {
     border-color: var(--accent-color);
-    background-color: var(--accent-light);
-    color: var(--text-color);
+    background-color: var(--accent-color);
+    color: #ffffff;
+    box-shadow: 0 4px 14px var(--accent-light);
 }
 
 .action-buttons-row {
@@ -3266,6 +3281,11 @@ body {
     .product-grid {
         grid-template-columns: repeat(2, 1fr) !important;
         gap: 12px !important;
+        padding: 0 4px !important;
+    }
+    
+    .homepage-horizontal-scroll {
+        padding: 10px 4px 20px 4px !important;
     }
     
     /* Adjust layout, font sizes, and image heights for product cards on mobile */
