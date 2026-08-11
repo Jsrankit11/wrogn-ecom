@@ -40,6 +40,12 @@ const connectDB = async () => {
             }
         }
         
+        // Skip starting memory server if running on Vercel (read-only filesystem and timeout limits)
+        if (process.env.VERCEL) {
+            console.warn('Running on Vercel. In-memory MongoDB is disabled. Database features offline.');
+            return;
+        }
+
         try {
             console.log('Starting a new persistent In-Memory MongoDB Server...');
             const dbPath = path.join(__dirname, '../data/db');
